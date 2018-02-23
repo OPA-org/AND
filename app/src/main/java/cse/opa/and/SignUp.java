@@ -13,12 +13,12 @@ Button Register;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        Register=(Button)findViewById(R.id.button_Signup);
+        Register=(Button)findViewById(R.id.btn_signup);
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(SignUp.this,MainActivity.class));
-                // finish();
+                finish();
             }
         });
     }

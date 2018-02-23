@@ -35,7 +35,7 @@
             android:layout_marginBottom="100dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/topology"
+            app:srcCompat="@drawable/temp_topology"
 
             android:id="@+id/iv_topology"
             android:cropToPadding="false"
