@@ -31,8 +31,8 @@
             android:theme="@style/FullscreenTheme" />
         <activity android:name=".Report" />
         <activity android:name=".ListOfTopologies" />
-        <activity android:name=".SignUp" />
-        <activity android:name=".SignIn" />
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".LoginActivity" />
     </application>
 
 </manifest>

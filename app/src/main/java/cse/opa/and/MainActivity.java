@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,SignIn.class));
+                startActivity(new Intent(MainActivity.this,LoginActivity.class));
                 // finish();
             }
         });
