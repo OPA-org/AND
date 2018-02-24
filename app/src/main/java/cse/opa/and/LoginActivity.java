@@ -59,11 +59,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String email=et_login_email.getText().toString().trim();
             String password=et_login_password.getText().toString().trim();
             if (email.isEmpty()){
-                Toast.makeText(this,ERROR_EMPTY_EMAIL,Toast.LENGTH_SHORT).show();
+                et_login_email.setError(ERROR_EMPTY_EMAIL);
+                et_login_email.requestFocus();
                 return;
             }
             else if (password.isEmpty()){
-                Toast.makeText(this,ERROR_EMPTY_PASSWORD,Toast.LENGTH_SHORT).show();
+                et_login_password.setError(ERROR_EMPTY_PASSWORD);
+                et_login_password.requestFocus();
                 return;
             }
             progressDialog.setMessage(LOGIN_USER);
