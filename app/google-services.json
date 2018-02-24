@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "742213642109",
+    "firebase_url": "https://opand-5c2d5.firebaseio.com",
+    "project_id": "opand-5c2d5",
+    "storage_bucket": "opand-5c2d5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742213642109:android:1ac6d8ff022e8ed9",
+        "android_client_info": {
+          "package_name": "cse.opa.and"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742213642109-o7meoire39cc620lv8485275ms7iqaui.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cse.opa.and",
+            "certificate_hash": "30576eb3c88fe9631e014c61fd0a9e6307883db6"
+          }
+        },
+        {
+          "client_id": "742213642109-iq07llt4ocdrb43rvflq28rmndq69lt9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4vCN5rVlH6mZTuMmiyMuELjsAWuCk_T0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742213642109-iq07llt4ocdrb43rvflq28rmndq69lt9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
