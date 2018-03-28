@@ -1,0 +1,150 @@
+//============================================Login==================================================
+	//=========================================================================
+//            final String [] returned_values= UserHandler.user_login(this,email,password);
+//
+//            UserHandler.mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+//                @Override
+//                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                    if (returned_values[0].equals(UserHandler.MESSAGE_SUCCESS)){
+//                        Log.v("ENTERED_SIGN_IN","YES");
+//                        progressDialog.cancel();
+//                        Toast.makeText(LoginActivity.this,SUCCESSFULL_LOGIN,Toast.LENGTH_SHORT).show();
+//                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+//                        finish();
+//                    }
+//                    else if (returned_values[0].equals(UserHandler.MESSAGE_HANDLED_ERROR) ){
+//                        progressDialog.cancel();
+//                        String error=returned_values[1];
+//                        handle_returned_error(error);
+//                    }
+//                    else if (returned_values[0].equals(UserHandler.MESSAGE_UNHANDLED_ERROR)){
+//                        progressDialog.cancel();
+//                        String error=returned_values[1];
+//                        Toast.makeText(LoginActivity.this,ERROR_LOGIN,Toast.LENGTH_SHORT).show();//in case error was not catched a default error handler is inserted
+//                    }
+//                    else {
+//                        progressDialog.cancel();
+//                        String error=returned_values[1];
+//                        Toast.makeText(LoginActivity.this,error,Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            });
+
+            //=====================================================================
+
+    private void handle_returned_error(String error){
+        switch (error){
+            case "ERROR_INVALID_EMAIL":{
+                et_login_email.setError(ERROR_INVALID_EMAIL);
+                et_login_email.requestFocus();
+                break;
+            }
+            case "ERROR_WRONG_PASSWORD":{
+                et_login_password.setError(ERROR_INCORRECT_PASSWORD);
+                et_login_password.requestFocus();
+                et_login_password.setText("");
+                break;
+            }
+            case "ERROR_EMAIL_ALREADY_IN_USE":{
+                et_login_email.setError(ERROR_EMAIL_ALREADY_USED);
+                et_login_email.requestFocus();
+                break;
+            }
+            case "":{
+                et_login_password.setError(ERROR_WEAK_PASSWORD);
+                et_login_password.requestFocus();
+                break;
+            }
+            default:{
+                Toast.makeText(LoginActivity.this,error,Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+//=================================================UserHandler ============================================================================
+public  class UserHandler {
+    public final static String MESSAGE_SUCCESS="SUCCESSFUL_LOGIN";
+    public final static String MESSAGE_UNHANDLED_ERROR="UNHANDLED_ERROR";
+    public final static String MESSAGE_HANDLED_ERROR="HANDLED_ERROR";
+    public static FirebaseAuth mAuth = FirebaseAuth.getInstance(); // responsible of authenticating users
+    public static String[] user_login( final Activity activity,String email, String password){
+        final String[] return_value = new String[2];
+        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {//try to login in with email and password
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if (task.isSuccessful()){//if logged in successfully
+                    return_value[0] =MESSAGE_SUCCESS;
+                    Log.v("ENTERED_SIGN_IN","YES");
+                }
+                else {
+                    FirebaseAuthException e = (FirebaseAuthException )task.getException();
+                    String returned_error=error_handler(e);
+                    if (returned_error.isEmpty()){
+                        return_value[0] =MESSAGE_UNHANDLED_ERROR;
+                        return_value[1] =e.getMessage();
+                        Log.e("Login", "Failed Log-in", e);//unhandled error logged
+                    }
+                    return_value[0] =MESSAGE_HANDLED_ERROR;
+                    return_value[1] =returned_error;
+                }
+            }
+        });
+        return return_value;
+    }
+
+
+
+    private static String error_handler(FirebaseAuthException e){//Handles all Firebase Authentication errors
+        String errorCode=e.getErrorCode();
+        switch (errorCode)
+        {
+            case "ERROR_INVALID_CUSTOM_TOKEN":
+                return "The custom token format is incorrect. Please contact the app developer";
+            case "ERROR_CUSTOM_TOKEN_MISMATCH":
+                return "The custom token corresponds to a different audience.Please contact the app developer";
+            case "ERROR_INVALID_CREDENTIAL":
+                return "The supplied auth credential is malformed or has expired.";
+            case "ERROR_INVALID_EMAIL":
+                return "ERROR_INVALID_EMAIL";
+            case "ERROR_WRONG_PASSWORD":
+                return "ERROR_WRONG_PASSWORD";
+
+            case "ERROR_USER_MISMATCH":
+                return "The supplied credentials do not correspond to the previously signed in user.";
+
+            case "ERROR_REQUIRES_RECENT_LOGIN":
+                return "This operation is sensitive and requires recent authentication. Log in again before retrying this request.";
+
+            case "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL":
+                return "An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.";
+
+            case "ERROR_EMAIL_ALREADY_IN_USE":
+                return "ERROR_EMAIL_ALREADY_IN_USE";
+
+            case "ERROR_CREDENTIAL_ALREADY_IN_USE":
+                return "This credential is already associated with a different user account.";
+
+            case "ERROR_USER_DISABLED":
+               return "The user account has been disabled by an administrator.";
+
+            case "ERROR_USER_TOKEN_EXPIRED":
+                return "The user\\'s credential is no longer valid. The user must sign in again.";
+
+            case "ERROR_USER_NOT_FOUND":
+                return "There is no user record corresponding to this identifier. The user may have been deleted.";
+
+            case "ERROR_INVALID_USER_TOKEN":
+                return "The user\\'s credential is no longer valid. The user must sign in again.";
+
+            case "ERROR_OPERATION_NOT_ALLOWED":
+               return "This operation is not allowed. You must enable this service in the console.";
+
+            case "ERROR_WEAK_PASSWORD":
+                return "ERROR_WEAK_PASSWORD";
+
+        }
+        return "";
+    }
+}
+ //====================================================================================================================
