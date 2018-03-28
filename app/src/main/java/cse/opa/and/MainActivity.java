@@ -8,44 +8,47 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
-    Button createtopology;
-    Button LoadTopology;
-    Button login;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    Button btn_create_topology, btn_load_topology, btn_login;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_main);
-        createtopology=(Button)findViewById(R.id.btn_create_topology);
-        LoadTopology=(Button)findViewById(R.id.btn_load_topology);
-        login=(Button)findViewById(R.id.btn_login);
-        createtopology.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,TopologyActivity.class));
-               // finish();
+        //===========================================================
+        btn_create_topology = findViewById(R.id.btn_create_topology);
+        btn_load_topology = findViewById(R.id.btn_load_topology);
+        btn_login = findViewById(R.id.btn_login);
+        //===========================================================
+        btn_create_topology.setOnClickListener(this);
+        btn_load_topology.setOnClickListener(this);
+        btn_login.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.btn_create_topology: {
+                startActivity(new Intent(MainActivity.this, TopologyActivity.class));
+                break;
             }
-        });
-        LoadTopology.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,ListOfTopologies.class));
-                //finish();
+            //===========================================================
+            case R.id.btn_load_topology: {
+                startActivity(new Intent(MainActivity.this, ListOfTopologies.class));
+                break;
             }
-        });
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,LoginActivity.class));
-                // finish();
+            //===========================================================
+            case R.id.btn_login: {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                break;
             }
-        });
+            //===========================================================
+        }
     }
 }
