@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class Topology extends AppCompatActivity {
+public class TopologyActivity extends AppCompatActivity {
     Button savetopology;
     Button generatereport;
     private String m_Text="";
@@ -24,18 +24,18 @@ public class Topology extends AppCompatActivity {
         generatereport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Topology.this,Report.class));
+                startActivity(new Intent(TopologyActivity.this,ReportActivity.class));
                // finish();
             }
         });
         savetopology.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Topology.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(TopologyActivity.this);
                 builder.setTitle("File Name");
 
 // Set up the input
-                final EditText input = new EditText(Topology.this);
+                final EditText input = new EditText(TopologyActivity.this);
 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
                 builder.setView(input);
@@ -44,7 +44,7 @@ public class Topology extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(Topology.this, "Topology successfully saved",
+                        Toast.makeText(TopologyActivity.this, "TopologyActivity successfully saved",
                                 Toast.LENGTH_LONG).show();
                         m_Text = input.getText().toString();
                     }

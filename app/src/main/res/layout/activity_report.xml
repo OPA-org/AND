@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:background="@drawable/background"
-    tools:context="cse.opa.and.Report">
+    tools:context="cse.opa.and.ReportActivity">
 
     <TextView
         android:text="Here will be the report"

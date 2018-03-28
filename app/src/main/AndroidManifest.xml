@@ -25,11 +25,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Topology"
+            android:name=".TopologyActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_topology"
             android:theme="@style/FullscreenTheme" />
-        <activity android:name=".Report" />
+        <activity android:name=".ReportActivity" />
         <activity android:name=".ListOfTopologies" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".LoginActivity" />

@@ -52,7 +52,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tv_signup.setOnClickListener(this);
 
     }
-    //TODO: Validate Email & password
     @Override
     public void onClick(View view) {//this is a onclick function for any clickable view
         if (view==btn_login){
@@ -70,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
             progressDialog.setMessage(LOGIN_USER);
             progressDialog.show();
+
             mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {//try to login in with email and password
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {

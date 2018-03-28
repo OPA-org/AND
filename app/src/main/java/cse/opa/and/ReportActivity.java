@@ -3,7 +3,7 @@ package cse.opa.and;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class Report extends AppCompatActivity {
+public class ReportActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

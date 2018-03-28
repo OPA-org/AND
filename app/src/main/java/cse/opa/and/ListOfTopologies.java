@@ -20,7 +20,7 @@ public class ListOfTopologies extends AppCompatActivity {
         int u;
         for(int i=0;i<8;i++){
             u=i+1;
-            objects.add(new CustomObject("Topology"+u,"User"+u,date[i]));
+            objects.add(new CustomObject("TopologyActivity"+u,"User"+u,date[i]));
         }
 
         CustomAdapter customAdapter = new CustomAdapter(this, R.layout.listview, objects);
@@ -33,7 +33,7 @@ public class ListOfTopologies extends AppCompatActivity {
                 //String str = ((TextView) arg1).getText().toString();
                 // Toast.makeText(getBaseContext(),str, Toast.LENGTH_LONG).show();
 
-                startActivity(new Intent(ListOfTopologies.this,Topology.class));
+                startActivity(new Intent(ListOfTopologies.this,TopologyActivity.class));
 
             }
         });
