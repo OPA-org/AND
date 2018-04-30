@@ -32,12 +32,12 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.btn_save_topology: {
+            case R.id.btn_generate_report: {
                 startActivity(new Intent(TopologyActivity.this, ReportActivity.class));
                 break;
             }
             //===========================================================
-            case R.id.btn_generate_report: {
+            case R.id.btn_save_topology: {
                 AlertDialog.Builder builder = new AlertDialog.Builder(TopologyActivity.this);
                 builder.setTitle("File Name");
 
