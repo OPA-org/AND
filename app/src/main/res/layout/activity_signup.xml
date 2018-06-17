@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_signup"
     android:layout_width="match_parent"
@@ -9,7 +10,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/background"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/background_gradient"
     tools:context="cse.opa.and.LoginActivity">
 
 
@@ -17,32 +19,39 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_weight="0.6">
+        android:layout_weight="1">
 
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_gravity="bottom" />
         <ImageView
-            android:id="@+id/iv_signup_logo"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/ic_logo2"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/logo" />
+            android:id="@+id/imageView2"/>
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="@string/and"
             android:textColor="#fff"
             android:textSize="26dp"
             android:fontFamily="sans-serif-light" />
-        <LinearLayout
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_gravity="bottom" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
@@ -67,9 +76,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:background="#f3f3f3"/>
-
         </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -77,81 +84,77 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:layout_weight="1">
-        <TextView
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="10"
-            android:layout_gravity="bottom" />
+            android:layout_weight="1" />
         <EditText
             android:id="@+id/et_signup_email"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="28.5"
+            android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="@string/e_mail"
             android:textColorHint="#9E9E9E"
             android:textColor="@android:color/white"
             android:fontFamily="sans-serif-light"
-            android:background="@drawable/edittext"
-            android:drawableLeft="@mipmap/ic_email"
-            android:drawablePadding="2pt"
-            android:paddingRight="5dp"/>
-        <TextView
+            android:background="@drawable/et_background"
+            android:drawableLeft="@drawable/ic_email"
+            android:drawablePadding="3pt"
+            android:paddingVertical="2dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="5dp"/>
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
-            android:layout_gravity="bottom" />
+            android:layout_weight="0.3" />
         <EditText
             android:id="@+id/et_signup_password"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="28.5"
+            android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="@string/password"
-            android:background="@drawable/edittext"
+            android:background="@drawable/et_background"
             android:textColorHint="#9E9E9E"
             android:textColor="@android:color/white"
             android:fontFamily="sans-serif-light"
-            android:drawableLeft="@mipmap/ic_password2"
-            android:drawablePadding="2pt"
-            android:paddingRight="5dp"/>
-        <TextView
+            android:drawableLeft="@drawable/ic_password"
+            android:drawablePadding="3pt"
+            android:paddingVertical="2dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="5dp"/>
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
-            android:layout_gravity="bottom" />
+            android:layout_weight="0.3" />
         <EditText
             android:id="@+id/et_signup_confirm_password"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="28.5"
+            android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="@string/confirm_password"
-            android:background="@drawable/edittext"
+            android:background="@drawable/et_background"
             android:textColorHint="#9E9E9E"
             android:textColor="@android:color/white"
             android:fontFamily="sans-serif-light"
-            android:drawableLeft="@mipmap/ic_password2"
-            android:drawablePadding="2pt"
-            android:paddingRight="5dp"/>
+            android:drawableLeft="@drawable/ic_password"
+            android:drawablePadding="3pt"
+            android:paddingVertical="2dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="5dp"/>
 
-
-        <TextView
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
-            android:layout_gravity="bottom" />
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/btn_signup"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/mailText"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_weight="23"
-            android:background="@drawable/loginbotton"
+            android:background="@drawable/btn_background"
             android:elevation="2dp"
             android:fontFamily="sans-serif-light"
             android:paddingLeft="30pt"
@@ -165,14 +168,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.4"
+        android:layout_weight="0.5"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="bottom" />
-
     </LinearLayout>
 
 </LinearLayout>

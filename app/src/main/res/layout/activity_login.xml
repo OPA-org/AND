@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
@@ -9,33 +10,32 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/background"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/background_gradient"
     tools:context="cse.opa.and.LoginActivity">
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_weight="0.70">
-        <TextView
+        android:layout_weight="1">
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
         <ImageView
-            android:id="@+id/iv_login_logo"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/ic_logo2"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/logo" />
+            android:id="@+id/imageView2"/>
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="@string/and"
             android:textColor="#fff"
@@ -47,63 +47,65 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_weight="0.8">
-        <TextView
+        android:layout_weight="1">
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8"
+            android:layout_weight="1.5"
             android:layout_gravity="bottom" />
         <EditText
             android:id="@+id/et_login_email"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="28.5"
+            android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="@string/e_mail"
             android:textColorHint="#9E9E9E"
             android:textColor="@android:color/white"
             android:fontFamily="sans-serif-light"
-            android:background="@drawable/edittext"
-            android:drawableLeft="@mipmap/ic_email"
-            android:drawablePadding="2pt"
-            android:paddingRight="5dp"/>
+            android:background="@drawable/et_background"
+            android:drawableLeft="@drawable/ic_email"
+            android:drawablePadding="3pt"
+            android:maxLength="35"
+            android:paddingVertical="2dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="5dp"/>
 
-        <TextView
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
+            android:layout_weight="0.2"
             android:layout_gravity="bottom" />
         <EditText
             android:id="@+id/et_login_password"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="28.5"
+            android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="@string/password"
-            android:background="@drawable/edittext"
+            android:background="@drawable/et_background"
             android:textColorHint="#9E9E9E"
             android:textColor="@android:color/white"
             android:fontFamily="sans-serif-light"
-            android:drawableLeft="@mipmap/ic_password2"
-            android:drawablePadding="2pt"
-            android:paddingRight="5dp"/>
+            android:drawableLeft="@drawable/ic_password"
+            android:drawablePadding="3pt"
+            android:paddingVertical="2dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="5dp"/>
 
-        <TextView
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
+            android:layout_weight="0.5"
             android:layout_gravity="bottom" />
 
         <Button
             android:id="@+id/btn_login"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/mailText"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:layout_weight="23"
-            android:background="@drawable/loginbotton"
+            android:background="@drawable/btn_background"
             android:elevation="2dp"
             android:fontFamily="sans-serif-light"
             android:paddingLeft="30pt"
