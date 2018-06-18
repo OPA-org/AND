@@ -21,20 +21,13 @@
         android:fontFamily="sans-serif-light" />
 
     <LinearLayout
+        android:id="@+id/ll_topology"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:background="#fff">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            app:srcCompat="@drawable/temp_topology"
-            android:layout_gravity="center"
-            android:id="@+id/iv_topology"
-            android:cropToPadding="false"
-            android:adjustViewBounds="true" />
     </LinearLayout>
     <View
         android:layout_width="match_parent"

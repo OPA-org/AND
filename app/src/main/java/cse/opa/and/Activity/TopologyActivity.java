@@ -9,11 +9,13 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class TopologyActivity extends AppCompatActivity implements View.OnClickListener {
     Button btn_save_topology, btn_generate_report;
     String m_Text;
+    LinearLayout ll_topology;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,13 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         btn_save_topology.setOnClickListener(this);
         btn_generate_report.setOnClickListener(this);
         //===========================================================
+        ll_topology = findViewById(R.id.ll_topology);
+        TopologyGraphView myView = new TopologyGraphView(this);
+        myView.AddPath(100,200,700,600);
+        myView.AddPath(100,600,700,200);
+        //MyView myView2 = new MyView(this,100,600,700,200);
+        //ll_topology.addView(myView);
+        ll_topology.addView(myView);
     }
 
     @Override
@@ -34,7 +43,7 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
 
             case R.id.btn_generate_report: {
-                startActivity(new Intent(TopologyActivity.this, ReportActivity.class));
+                startActivity(new Intent(TopologyActivity.this, cse.opa.and.ReportActivity.class));
                 break;
             }
             //===========================================================

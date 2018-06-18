@@ -7,3 +7,5 @@
 /build
 /captures
 .externalNativeBuild
+/AND/nbproject/private/
+/AND/build/
