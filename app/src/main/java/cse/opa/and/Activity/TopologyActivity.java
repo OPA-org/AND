@@ -7,9 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class TopologyActivity extends AppCompatActivity implements View.OnClickListener {
@@ -21,7 +23,7 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topology);
-        MainActivity.setStatusBarGradiant(this);
+        cse.opa.and.MainActivity.setStatusBarGradiant(this);
         //===========================================================
         btn_save_topology = findViewById(R.id.btn_save_topology);
         btn_generate_report = findViewById(R.id.btn_generate_report);
@@ -35,7 +37,15 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         myView.AddPath(100,600,700,200);
         //MyView myView2 = new MyView(this,100,600,700,200);
         //ll_topology.addView(myView);
-        ll_topology.addView(myView);
+        ZoomView zoomView = new ZoomView(this);
+        TextView txtview = new TextView(this);
+        txtview.setText("Test");
+//        zoomView.addView(txtview);
+//        zoomView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//        zoomView.requestLayout();
+        zoomView.addView(myView);
+        ll_topology.addView(zoomView);
+        //ll_topology.addView(myView);
     }
 
     @Override

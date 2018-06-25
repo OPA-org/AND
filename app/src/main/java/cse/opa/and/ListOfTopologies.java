@@ -33,7 +33,7 @@ public class ListOfTopologies extends AppCompatActivity {
                 //String str = ((TextView) arg1).getText().toString();
                 // Toast.makeText(getBaseContext(),str, Toast.LENGTH_LONG).show();
 
-                startActivity(new Intent(ListOfTopologies.this,TopologyActivity.class));
+                startActivity(new Intent(ListOfTopologies.this, cse.opa.and.TopologyActivity.class));
 
             }
         });
