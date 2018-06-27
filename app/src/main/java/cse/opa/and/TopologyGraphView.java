@@ -23,6 +23,8 @@ public class TopologyGraphView extends View {
     private int mSquareWidth,mSquareHeight;
     private int SCREEN_SIZE_WIDTH ;
     private int SCREEN_SIZE_HEIGHT ;
+    private float zoomCenterX = 0 , zoomCenterY = 0;
+
     public TopologyGraphView(Context context) {
         super(context);
 
@@ -38,7 +40,8 @@ public class TopologyGraphView extends View {
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(4);
         ProcessInput();
-
+        Scale();
+        set_AverageXY();
     }
     //======================================================
     public TopologyGraphView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -182,8 +185,8 @@ public class TopologyGraphView extends View {
         System.out.println("BestHook: "+best_hook);
         System.out.println("MinCrossEdgesCount: "+Min_CrossEdgesCount);
 
-        Scale();
     }
+
     public void Scale()
     {
         double XMin= Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -226,6 +229,7 @@ public class TopologyGraphView extends View {
         }
 
     }
+
     @Override
     protected void onDraw(Canvas canvas) {
         for(int j=0;j< Nodename.length;j++)
@@ -244,7 +248,7 @@ public class TopologyGraphView extends View {
 
     }
 
-    public static Node get_vertex_by_ID(ArrayList<Node> nodes, String ID) {
+    private static Node get_vertex_by_ID(ArrayList<Node> nodes, String ID) {
         for (Node v : nodes) {
             if (v.getId().equals(ID)) {
                 return v;
@@ -253,7 +257,7 @@ public class TopologyGraphView extends View {
         return null;
     }
 
-    public static void printCoords(ArrayList<Node> nodes) {
+    private static void printCoords(ArrayList<Node> nodes) {
         for (Node v : nodes) {
             System.out.println("Node: " + v.getId());
             System.out.println("\tX: " + v.getX());
@@ -265,6 +269,33 @@ public class TopologyGraphView extends View {
             }
             System.out.println("==================");
         }
+    }
+
+    public float getZoomCenterX() {
+        return zoomCenterX;
+    }
+
+    public void setZoomCenterX(float zoomCenterX) {
+        this.zoomCenterX = zoomCenterX;
+    }
+
+    public float getZoomCenterY() {
+        return zoomCenterY;
+    }
+
+    public void setZoomCenterY(float zoomCenterY) {
+        this.zoomCenterY = zoomCenterY;
+    }
+
+    private void set_AverageXY(){
+        float sumX = 0;
+        float sumY = 0;
+        for(int i = 0 ; i < nodes.size() ; i++){
+            sumX += nodes.get(i).getX();
+            sumY += nodes.get(i).getY();
+        }
+        zoomCenterX = sumX/nodes.size();
+        zoomCenterY = sumY/nodes.size();
     }
 
 }

@@ -13,12 +13,15 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import cse.opa.and.R;
+import cse.opa.and.TopologyGraphView;
+import cse.opa.and.ZoomView;
 
 public class TopologyActivity extends AppCompatActivity implements View.OnClickListener {
     Button btn_save_topology, btn_generate_report;
     String m_Text;
     LinearLayout ll_topology;
-
+    ZoomView zv_zoomview;
+    TopologyGraphView tgv_topology;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,8 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         btn_generate_report.setOnClickListener(this);
         //===========================================================
         ll_topology = findViewById(R.id.ll_topology);
+        zv_zoomview = findViewById(R.id.zv_zoomview);
+        tgv_topology = findViewById(R.id.tgv_topology);
         //TopologyGraphView myView = new TopologyGraphView(this);
         //ZoomView zoomView = new ZoomView(this);
         //zoomView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -39,6 +44,11 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 //        zoomView.requestLayout();
        // zoomView.addView(myView);
         //ll_topology.addView(zoomView);
+        zv_zoomview.setSmoothZoomX(tgv_topology.getZoomCenterX());
+        zv_zoomview.setSmoothZoomY(tgv_topology.getZoomCenterY());
+        //zv_zoomview.addView(myView);
+        //ll_topology.addView(zv_zoomview);
+
         //ll_topology.addView(myView);
     }
 

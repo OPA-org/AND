@@ -33,9 +33,11 @@
                 <HorizontalScrollView
                 android:layout_width="wrap_content" android:layout_height="wrap_content">
                 <cse.opa.and.ZoomView
+                    android:id="@+id/zv_zoomview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <cse.opa.and.TopologyGraphView
+                        android:id="@+id/tgv_topology"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </cse.opa.and.ZoomView>
