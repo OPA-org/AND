@@ -1,4 +1,4 @@
-package cse.opa.and;
+package cse.opa.and.Activity;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import cse.opa.and.Classes.OIDS;
 import cse.opa.and.Classes.SNMP_methods;
+import cse.opa.and.R;
 
 public class ReportActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;

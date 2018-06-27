@@ -6,22 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
-/**
- * Created by gaafar62 on 6/25/2018.
- */
 
 public class ZoomView extends FrameLayout {
-
-    /**
-     * Zooming view listener interface.
-     *
-     * @author karooolek
-     *
-     */
     public interface ZoomViewListener {
 
         void onZoomStarted(float zoom, float zoomx, float zoomy);
@@ -66,8 +57,21 @@ public class ZoomView extends FrameLayout {
 
     private Bitmap ch;
 
-    public ZoomView(final Context context) {
+
+    public ZoomView(Context context) {
         super(context);
+    }
+    //======================================================
+    public ZoomView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+    //======================================================
+    public ZoomView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+    //======================================================
+    public ZoomView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     public float getZoom() {

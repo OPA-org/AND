@@ -5,7 +5,7 @@
     android:id="@+id/activity_topology"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cse.opa.and.TopologyActivity"
+    tools:context="cse.opa.and.Activity.TopologyActivity"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     android:background="@drawable/background_gradient">
@@ -19,16 +19,30 @@
         android:textSize="36sp"
         android:textColor="#fff"
         android:fontFamily="sans-serif-light" />
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:background="@android:color/black">
+            <LinearLayout
+                android:id="@+id/ll_topology"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#fff">
+                <HorizontalScrollView
+                android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <cse.opa.and.ZoomView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <cse.opa.and.TopologyGraphView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </cse.opa.and.ZoomView>
+                </HorizontalScrollView>
+            </LinearLayout>
+        </ScrollView>
 
-        <LinearLayout
-            android:id="@+id/ll_topology"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="#fff">
-
-        </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"

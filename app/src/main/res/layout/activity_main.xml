@@ -12,7 +12,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/background_gradient"
     android:fitsSystemWindows="true"
-    tools:context="cse.opa.and.MainActivity">
+    tools:context="cse.opa.and.Activity.MainActivity">
 
     <LinearLayout
         android:orientation="vertical"

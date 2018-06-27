@@ -1,4 +1,4 @@
-package cse.opa.and;
+package cse.opa.and.Activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+
+import cse.opa.and.ListOfTopologies;
+import cse.opa.and.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button btn_create_topology, btn_load_topology, btn_login;

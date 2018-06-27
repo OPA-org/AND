@@ -1,13 +1,15 @@
 package cse.opa.and;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+
+import cse.opa.and.Activity.TopologyActivity;
 
 public class ListOfTopologies extends AppCompatActivity {
 
@@ -33,7 +35,7 @@ public class ListOfTopologies extends AppCompatActivity {
                 //String str = ((TextView) arg1).getText().toString();
                 // Toast.makeText(getBaseContext(),str, Toast.LENGTH_LONG).show();
 
-                startActivity(new Intent(ListOfTopologies.this, cse.opa.and.TopologyActivity.class));
+                startActivity(new Intent(ListOfTopologies.this, TopologyActivity.class));
 
             }
         });

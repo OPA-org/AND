@@ -1,4 +1,4 @@
-package cse.opa.and;
+package cse.opa.and.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,6 +18,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+
+import cse.opa.and.R;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btn_login;

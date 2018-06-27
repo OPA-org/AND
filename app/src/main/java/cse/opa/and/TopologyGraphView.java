@@ -2,12 +2,11 @@ package cse.opa.and;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Point;
-import android.util.DisplayMetrics;
+import android.support.annotation.Nullable;
+import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -21,16 +20,54 @@ public class TopologyGraphView extends View {
     ArrayList<Node> nodes;
     ArrayList<Edge> edges;
 
+    private int mSquareWidth,mSquareHeight;
+    private int SCREEN_SIZE_WIDTH ;
+    private int SCREEN_SIZE_HEIGHT ;
     public TopologyGraphView(Context context) {
         super(context);
 
+        init(null,context);
+        p = new Paint(Paint.ANTI_ALIAS_FLAG);
+        p.setStrokeWidth(4);
+        ProcessInput();
+    }
+    //======================================================
+    public TopologyGraphView(Context context, AttributeSet attrs) {
+        super(context,attrs);
+        init(attrs,context);
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(4);
         ProcessInput();
 
     }
+    //======================================================
+    public TopologyGraphView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
 
+        init(attrs,context);
+        p = new Paint(Paint.ANTI_ALIAS_FLAG);
+        p.setStrokeWidth(4);
+        ProcessInput();
+    }
+    //======================================================
+    public TopologyGraphView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
 
+        init(attrs,context);
+        p = new Paint(Paint.ANTI_ALIAS_FLAG);
+        p.setStrokeWidth(4);
+        ProcessInput();
+    }
+    private void init(@Nullable AttributeSet set, Context context) {
+        if (set == null)
+            return;
+        TypedArray ta = getContext().obtainStyledAttributes(set, R.styleable.TopologyGraphView);
+        SCREEN_SIZE_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
+        SCREEN_SIZE_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
+        mSquareWidth = ta.getDimensionPixelSize(R.styleable.TopologyGraphView_square_size, SCREEN_SIZE_WIDTH);
+        mSquareHeight = ta.getDimensionPixelSize(R.styleable.TopologyGraphView_square_size, SCREEN_SIZE_HEIGHT);
+        ta.recycle();
+    }
 
     public void ProcessInput()
     {
@@ -182,8 +219,8 @@ public class TopologyGraphView extends View {
         {
             double nodeX = nodes.get(j).getX();
             double nodeY = nodes.get(j).getY();
-            double tempx = nodeX*(600.0 / length);
-            double tempy = nodeY*(600.0 / length);
+            double tempx = nodeX*(2000.0 / length);
+            double tempy = nodeY*(2000.0 / length);
             nodes.get(j).setX(tempx);
             nodes.get(j).setY(tempy);
         }
@@ -200,7 +237,12 @@ public class TopologyGraphView extends View {
             edges.get(j).Draw(p,canvas);
         }
     }
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(resolveSize(SCREEN_SIZE_WIDTH*2, heightMeasureSpec), resolveSize(SCREEN_SIZE_HEIGHT+SCREEN_SIZE_HEIGHT/2, heightMeasureSpec));
 
+    }
 
     public static Node get_vertex_by_ID(ArrayList<Node> nodes, String ID) {
         for (Node v : nodes) {

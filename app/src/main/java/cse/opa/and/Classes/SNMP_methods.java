@@ -27,7 +27,7 @@ import java.util.TreeMap;
 public class SNMP_methods {
 
     private static Map<String, String> doWalk(String tableOid, Target target) throws IOException {
-        Map<String, String> result = new TreeMap<>();
+        Map<String, String> result = new TreeMap<String, String>();
         TransportMapping<? extends Address> transport = new DefaultUdpTransportMapping();
         Snmp snmp = new Snmp(transport);
         transport.listen();
@@ -77,13 +77,13 @@ public class SNMP_methods {
     public static ArrayList<ArrayList<String>> getfromwalk_multi(String ip,String TableOID,ArrayList<String> EntryOIDs) throws IOException{
         CommunityTarget target = init_walk(ip);
 
-        ArrayList<ArrayList<String>> entries = new ArrayList<>();
+        ArrayList<ArrayList<String>> entries = new ArrayList<ArrayList<String>>();
         
         Map<String, String> result = doWalk("."+TableOID.trim(), target); // ifTable, mib-2 interfaces
                                             // 1.3.6.1.2.1.2.2  ,  1.3.6.1.2.1.4.21 , 1.3.6.1.2.1.4.22
                                             
         for (String entryoid : EntryOIDs) {
-            ArrayList<String> entrydata = new ArrayList<>();
+            ArrayList<String> entrydata = new ArrayList<String>();
             for (Map.Entry<String, String> entry : result.entrySet()) {
                 if (entry.getKey().startsWith("." + entryoid.trim() + ".")) {
                     entrydata.add(entry.getValue());
@@ -98,7 +98,7 @@ public class SNMP_methods {
     public static ArrayList<String> getfromwalk_single(String ip,String TableOID,String EntryOID) throws IOException{
         CommunityTarget target = init_walk(ip);
 
-        ArrayList<String> entrydata = new ArrayList<>();
+        ArrayList<String> entrydata = new ArrayList<String>();
         
         Map<String, String> result = doWalk("."+TableOID.trim(), target); // ifTable, mib-2 interfaces
                                             // 1.3.6.1.2.1.2.2  ,  1.3.6.1.2.1.4.21 , 1.3.6.1.2.1.4.22
@@ -160,7 +160,7 @@ public class SNMP_methods {
     }
     
     public static ArrayList<String> getfromsnmpget_multi(String ipaddress,ArrayList<String> OIDs) throws IOException, Exception{
-        ArrayList<String> results = new ArrayList<>();
+        ArrayList<String> results = new ArrayList<String>();
         for(String OID: OIDs){
             results.add(snmpGet(ipaddress,"public", OID));
         }
