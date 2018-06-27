@@ -222,8 +222,8 @@ public class TopologyGraphView extends View {
         {
             double nodeX = nodes.get(j).getX();
             double nodeY = nodes.get(j).getY();
-            double tempx = nodeX*(2000.0 / length);
-            double tempy = nodeY*(2000.0 / length);
+            double tempx = nodeX*(500.0 / length);
+            double tempy = nodeY*(500.0 / length);
             nodes.get(j).setX(tempx);
             nodes.get(j).setY(tempy);
         }
