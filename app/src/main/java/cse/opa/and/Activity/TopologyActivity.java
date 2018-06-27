@@ -38,6 +38,8 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         //zoomView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
        // myView.setLayoutParams(new LinearLayout.LayoutParams(Resources.getSystem().getDisplayMetrics().widthPixels, Resources.getSystem().getDisplayMetrics().heightPixels));
 //        zoomView.requestLayout();
+        zoomView.setSmoothZoomX(myView.getZoomCenterX());
+        zoomView.setSmoothZoomY(myView.getZoomCenterY());
         zoomView.addView(myView);
         ll_topology.addView(zoomView);
         //ll_topology.addView(myView);

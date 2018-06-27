@@ -33,14 +33,15 @@ public class ZoomView extends FrameLayout {
 
     // zooming
     float zoom = 1.0f;
-    float maxZoom = 2.0f;
-    float smoothZoom = 1.0f;
+    float maxZoom = 5.0f;
+    float smoothZoom = 2.0f;
     float zoomX, zoomY;
     float smoothZoomX, smoothZoomY;
     private boolean scrolling; // NOPMD by karooolek on 29.06.11 11:45
 
     // minimap variables
     private boolean showMinimap = false;
+
     private int miniMapColor = Color.BLACK;
     private int miniMapHeight = -1;
     private String miniMapCaption;
@@ -72,6 +73,14 @@ public class ZoomView extends FrameLayout {
 
     public float getZoom() {
         return zoom;
+    }
+
+    public void setSmoothZoomX(float smoothZoomX) {
+        this.smoothZoomX = smoothZoomX;
+    }
+
+    public void setSmoothZoomY(float smoothZoomY) {
+        this.smoothZoomY = smoothZoomY;
     }
 
     public float getMaxZoom() {
