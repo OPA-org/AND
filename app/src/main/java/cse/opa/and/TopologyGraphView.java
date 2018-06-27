@@ -12,151 +12,140 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-/**
- * Created by gaafar62 on 18/06/2018.
- */
-
 
 public class TopologyGraphView extends View {
 
     private final Paint p;
-    private final Path path;
-    private final ArrayList<Point> pointsStart = new ArrayList<>();
-    private final ArrayList<Point> pointsEnd = new ArrayList<>();
-    public int [][] inputTable =new int[][]
-            { 	{0,1,1,1,1} ,
-                    {1,0,5,0,0} ,
-                    {1,5,0,0,1} ,
-                    {1,0,0,0,1} ,
-                    {1,0,1,1,0} ,
-            };
-    public String[] Nodename = new String[]{"A","B","C","D","E"};
+    public String[] Nodename = new String[]{"Router0","Router1","Router2","Router3","Router4","Switch1","Switch2","Switch3","LocalPC","PC0","PC1","PC2","EthernetSwitch0"};
 
-    ArrayList<Node> all;
+    ArrayList<Node> nodes;
     ArrayList<Edge> edges;
 
     public TopologyGraphView(Context context) {
         super(context);
 
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
-        p.setStrokeWidth(10);
-        path = new Path();
-
-
-
+        p.setStrokeWidth(4);
         ProcessInput();
-        Thread t = new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                while(true)
-                {
-                    try
-                    {
-                        Thread.sleep(50);
-                    } catch (InterruptedException e)
-                    {
-                        e.printStackTrace();
-                    }
-                    for(int j=0;j< Nodename.length;j++)
-                    {
-                        all.get(j).acc=new Vector();
-                        all.get(j).calForce(all);
-                        all.get(j). calForceEdge( );
-                        //all.get(j).move();
-                    }
-                    //scale
-                    Scale();
-                    //centroid
-                    Vector centoid = all.get(0).getCentroid(all);
-                    Vector temp = (new Vector(300,300)).sub(centoid);
-                    for(int j=0;j< Nodename.length;j++)
-                    {
-                        all.get(j).posTodraw=all.get(j).posTodraw.add(temp) ;
-                    }
-
-                }
-            }
-        });
-        t.start();
 
     }
 
-    public void GenerateGraph()
-    {
-        int n= 5;
-        inputTable = new int[n][n];
-        Nodename = new String[n];
-        for(int i=0;i< Nodename.length;i++)
-        {
-            for(int j=i+1;j< Nodename.length;j++)
-            {
-                if(Math.random() > 0.6)
-                {
-                    inputTable[i][j] = (int)(Math.random() * 20);
-                    inputTable[j][i] =inputTable[i][j] ;
-                }
-            }
-        }
-        for(int i=0;i< Nodename.length;i++)
-        {
-            Nodename[i]= "" + (char)(65+i);
-        }
-    }
 
-    public void GenerateGraph2()
-    {
-        int n= 5;
-        inputTable = new int[n][n];
-        Nodename = new String[n];
-        for(int i=0;i< Nodename.length;i++)
-        {
-            for(int j=i+1;j< Nodename.length;j++)
-            {
-                if(Math.random()/Math.log(j-i)*Math.log(2)*2 > 0.5)
-                {
-                    inputTable[i][j] = (int)(Math.random() * 7*(j-i));
-                    inputTable[j][i] =inputTable[i][j] ;
-                }
-            }
-        }
-        for(int i=0;i< Nodename.length;i++)
-        {
-            Nodename[i]= "" + (char)(65+i);
-        }
-    }
 
     public void ProcessInput()
     {
-        GenerateGraph();
-        //GenerateGraph2();
-        all = new ArrayList<Node>();
-        edges =new ArrayList<Edge>();
+        nodes = new ArrayList<Node>();
+        edges = new ArrayList<Edge>();
 
-        for(int i=0;i< Nodename.length;i++)
-        {
-            all.add(new Node());
-            all.get(i).name = Nodename[i];
-            all.get(i).Adj= new ArrayList<Edge>();
-        }
+        nodes.add(new Node("Router0"));
+        nodes.add(new Node("Router1"));
+        nodes.add(new Node("Router2"));
+        nodes.add(new Node("Router3"));
+        nodes.add(new Node("Router4"));
+        nodes.add(new Node("Switch1"));
+        nodes.add(new Node("Switch2"));
+        nodes.add(new Node("Switch3"));
+        nodes.add(new Node("LocalPC"));
+        nodes.add(new Node("PC0"));
+        nodes.add(new Node("PC1"));
+        nodes.add(new Node("PC2"));
+        nodes.add(new Node("EthernetSwitch"));
 
-        for(int i=0;i< Nodename.length;i++)
-        {
-            for(int j=i+1;j< Nodename.length;j++)
-            {
-                if(inputTable[i][j] != 0)
-                {
-                    Edge e = new Edge();
-                    e.a = all.get(i);
-                    e.b = all.get(j);
-                    e.length = inputTable[i][j] ;
-                    edges.add(e);
-                    all.get(i).Adj.add(e);
-                    all.get(j).Adj.add(e);
+        Edge edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "LocalPC"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
+        get_vertex_by_ID(nodes, "LocalPC").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "PC0"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
+        get_vertex_by_ID(nodes, "PC0").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "Router1"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
+        get_vertex_by_ID(nodes, "Router1").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "Router1"), get_vertex_by_ID(nodes, "Router2"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "Router1").addEdge(edge);
+        get_vertex_by_ID(nodes, "Router2").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "Router2"), get_vertex_by_ID(nodes, "Switch1"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "Router2").addEdge(edge);
+        get_vertex_by_ID(nodes, "Switch1").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "Router2"), get_vertex_by_ID(nodes, "EthernetSwitch"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "Router2").addEdge(edge);
+        get_vertex_by_ID(nodes, "EthernetSwitch").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "Router3"), get_vertex_by_ID(nodes, "EthernetSwitch"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "Router3").addEdge(edge);
+        get_vertex_by_ID(nodes, "EthernetSwitch").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "Router4"), get_vertex_by_ID(nodes, "EthernetSwitch"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "Router4").addEdge(edge);
+        get_vertex_by_ID(nodes, "EthernetSwitch").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "Switch1"), get_vertex_by_ID(nodes, "Switch2"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "Switch1").addEdge(edge);
+        get_vertex_by_ID(nodes, "Switch2").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "Switch1"), get_vertex_by_ID(nodes, "Switch3"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "Switch1").addEdge(edge);
+        get_vertex_by_ID(nodes, "Switch3").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "Switch2"), get_vertex_by_ID(nodes, "PC1"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "Switch2").addEdge(edge);
+        get_vertex_by_ID(nodes, "PC1").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "Switch3"), get_vertex_by_ID(nodes, "PC2"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "Switch3").addEdge(edge);
+        get_vertex_by_ID(nodes, "PC2").addEdge(edge);
+
+        AlgorithmParams.setNodes(nodes);
+        AlgorithmParams.setEdges(edges);
+
+        int Min_CrossEdgesCount = Integer.MAX_VALUE;
+        double best_hook = 0,best_gravity = 0;
+        for (double gravity = 10000.0; gravity < 300000.0; gravity += 25000.0) {
+            int c = -1;
+            for (double hookConst = 0.1; hookConst < 1.5; hookConst += 0.1) {
+                System.out.println("TESTING FOR:" + gravity + "," + hookConst);
+                AlgorithmParams.setGravityConst(gravity);
+                AlgorithmParams.setHookConst(hookConst);
+                PhisicEngine p = new PhisicEngine();
+                c = p.getCrossedEdgesCount();
+                System.out.println("CrossedEdgesCount: " + c);
+                if(c < Min_CrossEdgesCount){
+                    best_hook = hookConst;
+                    best_gravity = gravity;
+                    Min_CrossEdgesCount=c;
+                }
+                if(c == 0){
+                    break;
                 }
             }
+            if (c == 0) {
+                break;
+            }
         }
+        System.out.println("==========================");
+        printCoords(nodes);
+        System.out.println("==========================");
+        System.out.println("BestGravity: "+best_gravity);
+        System.out.println("BestHook: "+best_hook);
+        System.out.println("MinCrossEdgesCount: "+Min_CrossEdgesCount);
+
+        Scale();
     }
     public void Scale()
     {
@@ -168,21 +157,21 @@ public class TopologyGraphView extends View {
 
         for(int j=0;j< Nodename.length;j++)
         {
-            if(all.get(j).pos.getX() < XMin)
+            if(nodes.get(j).getX() < XMin)
             {
-                XMin=all.get(j).pos.getX();
+                XMin=nodes.get(j).getX();
             }
-            if(all.get(j).pos.getY() < YMin)
+            if(nodes.get(j).getY() < YMin)
             {
-                YMin=all.get(j).pos.getY();
+                YMin=nodes.get(j).getY();
             }
-            if(all.get(j).pos.getX() > XMax)
+            if(nodes.get(j).getX() > XMax)
             {
-                XMax=all.get(j).pos.getX();
+                XMax=nodes.get(j).getX();
             }
-            if(all.get(j).pos.getY() > YMax)
+            if(nodes.get(j).getY() > YMax)
             {
-                YMax=all.get(j).pos.getY();
+                YMax=nodes.get(j).getY();
             }
         }
 
@@ -191,69 +180,49 @@ public class TopologyGraphView extends View {
         double length  = Math.max(length_x, length_y);
         for(int j=0;j< Nodename.length;j++)
         {
-            Vector vv = all.get(j).pos;
-            vv= vv.Mul(400.0 / length);
-            all.get(j).setPosToDraw(vv);
+            double nodeX = nodes.get(j).getX();
+            double nodeY = nodes.get(j).getY();
+            double tempx = nodeX*(600.0 / length);
+            double tempy = nodeY*(600.0 / length);
+            nodes.get(j).setX(tempx);
+            nodes.get(j).setY(tempy);
         }
 
     }
-    public void AddPath(int x1,int y1,int x2,int y2){
-        pointsStart.add(new Point(x1, y1));
-        pointsEnd.add(new Point(x2, y2));
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
-        // draw first vertex
-//        p.setStyle(Paint.Style.FILL);
-//        p.setColor(Color.GREEN);
-
-
-
-//        for (int i=-0;i<pointsStart.size();i++){
-//            // draw first vertex
-//            p.setStyle(Paint.Style.FILL);
-//            p.setColor(Color.GREEN);
-//            canvas.drawCircle(pointsStart.get(i).x, pointsStart.get(i).y, 15, p);
-//            // draw the edge
-//            path.reset();
-//            path.moveTo(pointsStart.get(i).x, pointsStart.get(i).y);
-//            path.lineTo(pointsEnd.get(i).x, pointsEnd.get(i).y);
-//            p.setStyle(Paint.Style.STROKE);
-//            p.setColor(Color.CYAN);
-//            canvas.drawPath(path, p);
-//            // draw second vertex
-//            p.setStyle(Paint.Style.FILL);
-//            p.setColor(Color.BLUE);
-//            canvas.drawCircle(pointsEnd.get(i).x, pointsEnd.get(i).y, 15, p);
-//        }
-
-
-
-        //        canvas.drawCircle(point1.x, point1.y, 15, p);
-//
-//        // draw the edge
-//        path.reset();
-//        path.moveTo(point1.x, point1.y);
-//        path.lineTo(point2.x, point2.y);
-//        p.setStyle(Paint.Style.STROKE);
-//        p.setColor(Color.CYAN);
-//        canvas.drawPath(path, p);
-//
-//        // draw second vertex
-//        p.setStyle(Paint.Style.FILL);
-//        p.setColor(Color.BLUE);
-//        canvas.drawCircle(point2.x, point2.y, 15, p);
-
-
-
         for(int j=0;j< Nodename.length;j++)
         {
-            all.get(j).Draw(p,canvas);
+            nodes.get(j).Draw(p,canvas);
         }
         for(int j=0;j< edges.size();j++)
         {
             edges.get(j).Draw(p,canvas);
         }
     }
+
+
+    public static Node get_vertex_by_ID(ArrayList<Node> nodes, String ID) {
+        for (Node v : nodes) {
+            if (v.getId().equals(ID)) {
+                return v;
+            }
+        }
+        return null;
+    }
+
+    public static void printCoords(ArrayList<Node> nodes) {
+        for (Node v : nodes) {
+            System.out.println("Node: " + v.getId());
+            System.out.println("\tX: " + v.getX());
+            System.out.println("\tY: " + v.getY());
+            System.out.println("=====");
+            System.out.println("\tEdges:");
+            for (Edge e : v.getEdges()) {
+                System.out.println(e.toString());
+            }
+            System.out.println("==================");
+        }
+    }
+
 }

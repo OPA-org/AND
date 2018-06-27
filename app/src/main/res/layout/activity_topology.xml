@@ -20,19 +20,19 @@
         android:textColor="#fff"
         android:fontFamily="sans-serif-light" />
 
-    <LinearLayout
-        android:id="@+id/ll_topology"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:background="#fff">
+        <LinearLayout
+            android:id="@+id/ll_topology"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="#fff">
 
-    </LinearLayout>
+        </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="0.5"/>
     <LinearLayout
         android:layout_gravity="bottom"
         android:orientation="horizontal"

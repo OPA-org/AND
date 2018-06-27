@@ -3,6 +3,7 @@ package cse.opa.and;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -33,15 +34,9 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         //===========================================================
         ll_topology = findViewById(R.id.ll_topology);
         TopologyGraphView myView = new TopologyGraphView(this);
-        myView.AddPath(100,200,700,600);
-        myView.AddPath(100,600,700,200);
-        //MyView myView2 = new MyView(this,100,600,700,200);
-        //ll_topology.addView(myView);
         ZoomView zoomView = new ZoomView(this);
-        TextView txtview = new TextView(this);
-        txtview.setText("Test");
-//        zoomView.addView(txtview);
-//        zoomView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        //zoomView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+       // myView.setLayoutParams(new LinearLayout.LayoutParams(Resources.getSystem().getDisplayMetrics().widthPixels, Resources.getSystem().getDisplayMetrics().heightPixels));
 //        zoomView.requestLayout();
         zoomView.addView(myView);
         ll_topology.addView(zoomView);
