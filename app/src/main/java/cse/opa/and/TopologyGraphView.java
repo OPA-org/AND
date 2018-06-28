@@ -15,7 +15,23 @@ import java.util.ArrayList;
 public class TopologyGraphView extends View {
 
     private final Paint p;
-    public String[] Nodename = new String[]{"Router0","Router1","Router2","Router3","Router4","Switch1","Switch2","Switch3","LocalPC","PC0","PC1","PC2","EthernetSwitch0"};
+    public String[] Nodename = new String[]{"Router0","Router1","Router2","Router3","Router4","Switch1","Switch2","Switch3"/*,"Switch4"*/,"LocalPC","PC0","PC1","PC2"/*,"PC3"*/,"EthernetSwitch0"};
+
+    public ArrayList<Node> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(ArrayList<Node> nodes) {
+        this.nodes = nodes;
+    }
+
+    public ArrayList<Edge> getEdges() {
+        return edges;
+    }
+
+    public void setEdges(ArrayList<Edge> edges) {
+        this.edges = edges;
+    }
 
     ArrayList<Node> nodes;
     ArrayList<Edge> edges;
@@ -31,7 +47,12 @@ public class TopologyGraphView extends View {
         init(null,context);
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(4);
+//        this.nodes = TopologyActivity.nodes;
+//        this.edges = TopologyActivity.edges;
+//        Nodename = TopologyActivity.Nodename;
         ProcessInput();
+        Scale();
+        set_AverageXY();
     }
     //======================================================
     public TopologyGraphView(Context context, AttributeSet attrs) {
@@ -39,6 +60,9 @@ public class TopologyGraphView extends View {
         init(attrs,context);
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(4);
+//        this.nodes = TopologyActivity.nodes;
+//        this.edges = TopologyActivity.edges;
+//        Nodename = TopologyActivity.Nodename;
         ProcessInput();
         Scale();
         set_AverageXY();
@@ -50,7 +74,12 @@ public class TopologyGraphView extends View {
         init(attrs,context);
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(4);
+//        this.nodes = TopologyActivity.nodes;
+//        this.edges = TopologyActivity.edges;
+//        Nodename = TopologyActivity.Nodename;
         ProcessInput();
+        Scale();
+        set_AverageXY();
     }
     //======================================================
     public TopologyGraphView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -59,7 +88,12 @@ public class TopologyGraphView extends View {
         init(attrs,context);
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(4);
+//        this.nodes = TopologyActivity.nodes;
+//        this.edges = TopologyActivity.edges;
+//        Nodename = TopologyActivity.Nodename;
         ProcessInput();
+        Scale();
+        set_AverageXY();
     }
     private void init(@Nullable AttributeSet set, Context context) {
         if (set == null)
@@ -90,7 +124,11 @@ public class TopologyGraphView extends View {
         nodes.add(new Node("PC1"));
         nodes.add(new Node("PC2"));
         nodes.add(new Node("EthernetSwitch"));
+        //==============
+//        nodes.add(new Node("Switch4"));
+//        nodes.add(new Node("PC3"));
 
+        //==============
         Edge edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "LocalPC"));
         edges.add(edge);
         get_vertex_by_ID(nodes, "Router0").addEdge(edge);
@@ -100,7 +138,17 @@ public class TopologyGraphView extends View {
         edges.add(edge);
         get_vertex_by_ID(nodes, "Router0").addEdge(edge);
         get_vertex_by_ID(nodes, "PC0").addEdge(edge);
-
+        //=========================
+//        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "Switch4"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
+//        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "Switch4"), get_vertex_by_ID(nodes, "PC3"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
+//        get_vertex_by_ID(nodes, "PC3").addEdge(edge);
+        //=========================
         edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "Router1"));
         edges.add(edge);
         get_vertex_by_ID(nodes, "Router0").addEdge(edge);
@@ -189,10 +237,10 @@ public class TopologyGraphView extends View {
 
     public void Scale()
     {
-        double XMin= Resources.getSystem().getDisplayMetrics().widthPixels;
-        double YMin= Resources.getSystem().getDisplayMetrics().heightPixels;
+        double XMin= getRootView().getWidth();
+        double YMin= getRootView().getHeight();
         double XMax= Integer.MIN_VALUE+20;
-        double YMax= Integer.MIN_VALUE+100;
+        double YMax= Integer.MIN_VALUE+20;
 
 
         for(int j=0;j< Nodename.length;j++)
@@ -244,7 +292,8 @@ public class TopologyGraphView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(resolveSize(SCREEN_SIZE_WIDTH*2, heightMeasureSpec), resolveSize(SCREEN_SIZE_HEIGHT+SCREEN_SIZE_HEIGHT/2, heightMeasureSpec));
+        //setMeasuredDimension(resolveSize(SCREEN_SIZE_WIDTH, heightMeasureSpec), resolveSize(SCREEN_SIZE_HEIGHT, heightMeasureSpec));
+        //getRootView().getParent().
 
     }
 

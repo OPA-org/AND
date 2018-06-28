@@ -12,6 +12,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import cse.opa.and.Edge;
+import cse.opa.and.Node;
 import cse.opa.and.R;
 import cse.opa.and.TopologyGraphView;
 import cse.opa.and.ZoomView;
@@ -22,6 +26,10 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
     LinearLayout ll_topology;
     ZoomView zv_zoomview;
     TopologyGraphView tgv_topology;
+    public static ArrayList<Node> nodes;
+    public static ArrayList<Edge> edges;
+    public static String[] Nodename = new String[]{"Router0","Router1","Router2","Router3","Router4","Switch1","Switch2","Switch3","LocalPC","PC0","PC1","PC2","EthernetSwitch0"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,14 +52,116 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 //        zoomView.requestLayout();
        // zoomView.addView(myView);
         //ll_topology.addView(zoomView);
+        //testgentopology();
+        //tgv_topology = new TopologyGraphView(this);
         zv_zoomview.setSmoothZoomX(tgv_topology.getZoomCenterX());
         zv_zoomview.setSmoothZoomY(tgv_topology.getZoomCenterY());
-        //zv_zoomview.addView(myView);
+        //zv_zoomview.addView(tgv_topology);
         //ll_topology.addView(zv_zoomview);
 
         //ll_topology.addView(myView);
     }
-
+//    public void testgentopology(){
+//        nodes = new ArrayList<Node>();
+//        edges = new ArrayList<Edge>();
+//
+//        nodes.add(new Node("Router0"));
+//        nodes.add(new Node("Router1"));
+//        nodes.add(new Node("Router2"));
+//        nodes.add(new Node("Router3"));
+//        nodes.add(new Node("Router4"));
+//        nodes.add(new Node("Switch1"));
+//        nodes.add(new Node("Switch2"));
+//        nodes.add(new Node("Switch3"));
+//        nodes.add(new Node("LocalPC"));
+//        nodes.add(new Node("PC0"));
+//        nodes.add(new Node("PC1"));
+//        nodes.add(new Node("PC2"));
+//        nodes.add(new Node("EthernetSwitch"));
+//        //==============
+////        nodes.add(new Node("Switch4"));
+////        nodes.add(new Node("PC3"));
+//
+//        //==============
+//        Edge edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "LocalPC"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
+//        get_vertex_by_ID(nodes, "LocalPC").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "PC0"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
+//        get_vertex_by_ID(nodes, "PC0").addEdge(edge);
+//        //=========================
+////        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "Switch4"));
+////        edges.add(edge);
+////        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
+////        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
+////
+////        edge = new Edge(get_vertex_by_ID(nodes, "Switch4"), get_vertex_by_ID(nodes, "PC3"));
+////        edges.add(edge);
+////        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
+////        get_vertex_by_ID(nodes, "PC3").addEdge(edge);
+//        //=========================
+//        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "Router1"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
+//        get_vertex_by_ID(nodes, "Router1").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "Router1"), get_vertex_by_ID(nodes, "Router2"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Router1").addEdge(edge);
+//        get_vertex_by_ID(nodes, "Router2").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "Router2"), get_vertex_by_ID(nodes, "Switch1"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Router2").addEdge(edge);
+//        get_vertex_by_ID(nodes, "Switch1").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "Router2"), get_vertex_by_ID(nodes, "EthernetSwitch"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Router2").addEdge(edge);
+//        get_vertex_by_ID(nodes, "EthernetSwitch").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "Router3"), get_vertex_by_ID(nodes, "EthernetSwitch"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Router3").addEdge(edge);
+//        get_vertex_by_ID(nodes, "EthernetSwitch").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "Router4"), get_vertex_by_ID(nodes, "EthernetSwitch"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Router4").addEdge(edge);
+//        get_vertex_by_ID(nodes, "EthernetSwitch").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "Switch1"), get_vertex_by_ID(nodes, "Switch2"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Switch1").addEdge(edge);
+//        get_vertex_by_ID(nodes, "Switch2").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "Switch1"), get_vertex_by_ID(nodes, "Switch3"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Switch1").addEdge(edge);
+//        get_vertex_by_ID(nodes, "Switch3").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "Switch2"), get_vertex_by_ID(nodes, "PC1"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Switch2").addEdge(edge);
+//        get_vertex_by_ID(nodes, "PC1").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "Switch3"), get_vertex_by_ID(nodes, "PC2"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Switch3").addEdge(edge);
+//        get_vertex_by_ID(nodes, "PC2").addEdge(edge);
+//
+//    }
+//    private static Node get_vertex_by_ID(ArrayList<Node> nodes, String ID) {
+//        for (Node v : nodes) {
+//            if (v.getId().equals(ID)) {
+//                return v;
+//            }
+//        }
+//        return null;
+//    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
