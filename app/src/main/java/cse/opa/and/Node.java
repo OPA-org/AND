@@ -7,10 +7,10 @@ import android.graphics.Paint;
 import java.util.ArrayList;
 
 public class Node {
-	
-	private String id;
 
+	private String id;
     private String name;
+
 	private double x;
 	private double y;
 	
@@ -18,11 +18,11 @@ public class Node {
 	private double dy;
 	private ArrayList<Edge> edges = new ArrayList<Edge>();
 
-	public final static int VERTEX_SIZE = 22;  
+	public final static int VERTEX_SIZE = 20;
 	
-	public Node(String id){
-		this.id = id;
-		this.name = id;
+	public Node(int id_no, String name){
+		this.id = Integer.toString(id_no);
+		this.name = name;
 	}
 	
 	public void addEdge(Edge e){

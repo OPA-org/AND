@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import cse.opa.and.Classes.MiscellaneousMethods;
+import cse.opa.and.Classes.SNMPManager;
+import cse.opa.and.Classes.Topology;
 import cse.opa.and.Edge;
 import cse.opa.and.Node;
 import cse.opa.and.R;
@@ -53,6 +56,7 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
        // zoomView.addView(myView);
         //ll_topology.addView(zoomView);
         //testgentopology();
+
         //tgv_topology = new TopologyGraphView(this);
         zv_zoomview.setSmoothZoomX(tgv_topology.getZoomCenterX());
         zv_zoomview.setSmoothZoomY(tgv_topology.getZoomCenterY());
@@ -204,4 +208,5 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 
         }
     }
+
 }

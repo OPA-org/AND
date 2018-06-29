@@ -5,11 +5,16 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.ArrayList;
+
+import cse.opa.and.Classes.MiscellaneousMethods;
+import cse.opa.and.Classes.SNMPManager;
+import cse.opa.and.Classes.Topology;
 
 
 public class TopologyGraphView extends View {
@@ -50,6 +55,7 @@ public class TopologyGraphView extends View {
 //        this.nodes = TopologyActivity.nodes;
 //        this.edges = TopologyActivity.edges;
 //        Nodename = TopologyActivity.Nodename;
+
         ProcessInput();
         Scale();
         set_AverageXY();
@@ -108,130 +114,163 @@ public class TopologyGraphView extends View {
 
     public void ProcessInput()
     {
-        nodes = new ArrayList<Node>();
-        edges = new ArrayList<Edge>();
+//        nodes = new ArrayList<Node>();
+//        edges = new ArrayList<Edge>();
 
-        nodes.add(new Node("Router0"));
-        nodes.add(new Node("Router1"));
-        nodes.add(new Node("Router2"));
-        nodes.add(new Node("Router3"));
-        nodes.add(new Node("Router4"));
-        nodes.add(new Node("Switch1"));
-        nodes.add(new Node("Switch2"));
-        nodes.add(new Node("Switch3"));
-        nodes.add(new Node("LocalPC"));
-        nodes.add(new Node("PC0"));
-        nodes.add(new Node("PC1"));
-        nodes.add(new Node("PC2"));
-        nodes.add(new Node("EthernetSwitch"));
-        //==============
-//        nodes.add(new Node("Switch4"));
-//        nodes.add(new Node("PC3"));
-
-        //==============
-        Edge edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "LocalPC"));
-        edges.add(edge);
-        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
-        get_vertex_by_ID(nodes, "LocalPC").addEdge(edge);
-
-        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "PC0"));
-        edges.add(edge);
-        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
-        get_vertex_by_ID(nodes, "PC0").addEdge(edge);
-        //=========================
-//        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "Switch4"));
-//        edges.add(edge);
-//        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
-//        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
+//        nodes.add(new Node(0,"Router0"));
+//        nodes.add(new Node(1,"Router1"));
+//        nodes.add(new Node(2,"Router2"));
+//        nodes.add(new Node(3,"Router3"));
+//        nodes.add(new Node(4,"Router4"));
+//        nodes.add(new Node(5,"Switch1"));
+//        nodes.add(new Node(6,"Switch2"));
+//        nodes.add(new Node(7,"Switch3"));
+//        nodes.add(new Node(8,"LocalPC"));
+//        nodes.add(new Node(9,"PC0"));
+//        nodes.add(new Node(10,"PC1"));
+//        nodes.add(new Node(11,"PC2"));
+//        nodes.add(new Node(12,"EthernetSwitch"));
+//        //==============
+////        nodes.add(new Node("Switch4"));
+////        nodes.add(new Node("PC3"));
 //
-//        edge = new Edge(get_vertex_by_ID(nodes, "Switch4"), get_vertex_by_ID(nodes, "PC3"));
+//        //==============
+//        Edge edge = new Edge(get_vertex_by_ID(nodes, "0"), get_vertex_by_ID(nodes, "8"));
 //        edges.add(edge);
-//        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
-//        get_vertex_by_ID(nodes, "PC3").addEdge(edge);
-        //=========================
-        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "Router1"));
-        edges.add(edge);
-        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
-        get_vertex_by_ID(nodes, "Router1").addEdge(edge);
+//        get_vertex_by_ID(nodes, "0").addEdge(edge);
+//        get_vertex_by_ID(nodes, "8").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "0"), get_vertex_by_ID(nodes, "9"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "0").addEdge(edge);
+//        get_vertex_by_ID(nodes, "9").addEdge(edge);
+//        //=========================
+////        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "Switch4"));
+////        edges.add(edge);
+////        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
+////        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
+////
+////        edge = new Edge(get_vertex_by_ID(nodes, "Switch4"), get_vertex_by_ID(nodes, "PC3"));
+////        edges.add(edge);
+////        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
+////        get_vertex_by_ID(nodes, "PC3").addEdge(edge);
+//        //=========================
+//        edge = new Edge(get_vertex_by_ID(nodes, "0"), get_vertex_by_ID(nodes, "1"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "0").addEdge(edge);
+//        get_vertex_by_ID(nodes, "1").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "1"), get_vertex_by_ID(nodes, "2"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "1").addEdge(edge);
+//        get_vertex_by_ID(nodes, "2").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "2"), get_vertex_by_ID(nodes, "5"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "2").addEdge(edge);
+//        get_vertex_by_ID(nodes, "5").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "2"), get_vertex_by_ID(nodes, "12"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "2").addEdge(edge);
+//        get_vertex_by_ID(nodes, "12").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "3"), get_vertex_by_ID(nodes, "12"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "3").addEdge(edge);
+//        get_vertex_by_ID(nodes, "12").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "4"), get_vertex_by_ID(nodes, "12"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "4").addEdge(edge);
+//        get_vertex_by_ID(nodes, "12").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "5"), get_vertex_by_ID(nodes, "6"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "5").addEdge(edge);
+//        get_vertex_by_ID(nodes, "6").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "5"), get_vertex_by_ID(nodes, "7"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "5").addEdge(edge);
+//        get_vertex_by_ID(nodes, "7").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "6"), get_vertex_by_ID(nodes, "10"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "6").addEdge(edge);
+//        get_vertex_by_ID(nodes, "10").addEdge(edge);
+//
+//        edge = new Edge(get_vertex_by_ID(nodes, "7"), get_vertex_by_ID(nodes, "11"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "7").addEdge(edge);
+//        get_vertex_by_ID(nodes, "11").addEdge(edge);
 
-        edge = new Edge(get_vertex_by_ID(nodes, "Router1"), get_vertex_by_ID(nodes, "Router2"));
-        edges.add(edge);
-        get_vertex_by_ID(nodes, "Router1").addEdge(edge);
-        get_vertex_by_ID(nodes, "Router2").addEdge(edge);
+        try {
+            new  AsyncTask<Void, Void, Void>() {
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
 
-        edge = new Edge(get_vertex_by_ID(nodes, "Router2"), get_vertex_by_ID(nodes, "Switch1"));
-        edges.add(edge);
-        get_vertex_by_ID(nodes, "Router2").addEdge(edge);
-        get_vertex_by_ID(nodes, "Switch1").addEdge(edge);
-
-        edge = new Edge(get_vertex_by_ID(nodes, "Router2"), get_vertex_by_ID(nodes, "EthernetSwitch"));
-        edges.add(edge);
-        get_vertex_by_ID(nodes, "Router2").addEdge(edge);
-        get_vertex_by_ID(nodes, "EthernetSwitch").addEdge(edge);
-
-        edge = new Edge(get_vertex_by_ID(nodes, "Router3"), get_vertex_by_ID(nodes, "EthernetSwitch"));
-        edges.add(edge);
-        get_vertex_by_ID(nodes, "Router3").addEdge(edge);
-        get_vertex_by_ID(nodes, "EthernetSwitch").addEdge(edge);
-
-        edge = new Edge(get_vertex_by_ID(nodes, "Router4"), get_vertex_by_ID(nodes, "EthernetSwitch"));
-        edges.add(edge);
-        get_vertex_by_ID(nodes, "Router4").addEdge(edge);
-        get_vertex_by_ID(nodes, "EthernetSwitch").addEdge(edge);
-
-        edge = new Edge(get_vertex_by_ID(nodes, "Switch1"), get_vertex_by_ID(nodes, "Switch2"));
-        edges.add(edge);
-        get_vertex_by_ID(nodes, "Switch1").addEdge(edge);
-        get_vertex_by_ID(nodes, "Switch2").addEdge(edge);
-
-        edge = new Edge(get_vertex_by_ID(nodes, "Switch1"), get_vertex_by_ID(nodes, "Switch3"));
-        edges.add(edge);
-        get_vertex_by_ID(nodes, "Switch1").addEdge(edge);
-        get_vertex_by_ID(nodes, "Switch3").addEdge(edge);
-
-        edge = new Edge(get_vertex_by_ID(nodes, "Switch2"), get_vertex_by_ID(nodes, "PC1"));
-        edges.add(edge);
-        get_vertex_by_ID(nodes, "Switch2").addEdge(edge);
-        get_vertex_by_ID(nodes, "PC1").addEdge(edge);
-
-        edge = new Edge(get_vertex_by_ID(nodes, "Switch3"), get_vertex_by_ID(nodes, "PC2"));
-        edges.add(edge);
-        get_vertex_by_ID(nodes, "Switch3").addEdge(edge);
-        get_vertex_by_ID(nodes, "PC2").addEdge(edge);
-
-        AlgorithmParams.setNodes(nodes);
-        AlgorithmParams.setEdges(edges);
-
-        int Min_CrossEdgesCount = Integer.MAX_VALUE;
-        double best_hook = 0,best_gravity = 0;
-        for (double gravity = 10000.0; gravity < 300000.0; gravity += 25000.0) {
-            int c = -1;
-            for (double hookConst = 0.1; hookConst < 1.5; hookConst += 0.1) {
-                System.out.println("TESTING FOR:" + gravity + "," + hookConst);
-                AlgorithmParams.setGravityConst(gravity);
-                AlgorithmParams.setHookConst(hookConst);
-                PhisicEngine p = new PhisicEngine();
-                c = p.getCrossedEdgesCount();
-                System.out.println("CrossedEdgesCount: " + c);
-                if(c < Min_CrossEdgesCount){
-                    best_hook = hookConst;
-                    best_gravity = gravity;
-                    Min_CrossEdgesCount=c;
                 }
-                if(c == 0){
-                    break;
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try {
+
+                        nodes = new ArrayList<Node>();
+                        edges = new ArrayList<Edge>();
+
+                        Topology topology = SNMPManager.generate_topology();
+                        MiscellaneousMethods.create_Nodes_and_Edges(topology,nodes,edges);
+                        printNodes(nodes);
+                        AlgorithmParams.setNodes(nodes);
+                        AlgorithmParams.setEdges(edges);
+
+                        int Min_CrossEdgesCount = Integer.MAX_VALUE;
+                        double best_hook = 0,best_gravity = 0;
+                        for (double gravity = 10000.0; gravity < 300000.0; gravity += 25000.0) {
+                            int c = -1;
+                            for (double hookConst = 0.1; hookConst < 1.5; hookConst += 0.1) {
+                                System.out.println("TESTING FOR:" + gravity + "," + hookConst);
+                                AlgorithmParams.setGravityConst(gravity);
+                                AlgorithmParams.setHookConst(hookConst);
+                                PhisicEngine p = new PhisicEngine();
+                                c = p.getCrossedEdgesCount();
+                                System.out.println("CrossedEdgesCount: " + c);
+                                if(c < Min_CrossEdgesCount){
+                                    best_hook = hookConst;
+                                    best_gravity = gravity;
+                                    Min_CrossEdgesCount=c;
+                                }
+                                if(c == 0){
+                                    break;
+                                }
+                            }
+                            if (c == 0) {
+                                break;
+                            }
+                        }
+
+                        System.out.println("==========================");
+                        printCoords(nodes);
+                        System.out.println("==========================");
+                        System.out.println("BestGravity: "+best_gravity);
+                        System.out.println("BestHook: "+best_hook);
+                        System.out.println("MinCrossEdgesCount: "+Min_CrossEdgesCount);
+                    } catch (Exception e) {
+                        System.out.println("Exception "+ e.getMessage());
+                        return null;
+                    }
+                    return null;
                 }
-            }
-            if (c == 0) {
-                break;
-            }
+                @Override
+                protected void onPostExecute(Void Void) {
+                }
+            }.execute().get();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        System.out.println("==========================");
-        printCoords(nodes);
-        System.out.println("==========================");
-        System.out.println("BestGravity: "+best_gravity);
-        System.out.println("BestHook: "+best_hook);
-        System.out.println("MinCrossEdgesCount: "+Min_CrossEdgesCount);
+
+
 
     }
 
@@ -308,7 +347,7 @@ public class TopologyGraphView extends View {
 
     private static void printCoords(ArrayList<Node> nodes) {
         for (Node v : nodes) {
-            System.out.println("Node: " + v.getId());
+            System.out.println("Node: " + v.getName());
             System.out.println("\tX: " + v.getX());
             System.out.println("\tY: " + v.getY());
             System.out.println("=====");
@@ -347,4 +386,15 @@ public class TopologyGraphView extends View {
         zoomCenterY = sumY/nodes.size();
     }
 
+    private static void printNodes(ArrayList<Node> nodes) {
+        for (Node v : nodes) {
+            System.out.println("Node: " + v.getName());
+            System.out.println("=====");
+            System.out.println("\tEdges:");
+            for (Edge e : v.getEdges()) {
+                System.out.println(e.toString());
+            }
+            System.out.println("==================");
+        }
+    }
 }

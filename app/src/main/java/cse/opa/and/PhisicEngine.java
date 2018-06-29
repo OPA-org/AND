@@ -17,8 +17,8 @@ public class PhisicEngine {
     private int step = 0;
     private int minFrontierX = 20;
     private int minFrontierY = 20;
-    private int maxFrontierX = 500;
-    private int maxFrontierY = 500;
+    private int maxFrontierX = 1500;
+    private int maxFrontierY = 1500;
 
     private double minChange = 0.000001;
 

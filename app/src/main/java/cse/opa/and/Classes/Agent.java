@@ -1,34 +1,17 @@
 package cse.opa.and.Classes;
 
-/**
- * Created by Peter on 28/3/2018.
- */
+import java.util.ArrayList;
 
-public class Agent {
-    private int id;
-    private String serial_number;
+import cse.opa.and.Node;
+
+public abstract class Agent {
+
+    protected static int id_no = 0;
+
     private boolean visited;
 
-    public Agent(int id, String serial_number, boolean visited) {
-        this.id = id;
-        this.serial_number = serial_number;
+    public Agent(boolean visited) {
         this.visited = visited;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getSerial_number() {
-        return serial_number;
-    }
-
-    public void setSerial_number(String serial_number) {
-        this.serial_number = serial_number;
     }
 
     public boolean isVisited() {
@@ -38,7 +21,21 @@ public class Agent {
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
-    public void send_trap(){
 
-    }
+    public abstract Boolean has_IPaddress(String IP);
+
+    public abstract ArrayList<Interface> get_UsedInterfaces();
+
+    public abstract String getIPAddress();
+
+    public abstract Interface GetInterface_byMacAddress(String mac_address);
+    
+    public abstract Interface GetInterface_index(String index);
+    
+    public abstract ArrayList<String> get_mac_addresses();
+
+    @Override
+    public abstract String toString();
+
+    public abstract Node getNode();
 }

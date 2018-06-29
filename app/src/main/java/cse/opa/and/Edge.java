@@ -40,7 +40,7 @@ public class Edge {
 	}
     @Override
     public String toString() {
-        return "\t\tVertexA: "+a.getId()+"\n\t\tVertexB: "+b.getId(); //To change body of generated methods, choose Tools | Templates.
+        return "\t\tNode A: "+a.getName()+"\n\t\tNode B: "+b.getName(); //To change body of generated methods, choose Tools | Templates.
     }
         
         
