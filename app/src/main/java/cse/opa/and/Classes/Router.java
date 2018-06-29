@@ -9,6 +9,7 @@ public class Router extends Agent {
     private ArrayList<Interface> interfaces;
     private String sysDescr;
     private String sysName;
+    private Node node;
 
     public Router(String sysDescr, String sysName, ArrayList<Interface> interfaces) {
         super(false);
@@ -16,6 +17,7 @@ public class Router extends Agent {
         this.sysName = sysName;
         this.interfaces = interfaces;
         this.id = super.id_no++;
+        this.node = new Node(id,sysName);
     }
 
     public Router(String sysDescr, String sysName) {
@@ -24,6 +26,7 @@ public class Router extends Agent {
         this.sysName = sysName;
         this.interfaces = new ArrayList<>();
         this.id_no = super.id_no++;
+        this.node = new Node(id,sysName);
     }
 
     public Router() {
@@ -32,6 +35,7 @@ public class Router extends Agent {
         this.sysName = "";
         this.interfaces = new ArrayList<>();
         this.id_no = super.id_no++;
+        this.node = new Node(id,sysName);
     }
 
     public ArrayList<Interface> getInterfaces() {
@@ -111,7 +115,7 @@ public class Router extends Agent {
 
     @Override
     public Node getNode() {
-        return new Node(id,sysName);
+        return node;
     }
 
     public ArrayList<Interface> get_UsedInterfaces() {

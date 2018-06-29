@@ -10,11 +10,13 @@ public class Switch extends Agent {
     private String sysDescr;
     private String sysName;
     private int id;
+    private Node node;
 
     public Switch(ArrayList<Interface> interfaces) {
         super(false);
         this.interfaces = interfaces;
         this.id = super.id_no++;
+        this.node = new Node(id,sysName);
     }
 
     public Switch(String sysDescr, String sysName, ArrayList<Interface> interfaces) {
@@ -23,12 +25,14 @@ public class Switch extends Agent {
         this.sysName = sysName;
         this.interfaces = interfaces;
         this.id = super.id_no++;
+        this.node = new Node(id,sysName);
     }
 
     public Switch() {
         super(false);
         this.interfaces = new ArrayList<>();
         this.id = super.id_no++;
+        this.node = new Node(id,sysName);
     }
 
     public ArrayList<Interface> getInterfaces() {
@@ -158,6 +162,6 @@ public class Switch extends Agent {
 
     @Override
     public Node getNode() {
-        return new Node(id,sysName);
+        return node;
     }
 }

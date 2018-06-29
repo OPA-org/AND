@@ -18,6 +18,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import cse.opa.and.AlgorithmParams;
+import cse.opa.and.Classes.Agent;
+import cse.opa.and.Classes.Connection;
 import cse.opa.and.Classes.MiscellaneousMethods;
 import cse.opa.and.Classes.SNMPManager;
 import cse.opa.and.Classes.Topology;
@@ -36,7 +38,6 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
     TopologyGraphView tgv_topology;
     public static ArrayList<Node> nodes;
     public static ArrayList<Edge> edges;
-    public static String[] Nodename = new String[]{"Router0","Router1","Router2","Router3","Router4","Switch1","Switch2","Switch3","LocalPC","PC0","PC1","PC2","EthernetSwitch0"};
     static boolean finishedProcessing =false;
     ProgressDialog dialog;
     @Override
@@ -97,8 +98,8 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         //ll_topology.addView(myView);
     }
     public void testgentopology(){
-        nodes = new ArrayList<Node>();
-        edges = new ArrayList<Edge>();
+        nodes = new ArrayList<>();
+        edges = new ArrayList<>();
 
 //        nodes.add(new Node(0,"Router0"));
 //        nodes.add(new Node(1,"Router1"));
@@ -188,17 +189,28 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 //        get_vertex_by_ID(nodes, "7").addEdge(edge);
 //        get_vertex_by_ID(nodes, "11").addEdge(edge);
 
-        final Topology[] topology = {null};
+        Topology topology = null;
            // Thread t =new Thread(new Runnable(){
                // @Override
                 //public void run() {
                     try {
+
                         Log.v("Process","entered");
-                        topology[0] = SNMPManager.generate_topology();
+                        topology = SNMPManager.generate_topology();
                         Log.v("Process","After Gen");
-                        MiscellaneousMethods.create_Nodes_and_Edges(topology[0],nodes,edges);
+
+                        MiscellaneousMethods.create_Nodes_and_Edges(topology,nodes,edges);
                         Log.v("Process","After CREATE");
                         printNodes(nodes);
+
+                        for(Node N: nodes){
+                            Log.d("Debug","Node " +N.getName() +" :"+ N);
+                        }
+
+                        for(int i = 0 ;   i < edges.size() ; i++){
+                            Log.d("Debug","Edge (" +edges.get(i).getA().getName() +":"+edges.get(i).getA()+" |||| "+ edges.get(i).getB().getName() +":"+edges.get(i).getB()+")");
+                        }
+
                         AlgorithmParams.setNodes(nodes);
                         AlgorithmParams.setEdges(edges);
 

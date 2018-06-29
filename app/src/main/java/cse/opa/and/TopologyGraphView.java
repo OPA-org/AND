@@ -21,7 +21,6 @@ import cse.opa.and.Classes.Topology;
 public class TopologyGraphView extends View {
 
     private final Paint p;
-    public String[] Nodename = new String[]{"Router0","Router1","Router2","Router3","Router4","Switch1","Switch2","Switch3"/*,"Switch4"*/,"LocalPC","PC0","PC1","PC2"/*,"PC3"*/,"EthernetSwitch0"};
 
     public ArrayList<Node> getNodes() {
         return nodes;
@@ -55,9 +54,8 @@ public class TopologyGraphView extends View {
         p.setStrokeWidth(4);
         this.nodes = TopologyActivity.nodes;
         this.edges = TopologyActivity.edges;
-        Nodename = TopologyActivity.Nodename;
 
-        ProcessInput();
+//        ProcessInput();
         Scale();
         set_AverageXY();
     }
@@ -69,8 +67,7 @@ public class TopologyGraphView extends View {
         p.setStrokeWidth(4);
         this.nodes = TopologyActivity.nodes;
         this.edges = TopologyActivity.edges;
-        Nodename = TopologyActivity.Nodename;
-        ProcessInput();
+//        ProcessInput();
         Scale();
         set_AverageXY();
     }
@@ -83,8 +80,7 @@ public class TopologyGraphView extends View {
         p.setStrokeWidth(4);
         this.nodes = TopologyActivity.nodes;
         this.edges = TopologyActivity.edges;
-        Nodename = TopologyActivity.Nodename;
-        ProcessInput();
+//        ProcessInput();
         Scale();
         set_AverageXY();
     }
@@ -97,8 +93,7 @@ public class TopologyGraphView extends View {
         p.setStrokeWidth(4);
         this.nodes = TopologyActivity.nodes;
         this.edges = TopologyActivity.edges;
-        Nodename = TopologyActivity.Nodename;
-        ProcessInput();
+//        ProcessInput();
         Scale();
         set_AverageXY();
     }
@@ -284,7 +279,7 @@ public class TopologyGraphView extends View {
         double YMax= Integer.MIN_VALUE+20;
 
 
-        for(int j=0;j< Nodename.length;j++)
+        for(int j=0;j< nodes.size();j++)
         {
             if(nodes.get(j).getX() < XMin)
             {
@@ -307,7 +302,7 @@ public class TopologyGraphView extends View {
         double length_x = XMax- XMin;
         double length_y = YMax- YMin;
         double length  = Math.max(length_x, length_y);
-        for(int j=0;j< Nodename.length;j++)
+        for(int j=0;j< nodes.size();j++)
         {
             double nodeX = nodes.get(j).getX();
             double nodeY = nodes.get(j).getY();
@@ -321,7 +316,7 @@ public class TopologyGraphView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        for(int j=0;j< Nodename.length;j++)
+        for(int j=0;j< nodes.size();j++)
         {
             nodes.get(j).Draw(p,canvas);
         }

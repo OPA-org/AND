@@ -11,10 +11,13 @@ public class Host extends Agent {
 
     private int id;
 
+    private Node node;
+
     public Host(Interface anInterface) {
         super(false);
         this.anInterface = anInterface;
         this.id = super.id_no++;
+        this.node = new Node(id,"Host of IP: " + anInterface.getIp_address());
     }
 
     public Interface getAnInterface() {
@@ -68,7 +71,7 @@ public class Host extends Agent {
 
     @Override
     public Node getNode() {
-        return new Node(id,this.toString());
+        return node;
     }
 
 }
