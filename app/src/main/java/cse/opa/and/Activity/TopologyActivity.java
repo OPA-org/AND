@@ -67,14 +67,14 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         dialog.show();
         processthread =new Thread(
             new Runnable(){
-
                 @Override
                 public void run() {
-                    Log.v("Runnable","Thread STARTED!");
+                    Log.v("Runnable", "Thread STARTED!");
                     testgentopology();
 
 
-                    while (!finishedProcessing){}
+                    while (!finishedProcessing) {
+                    }
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -84,9 +84,11 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
                             zv_zoomview.setSmoothZoomX(tgv_topology.getZoomCenterX());
                             zv_zoomview.setSmoothZoomY(tgv_topology.getZoomCenterY());
                             zv_zoomview.addView(tgv_topology);
+                            if(Thread.interrupted()){
+                                return;
+                            }
                         }
                     });
-
                 }
             });
         processthread.start();
@@ -98,8 +100,8 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         //ll_topology.addView(myView);
     }
     public void testgentopology(){
-        nodes = new ArrayList<>();
-        edges = new ArrayList<>();
+//        nodes = new ArrayList<>();
+//        edges = new ArrayList<>();
 
 //        nodes.add(new Node(0,"Router0"));
 //        nodes.add(new Node(1,"Router1"));
@@ -194,6 +196,9 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
                // @Override
                 //public void run() {
                     try {
+
+                        nodes = new ArrayList<>();
+                        edges = new ArrayList<>();
 
                         Log.v("Process","entered");
                         topology = SNMPManager.generate_topology();
@@ -343,8 +348,8 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        processthread.stop();
+        processthread.interrupt();
         dialog.cancel();
+        super.onDestroy();
     }
 }

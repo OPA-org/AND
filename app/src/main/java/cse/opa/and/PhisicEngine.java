@@ -235,6 +235,9 @@ public class PhisicEngine {
 
     public int getCrossedEdgesCount() {
         int crossedEdgesCount = 0;
+        if(AlgorithmParams.getEdges().size() == 0){
+            return crossedEdgesCount;
+        }
         for (Iterator iter = AlgorithmParams.getEdges().iterator(); iter.hasNext();) {
             Edge basic = (Edge) iter.next();
             for (Iterator iter2 = AlgorithmParams.getEdges().iterator(); iter2.hasNext();) {
@@ -267,7 +270,9 @@ public class PhisicEngine {
 
     public PhisicEngine() {
         initCoords();
-        runAlgorithm();
+        if(AlgorithmParams.getEdges().size() != 0) {
+            runAlgorithm();
+        }
     }
     
 }
