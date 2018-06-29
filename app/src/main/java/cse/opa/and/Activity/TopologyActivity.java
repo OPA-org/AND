@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -18,8 +17,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import cse.opa.and.AlgorithmParams;
-import cse.opa.and.Classes.Agent;
-import cse.opa.and.Classes.Connection;
 import cse.opa.and.Classes.MiscellaneousMethods;
 import cse.opa.and.Classes.SNMPManager;
 import cse.opa.and.Classes.Topology;
@@ -40,6 +37,7 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
     public static ArrayList<Edge> edges;
     static boolean finishedProcessing =false;
     ProgressDialog dialog;
+    Thread processthread;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +62,10 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         //ll_topology.addView(zoomView);
         dialog = new ProgressDialog(this);
         dialog.setMessage("Loading topology..");
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         dialog.show();
-        Thread t =new Thread(
+        processthread =new Thread(
             new Runnable(){
 
                 @Override
@@ -89,7 +89,7 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 
                 }
             });
-        t.start();
+        processthread.start();
 
 
 
@@ -334,4 +334,17 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+//        processthread.stop();
+//        dialog.cancel();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        processthread.stop();
+        dialog.cancel();
+    }
 }
