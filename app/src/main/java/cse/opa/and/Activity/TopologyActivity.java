@@ -1,11 +1,14 @@
 package cse.opa.and.Activity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,11 +17,13 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import cse.opa.and.AlgorithmParams;
 import cse.opa.and.Classes.MiscellaneousMethods;
 import cse.opa.and.Classes.SNMPManager;
 import cse.opa.and.Classes.Topology;
 import cse.opa.and.Edge;
 import cse.opa.and.Node;
+import cse.opa.and.PhisicEngine;
 import cse.opa.and.R;
 import cse.opa.and.TopologyGraphView;
 import cse.opa.and.ZoomView;
@@ -32,7 +37,8 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
     public static ArrayList<Node> nodes;
     public static ArrayList<Edge> edges;
     public static String[] Nodename = new String[]{"Router0","Router1","Router2","Router3","Router4","Switch1","Switch2","Switch3","LocalPC","PC0","PC1","PC2","EthernetSwitch0"};
-
+    static boolean finishedProcessing =false;
+    ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +53,7 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         //===========================================================
         ll_topology = findViewById(R.id.ll_topology);
         zv_zoomview = findViewById(R.id.zv_zoomview);
-        tgv_topology = findViewById(R.id.tgv_topology);
+        //tgv_topology = findViewById(R.id.tgv_topology);
         //TopologyGraphView myView = new TopologyGraphView(this);
         //ZoomView zoomView = new ZoomView(this);
         //zoomView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -55,47 +61,72 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 //        zoomView.requestLayout();
        // zoomView.addView(myView);
         //ll_topology.addView(zoomView);
-        //testgentopology();
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Loading topology..");
+        dialog.show();
+        Thread t =new Thread(
+            new Runnable(){
 
-        //tgv_topology = new TopologyGraphView(this);
-        zv_zoomview.setSmoothZoomX(tgv_topology.getZoomCenterX());
-        zv_zoomview.setSmoothZoomY(tgv_topology.getZoomCenterY());
-        //zv_zoomview.addView(tgv_topology);
+                @Override
+                public void run() {
+                    Log.v("Runnable","Thread STARTED!");
+                    testgentopology();
+
+
+                    while (!finishedProcessing){}
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.cancel();
+                            tgv_topology = new TopologyGraphView(TopologyActivity.this);
+                            zv_zoomview.setSmoothZoomX(tgv_topology.getZoomCenterX());
+                            zv_zoomview.setSmoothZoomY(tgv_topology.getZoomCenterY());
+                            zv_zoomview.addView(tgv_topology);
+                        }
+                    });
+
+                }
+            });
+        t.start();
+
+
+
         //ll_topology.addView(zv_zoomview);
 
         //ll_topology.addView(myView);
     }
-//    public void testgentopology(){
-//        nodes = new ArrayList<Node>();
-//        edges = new ArrayList<Edge>();
-//
-//        nodes.add(new Node("Router0"));
-//        nodes.add(new Node("Router1"));
-//        nodes.add(new Node("Router2"));
-//        nodes.add(new Node("Router3"));
-//        nodes.add(new Node("Router4"));
-//        nodes.add(new Node("Switch1"));
-//        nodes.add(new Node("Switch2"));
-//        nodes.add(new Node("Switch3"));
-//        nodes.add(new Node("LocalPC"));
-//        nodes.add(new Node("PC0"));
-//        nodes.add(new Node("PC1"));
-//        nodes.add(new Node("PC2"));
-//        nodes.add(new Node("EthernetSwitch"));
+    public void testgentopology(){
+        nodes = new ArrayList<Node>();
+        edges = new ArrayList<Edge>();
+
+//        nodes.add(new Node(0,"Router0"));
+//        nodes.add(new Node(1,"Router1"));
+//        nodes.add(new Node(2,"Router2"));
+//        nodes.add(new Node(3,"Router3"));
+//        nodes.add(new Node(4,"Router4"));
+//        nodes.add(new Node(5,"Switch1"));
+//        nodes.add(new Node(6,"Switch2"));
+//        nodes.add(new Node(7,"Switch3"));
+//        nodes.add(new Node(8,"LocalPC"));
+//        nodes.add(new Node(9,"PC0"));
+//        nodes.add(new Node(10,"PC1"));
+//        nodes.add(new Node(11,"PC2"));
+//        nodes.add(new Node(12,"EthernetSwitch"));
 //        //==============
 ////        nodes.add(new Node("Switch4"));
 ////        nodes.add(new Node("PC3"));
 //
 //        //==============
-//        Edge edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "LocalPC"));
+//        Edge edge = new Edge(get_vertex_by_ID(nodes, "0"), get_vertex_by_ID(nodes, "8"));
 //        edges.add(edge);
-//        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
-//        get_vertex_by_ID(nodes, "LocalPC").addEdge(edge);
+//        get_vertex_by_ID(nodes, "0").addEdge(edge);
+//        get_vertex_by_ID(nodes, "8").addEdge(edge);
 //
-//        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "PC0"));
+//        edge = new Edge(get_vertex_by_ID(nodes, "0"), get_vertex_by_ID(nodes, "9"));
 //        edges.add(edge);
-//        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
-//        get_vertex_by_ID(nodes, "PC0").addEdge(edge);
+//        get_vertex_by_ID(nodes, "0").addEdge(edge);
+//        get_vertex_by_ID(nodes, "9").addEdge(edge);
 //        //=========================
 ////        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "Switch4"));
 ////        edges.add(edge);
@@ -107,65 +138,147 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 ////        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
 ////        get_vertex_by_ID(nodes, "PC3").addEdge(edge);
 //        //=========================
-//        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "Router1"));
+//        edge = new Edge(get_vertex_by_ID(nodes, "0"), get_vertex_by_ID(nodes, "1"));
 //        edges.add(edge);
-//        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
-//        get_vertex_by_ID(nodes, "Router1").addEdge(edge);
+//        get_vertex_by_ID(nodes, "0").addEdge(edge);
+//        get_vertex_by_ID(nodes, "1").addEdge(edge);
 //
-//        edge = new Edge(get_vertex_by_ID(nodes, "Router1"), get_vertex_by_ID(nodes, "Router2"));
+//        edge = new Edge(get_vertex_by_ID(nodes, "1"), get_vertex_by_ID(nodes, "2"));
 //        edges.add(edge);
-//        get_vertex_by_ID(nodes, "Router1").addEdge(edge);
-//        get_vertex_by_ID(nodes, "Router2").addEdge(edge);
+//        get_vertex_by_ID(nodes, "1").addEdge(edge);
+//        get_vertex_by_ID(nodes, "2").addEdge(edge);
 //
-//        edge = new Edge(get_vertex_by_ID(nodes, "Router2"), get_vertex_by_ID(nodes, "Switch1"));
+//        edge = new Edge(get_vertex_by_ID(nodes, "2"), get_vertex_by_ID(nodes, "5"));
 //        edges.add(edge);
-//        get_vertex_by_ID(nodes, "Router2").addEdge(edge);
-//        get_vertex_by_ID(nodes, "Switch1").addEdge(edge);
+//        get_vertex_by_ID(nodes, "2").addEdge(edge);
+//        get_vertex_by_ID(nodes, "5").addEdge(edge);
 //
-//        edge = new Edge(get_vertex_by_ID(nodes, "Router2"), get_vertex_by_ID(nodes, "EthernetSwitch"));
+//        edge = new Edge(get_vertex_by_ID(nodes, "2"), get_vertex_by_ID(nodes, "12"));
 //        edges.add(edge);
-//        get_vertex_by_ID(nodes, "Router2").addEdge(edge);
-//        get_vertex_by_ID(nodes, "EthernetSwitch").addEdge(edge);
+//        get_vertex_by_ID(nodes, "2").addEdge(edge);
+//        get_vertex_by_ID(nodes, "12").addEdge(edge);
 //
-//        edge = new Edge(get_vertex_by_ID(nodes, "Router3"), get_vertex_by_ID(nodes, "EthernetSwitch"));
+//        edge = new Edge(get_vertex_by_ID(nodes, "3"), get_vertex_by_ID(nodes, "12"));
 //        edges.add(edge);
-//        get_vertex_by_ID(nodes, "Router3").addEdge(edge);
-//        get_vertex_by_ID(nodes, "EthernetSwitch").addEdge(edge);
+//        get_vertex_by_ID(nodes, "3").addEdge(edge);
+//        get_vertex_by_ID(nodes, "12").addEdge(edge);
 //
-//        edge = new Edge(get_vertex_by_ID(nodes, "Router4"), get_vertex_by_ID(nodes, "EthernetSwitch"));
+//        edge = new Edge(get_vertex_by_ID(nodes, "4"), get_vertex_by_ID(nodes, "12"));
 //        edges.add(edge);
-//        get_vertex_by_ID(nodes, "Router4").addEdge(edge);
-//        get_vertex_by_ID(nodes, "EthernetSwitch").addEdge(edge);
+//        get_vertex_by_ID(nodes, "4").addEdge(edge);
+//        get_vertex_by_ID(nodes, "12").addEdge(edge);
 //
-//        edge = new Edge(get_vertex_by_ID(nodes, "Switch1"), get_vertex_by_ID(nodes, "Switch2"));
+//        edge = new Edge(get_vertex_by_ID(nodes, "5"), get_vertex_by_ID(nodes, "6"));
 //        edges.add(edge);
-//        get_vertex_by_ID(nodes, "Switch1").addEdge(edge);
-//        get_vertex_by_ID(nodes, "Switch2").addEdge(edge);
+//        get_vertex_by_ID(nodes, "5").addEdge(edge);
+//        get_vertex_by_ID(nodes, "6").addEdge(edge);
 //
-//        edge = new Edge(get_vertex_by_ID(nodes, "Switch1"), get_vertex_by_ID(nodes, "Switch3"));
+//        edge = new Edge(get_vertex_by_ID(nodes, "5"), get_vertex_by_ID(nodes, "7"));
 //        edges.add(edge);
-//        get_vertex_by_ID(nodes, "Switch1").addEdge(edge);
-//        get_vertex_by_ID(nodes, "Switch3").addEdge(edge);
+//        get_vertex_by_ID(nodes, "5").addEdge(edge);
+//        get_vertex_by_ID(nodes, "7").addEdge(edge);
 //
-//        edge = new Edge(get_vertex_by_ID(nodes, "Switch2"), get_vertex_by_ID(nodes, "PC1"));
+//        edge = new Edge(get_vertex_by_ID(nodes, "6"), get_vertex_by_ID(nodes, "10"));
 //        edges.add(edge);
-//        get_vertex_by_ID(nodes, "Switch2").addEdge(edge);
-//        get_vertex_by_ID(nodes, "PC1").addEdge(edge);
+//        get_vertex_by_ID(nodes, "6").addEdge(edge);
+//        get_vertex_by_ID(nodes, "10").addEdge(edge);
 //
-//        edge = new Edge(get_vertex_by_ID(nodes, "Switch3"), get_vertex_by_ID(nodes, "PC2"));
+//        edge = new Edge(get_vertex_by_ID(nodes, "7"), get_vertex_by_ID(nodes, "11"));
 //        edges.add(edge);
-//        get_vertex_by_ID(nodes, "Switch3").addEdge(edge);
-//        get_vertex_by_ID(nodes, "PC2").addEdge(edge);
-//
-//    }
-//    private static Node get_vertex_by_ID(ArrayList<Node> nodes, String ID) {
-//        for (Node v : nodes) {
-//            if (v.getId().equals(ID)) {
-//                return v;
-//            }
-//        }
-//        return null;
-//    }
+//        get_vertex_by_ID(nodes, "7").addEdge(edge);
+//        get_vertex_by_ID(nodes, "11").addEdge(edge);
+
+        final Topology[] topology = {null};
+           // Thread t =new Thread(new Runnable(){
+               // @Override
+                //public void run() {
+                    try {
+                        Log.v("Process","entered");
+                        topology[0] = SNMPManager.generate_topology();
+                        Log.v("Process","After Gen");
+                        MiscellaneousMethods.create_Nodes_and_Edges(topology[0],nodes,edges);
+                        Log.v("Process","After CREATE");
+                        printNodes(nodes);
+                        AlgorithmParams.setNodes(nodes);
+                        AlgorithmParams.setEdges(edges);
+
+                        int Min_CrossEdgesCount = Integer.MAX_VALUE;
+                        double best_hook = 0,best_gravity = 0;
+                        for (double gravity = 10000.0; gravity < 300000.0; gravity += 25000.0) {
+                            int c = -1;
+                            for (double hookConst = 0.1; hookConst < 1.5; hookConst += 0.1) {
+                                System.out.println("TESTING FOR:" + gravity + "," + hookConst);
+                                AlgorithmParams.setGravityConst(gravity);
+                                AlgorithmParams.setHookConst(hookConst);
+                                PhisicEngine p = new PhisicEngine();
+                                c = p.getCrossedEdgesCount();
+                                System.out.println("CrossedEdgesCount: " + c);
+                                if(c < Min_CrossEdgesCount){
+                                    best_hook = hookConst;
+                                    best_gravity = gravity;
+                                    Min_CrossEdgesCount=c;
+                                }
+                                if(c == 0){
+                                    break;
+                                }
+                            }
+                            if (c == 0) {
+                                break;
+                            }
+                        }
+                        Log.v("Process","Before FinishedProcessing assignment");
+                        finishedProcessing = true;
+                        Log.v("Process","After FinishedProcessing assignment");
+                        System.out.println("==========================");
+                        printCoords(nodes);
+                        System.out.println("==========================");
+                        System.out.println("BestGravity: "+best_gravity);
+                        System.out.println("BestHook: "+best_hook);
+                        System.out.println("MinCrossEdgesCount: "+Min_CrossEdgesCount);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                //}
+
+
+       // });
+           // t.start();
+
+
+    }
+    private static void printCoords(ArrayList<Node> nodes) {
+        for (Node v : nodes) {
+            System.out.println("Node: " + v.getName());
+            System.out.println("\tX: " + v.getX());
+            System.out.println("\tY: " + v.getY());
+            System.out.println("=====");
+            System.out.println("\tEdges:");
+            for (Edge e : v.getEdges()) {
+                System.out.println(e.toString());
+            }
+            System.out.println("==================");
+        }
+    }
+    private static void printNodes(ArrayList<Node> nodes) {
+        for (Node v : nodes) {
+            System.out.println("Node: " + v.getName());
+            System.out.println("=====");
+            System.out.println("\tEdges:");
+            for (Edge e : v.getEdges()) {
+                System.out.println(e.toString());
+            }
+            System.out.println("==================");
+        }
+    }
+    private static Node get_vertex_by_ID(ArrayList<Node> nodes, String ID) {
+        for (Node v : nodes) {
+            if (v.getId().equals(ID)) {
+                return v;
+            }
+        }
+        return null;
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

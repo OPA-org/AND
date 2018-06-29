@@ -32,10 +32,7 @@
                     android:id="@+id/zv_zoomview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <cse.opa.and.TopologyGraphView
-                        android:id="@+id/tgv_topology"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+
                 </cse.opa.and.ZoomView>
             </LinearLayout>
 

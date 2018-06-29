@@ -12,6 +12,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import cse.opa.and.Activity.TopologyActivity;
 import cse.opa.and.Classes.MiscellaneousMethods;
 import cse.opa.and.Classes.SNMPManager;
 import cse.opa.and.Classes.Topology;
@@ -52,9 +53,9 @@ public class TopologyGraphView extends View {
         init(null,context);
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(4);
-//        this.nodes = TopologyActivity.nodes;
-//        this.edges = TopologyActivity.edges;
-//        Nodename = TopologyActivity.Nodename;
+        this.nodes = TopologyActivity.nodes;
+        this.edges = TopologyActivity.edges;
+        Nodename = TopologyActivity.Nodename;
 
         ProcessInput();
         Scale();
@@ -66,9 +67,9 @@ public class TopologyGraphView extends View {
         init(attrs,context);
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(4);
-//        this.nodes = TopologyActivity.nodes;
-//        this.edges = TopologyActivity.edges;
-//        Nodename = TopologyActivity.Nodename;
+        this.nodes = TopologyActivity.nodes;
+        this.edges = TopologyActivity.edges;
+        Nodename = TopologyActivity.Nodename;
         ProcessInput();
         Scale();
         set_AverageXY();
@@ -80,9 +81,9 @@ public class TopologyGraphView extends View {
         init(attrs,context);
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(4);
-//        this.nodes = TopologyActivity.nodes;
-//        this.edges = TopologyActivity.edges;
-//        Nodename = TopologyActivity.Nodename;
+        this.nodes = TopologyActivity.nodes;
+        this.edges = TopologyActivity.edges;
+        Nodename = TopologyActivity.Nodename;
         ProcessInput();
         Scale();
         set_AverageXY();
@@ -94,9 +95,9 @@ public class TopologyGraphView extends View {
         init(attrs,context);
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(4);
-//        this.nodes = TopologyActivity.nodes;
-//        this.edges = TopologyActivity.edges;
-//        Nodename = TopologyActivity.Nodename;
+        this.nodes = TopologyActivity.nodes;
+        this.edges = TopologyActivity.edges;
+        Nodename = TopologyActivity.Nodename;
         ProcessInput();
         Scale();
         set_AverageXY();
@@ -216,11 +217,11 @@ public class TopologyGraphView extends View {
                 protected Void doInBackground(Void... params) {
                     try {
 
-                        nodes = new ArrayList<Node>();
-                        edges = new ArrayList<Edge>();
+                        //nodes = new ArrayList<Node>();
+                        //edges = new ArrayList<Edge>();
 
-                        Topology topology = SNMPManager.generate_topology();
-                        MiscellaneousMethods.create_Nodes_and_Edges(topology,nodes,edges);
+                        //Topology topology = SNMPManager.generate_topology();
+                        //MiscellaneousMethods.create_Nodes_and_Edges(topology,nodes,edges);
                         printNodes(nodes);
                         AlgorithmParams.setNodes(nodes);
                         AlgorithmParams.setEdges(edges);
@@ -264,8 +265,9 @@ public class TopologyGraphView extends View {
                 }
                 @Override
                 protected void onPostExecute(Void Void) {
+
                 }
-            }.execute().get();
+            }.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
