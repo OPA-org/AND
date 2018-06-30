@@ -16,7 +16,7 @@ public class Switch extends Agent {
         super(false);
         this.interfaces = interfaces;
         this.id = super.id_no++;
-        this.node = new Node(id,sysName);
+        this.node = new Node(id,sysName, this.getClass().getSimpleName());
     }
 
     public Switch(String sysDescr, String sysName, ArrayList<Interface> interfaces) {
@@ -25,14 +25,14 @@ public class Switch extends Agent {
         this.sysName = sysName;
         this.interfaces = interfaces;
         this.id = super.id_no++;
-        this.node = new Node(id,sysName);
+        this.node = new Node(id,sysName, this.getClass().getSimpleName());
     }
 
     public Switch() {
         super(false);
         this.interfaces = new ArrayList<>();
         this.id = super.id_no++;
-        this.node = new Node(id,sysName);
+        this.node = new Node(id,sysName, this.getClass().getSimpleName());
     }
 
     public ArrayList<Interface> getInterfaces() {

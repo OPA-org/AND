@@ -71,7 +71,7 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
                 public void run() {
                     Log.v("Runnable", "Thread STARTED!");
                     testgentopology();
-
+                    Scale();
 
                     while (!finishedProcessing) {
                     }
@@ -81,7 +81,14 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
                         public void run() {
                             dialog.cancel();
                             tgv_topology = new TopologyGraphView(TopologyActivity.this);
-                            zv_zoomview.setSmoothZoomX(tgv_topology.getZoomCenterX());
+//                            for(int j=0;j< nodes.size();j++)
+//                            {
+//                                nodes.get(j).setContext(getBaseContext());
+//                                nodes.get(j).setAgentView();
+//                                zv_zoomview.addView(nodes.get(j).getAgentView());
+//                                nodes.get(j).getAgentView().setOnClickListener(TopologyActivity.this);
+//                            }
+                           zv_zoomview.setSmoothZoomX(tgv_topology.getZoomCenterX());
                             zv_zoomview.setSmoothZoomY(tgv_topology.getZoomCenterY());
                             zv_zoomview.addView(tgv_topology);
                             if(Thread.interrupted()){
@@ -335,8 +342,55 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
                 break;
             }
             //===========================================================
-
+//                default:for (int i=0;i<nodes.size();i++){
+//                    if (v.getId()==nodes.get(i).getAgentView().getId()){
+//                        Toast.makeText(this.getBaseContext(),nodes.get(i).getAgentView().getName(),Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//                }
         }
+    }
+    public void Scale()
+    {
+        double XMin= this.ll_topology.getWidth();
+        double YMin= this.ll_topology.getHeight();
+        double XMax= Integer.MIN_VALUE+20;
+        double YMax= Integer.MIN_VALUE+20;
+
+
+        for(int j=0;j< nodes.size();j++)
+        {
+            if(nodes.get(j).getX() < XMin)
+            {
+                XMin=nodes.get(j).getX();
+            }
+            if(nodes.get(j).getY() < YMin)
+            {
+                YMin=nodes.get(j).getY();
+            }
+            if(nodes.get(j).getX() > XMax)
+            {
+                XMax=nodes.get(j).getX();
+            }
+            if(nodes.get(j).getY() > YMax)
+            {
+                YMax=nodes.get(j).getY();
+            }
+        }
+
+        double length_x = XMax- XMin;
+        double length_y = YMax- YMin;
+        double length  = Math.max(length_x, length_y);
+        for(int j=0;j< nodes.size();j++)
+        {
+            double nodeX = nodes.get(j).getX();
+            double nodeY = nodes.get(j).getY();
+            double tempx = nodeX*(500.0 / length);
+            double tempy = nodeY*(500.0 / length);
+            nodes.get(j).setX(tempx);
+            nodes.get(j).setY(tempy);
+        }
+
     }
 
     @Override

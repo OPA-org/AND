@@ -17,7 +17,7 @@ public class Router extends Agent {
         this.sysName = sysName;
         this.interfaces = interfaces;
         this.id = super.id_no++;
-        this.node = new Node(id,sysName);
+        this.node = new Node(id,sysName, this.getClass().getSimpleName());
     }
 
     public Router(String sysDescr, String sysName) {
@@ -26,7 +26,7 @@ public class Router extends Agent {
         this.sysName = sysName;
         this.interfaces = new ArrayList<>();
         this.id_no = super.id_no++;
-        this.node = new Node(id,sysName);
+        this.node = new Node(id,sysName, this.getClass().getSimpleName());
     }
 
     public Router() {
@@ -35,7 +35,7 @@ public class Router extends Agent {
         this.sysName = "";
         this.interfaces = new ArrayList<>();
         this.id_no = super.id_no++;
-        this.node = new Node(id,sysName);
+        this.node = new Node(id,sysName, this.getClass().getSimpleName());
     }
 
     public ArrayList<Interface> getInterfaces() {

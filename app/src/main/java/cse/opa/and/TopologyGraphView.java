@@ -21,7 +21,7 @@ import cse.opa.and.Classes.Topology;
 public class TopologyGraphView extends View {
 
     private final Paint p;
-
+    private Context context;
     public ArrayList<Node> getNodes() {
         return nodes;
     }
@@ -48,7 +48,7 @@ public class TopologyGraphView extends View {
 
     public TopologyGraphView(Context context) {
         super(context);
-
+        this.context= context;
         init(null,context);
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(4);
@@ -63,6 +63,7 @@ public class TopologyGraphView extends View {
     public TopologyGraphView(Context context, AttributeSet attrs) {
         super(context,attrs);
         init(attrs,context);
+        this.context= context;
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(4);
         this.nodes = TopologyActivity.nodes;
@@ -74,7 +75,7 @@ public class TopologyGraphView extends View {
     //======================================================
     public TopologyGraphView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
+        this.context= context;
         init(attrs,context);
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(4);
@@ -87,8 +88,8 @@ public class TopologyGraphView extends View {
     //======================================================
     public TopologyGraphView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-
         init(attrs,context);
+        this.context= context;
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(4);
         this.nodes = TopologyActivity.nodes;
@@ -318,12 +319,14 @@ public class TopologyGraphView extends View {
     protected void onDraw(Canvas canvas) {
         for(int j=0;j< nodes.size();j++)
         {
+            nodes.get(j).setContext(this.context);
             nodes.get(j).Draw(p,canvas);
         }
         for(int j=0;j< edges.size();j++)
         {
             edges.get(j).Draw(p,canvas);
         }
+
     }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

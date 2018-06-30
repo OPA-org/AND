@@ -1,7 +1,6 @@
 package cse.opa.and.Classes;
 
 import java.util.ArrayList;
-import org.snmp4j.smi.IpAddress;
 
 import cse.opa.and.Node;
 
@@ -17,7 +16,7 @@ public class Host extends Agent {
         super(false);
         this.anInterface = anInterface;
         this.id = super.id_no++;
-        this.node = new Node(id,"Host of IP: " + anInterface.getIp_address());
+        this.node = new Node(id,"Host of IP: " + anInterface.getIp_address(), this.getClass().getSimpleName());
     }
 
     public Interface getAnInterface() {
