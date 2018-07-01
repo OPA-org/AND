@@ -56,7 +56,7 @@ public class TopologyGraphView extends View {
         this.edges = TopologyActivity.edges;
 
 //        ProcessInput();
-        Scale();
+//        Scale();
         set_AverageXY();
     }
     //======================================================
@@ -69,7 +69,7 @@ public class TopologyGraphView extends View {
         this.nodes = TopologyActivity.nodes;
         this.edges = TopologyActivity.edges;
 //        ProcessInput();
-        Scale();
+//        Scale();
         set_AverageXY();
     }
     //======================================================
@@ -82,7 +82,7 @@ public class TopologyGraphView extends View {
         this.nodes = TopologyActivity.nodes;
         this.edges = TopologyActivity.edges;
 //        ProcessInput();
-        Scale();
+//        Scale();
         set_AverageXY();
     }
     //======================================================
@@ -95,7 +95,7 @@ public class TopologyGraphView extends View {
         this.nodes = TopologyActivity.nodes;
         this.edges = TopologyActivity.edges;
 //        ProcessInput();
-        Scale();
+//        Scale();
         set_AverageXY();
     }
     private void init(@Nullable AttributeSet set, Context context) {
@@ -317,16 +317,15 @@ public class TopologyGraphView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        for(int j=0;j< edges.size();j++)
+        {
+            edges.get(j).Draw(p,canvas);
+        }
         for(int j=0;j< nodes.size();j++)
         {
             nodes.get(j).setContext(this.context);
             nodes.get(j).Draw(p,canvas);
         }
-        for(int j=0;j< edges.size();j++)
-        {
-            edges.get(j).Draw(p,canvas);
-        }
-
     }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

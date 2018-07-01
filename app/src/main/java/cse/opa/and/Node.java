@@ -23,7 +23,7 @@ public class Node implements View.OnClickListener {
 	private double dy;
 	private ArrayList<Edge> edges = new ArrayList<Edge>();
 
-	public final static int VERTEX_SIZE = 20;
+	public final static int VERTEX_SIZE = 30;
 	private Context context;
     //private AgentView view;
     public Node(int id_no, String name, String type){
@@ -91,8 +91,8 @@ public class Node implements View.OnClickListener {
 //    }
 	public void Draw(Paint p, Canvas canvas)
 	{
-        p.setColor(Color.GREEN);
-        //canvas.drawCircle((int)(getX()), (int)(getY()), 10, p);
+//        p.setColor(Color.GREEN);
+//        canvas.drawCircle((int)(getX()), (int)(getY()), 10, p);
         Bitmap b=null;
         if (type.equals("Router")){
             b= BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_router);
@@ -105,6 +105,7 @@ public class Node implements View.OnClickListener {
 
         canvas.drawBitmap(b, (int) getX()-b.getWidth()/2, (int) getY()-b.getHeight()/2, p);
         p.setColor(Color.BLACK);
+//		canvas.drawText(name,(int)(getX()), (int)(getY()),p);
         canvas.drawText(name,(int)(getX()-b.getWidth()/2), (int)(getY()+b.getHeight()/2 +15),p);
 //		view =new AgentView(this.context,2,this.getX(),this.getY(),this.getName(),123);
 //		view.draw(canvas);

@@ -15,14 +15,14 @@ public class PhisicEngine {
     private double lastEnergyChange = 0;
 
     private int step = 0;
-    private int minFrontierX = 20;
-    private int minFrontierY = 20;
-    private int maxFrontierX = 1500;
-    private int maxFrontierY = 1500;
+    private int minFrontierX = 30;
+    private int minFrontierY = 30;
+    private int maxFrontierX = 1530;
+    private int maxFrontierY = 1530;
 
     private double minChange = 0.000001;
 
-    private double SPRING_MINIMAL_LENGTH = 20;
+    private double SPRING_MINIMAL_LENGTH = 60;
 
     private double kinetic = 0;
 

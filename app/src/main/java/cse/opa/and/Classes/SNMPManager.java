@@ -9,7 +9,7 @@ public class SNMPManager {
     public static Topology generate_topology() throws Exception {
         ArrayList<String> R = new ArrayList<>();
         ArrayList<String> IPs = new ArrayList<>();
-        device_discovery("192.168.10.2", R, IPs);
+        device_discovery("192.168.137.1", R, IPs);
         System.out.println("IPs:-");
         for (String s : IPs) {
             System.out.println(s);
@@ -60,7 +60,14 @@ public class SNMPManager {
             String sysservresult = SNMP_methods.getfromsnmpget_single(IP, OIDS.sysServices);
             if (!sysservresult.equals("error")) {
                 String binsysserv = new StringBuilder(MiscellaneousMethods.converttobinary(Integer.valueOf(sysservresult)).substring(1,8)).reverse().toString();
-                if(binsysserv.charAt(1) == '1'){
+                if(binsysserv.charAt(0) == '1'){
+                    //L1 Yes
+                    Interface inter = new Interface("1", "PC port", IP, "");
+                    String name = SNMP_methods.getfromsnmpget_single(IP, OIDS.sysName);
+                    String descr = SNMP_methods.getfromsnmpget_single(IP, OIDS.sysDescr);
+                    Agent host = new Host(inter,name,descr);
+                    agents.add(host);
+                }else if(binsysserv.charAt(1) == '1'){
                     //L2 yes
                     if(binsysserv.charAt(2) == '1'){
                         //L3 yes
@@ -235,12 +242,16 @@ public class SNMPManager {
         return null;
     }
 
-    private static Boolean has_similar_connection(ArrayList<Connection> connections,Agent A,Agent B){
+    private static Boolean has_similar_connection(ArrayList<Connection> connections,Agent A,Agent B, Interface inf_A, Interface inf_B){
         for(Connection c : connections){
             if(c.getAgentA().equals(A) && c.getAgentB().equals(B)){
-                return true;
+                if(c.getInterfaceA().equals(inf_A) && c.getInterfaceB().equals(inf_B)){
+                    return true;
+                }
             }else if(c.getAgentA().equals(B) && c.getAgentB().equals(A)){
-                return true;
+                if(c.getInterfaceA().equals(inf_B) && c.getInterfaceB().equals(inf_A)){
+                    return true;
+                }
             }
         }
         return false;
@@ -264,12 +275,12 @@ public class SNMPManager {
         Connections.addAll(switch_to_switch);
         System.out.println("Switch to router");
         ArrayList<Connection> switch_to_router = Switch_to_router_connectivity(switchrouterpairs,Connections);
+        System.out.println("Switch to host");
+        ArrayList<Connection> switch_to_host = Switch_to_host_connectivity(switchhostpairs,Connections);
         System.out.println("Router to router");
         ArrayList<Connection> router_to_router = Router_to_router_connectivity((ArrayList<Agent>)((Object)routers),Connections);
         System.out.println("Router to host");
         ArrayList<Connection> router_to_host = Router_to_host_connectivity(routerhostpairs,Connections);
-        System.out.println("Switch to host");
-        ArrayList<Connection> switch_to_host = Switch_to_host_connectivity(switchhostpairs,Connections);
 
         return Connections;
 
@@ -362,16 +373,16 @@ public class SNMPManager {
             String Router_ip = switchrouterpairs.get(i).getAgent2().getIPAddress();
             ArrayList<String> Switch_MacList = switchrouterpairs.get(i).getAgent1().get_mac_addresses();
             ArrayList<String> Router_MacList = switchrouterpairs.get(i).getAgent2().get_mac_addresses();
-            for (String Switch_MacList_Mac : Switch_MacList) {
-                if (MiscellaneousMethods.Mac_is_connected(Switch_MacList_Mac, connections)) {
-                    continue;
-                }
+            //for (String Switch_MacList_Mac : Switch_MacList) {
+//                if (MiscellaneousMethods.Mac_is_connected(Switch_MacList_Mac, connections)) {
+//                    continue;
+//                }
                 ArrayList<String> afts_Switch = SNMP_methods.getfromwalk_single(Switch_ip, OIDS.dot1dTpFdbTable, OIDS.dot1dTpFdbAddress);
                 ArrayList<String> aftsports_Switch = SNMP_methods.getfromwalk_single(Switch_ip, OIDS.dot1dTpFdbTable, OIDS.dot1dTpFdbPort);
-                Interface interface_of_MAC = switchrouterpairs.get(i).getAgent1().GetInterface_byMacAddress(Switch_MacList_Mac);
+                /*Interface interface_of_MAC = switchrouterpairs.get(i).getAgent1().GetInterface_byMacAddress(Switch_MacList_Mac);
                 if(!aftsports_Switch.contains(interface_of_MAC.getIndex())){
                     continue;
-                }
+                }*/
                 ArrayList<Integer> portoccurunces_Switch = new ArrayList<>();
                 ArrayList<Integer> removing_indices = new ArrayList<>();
                 for(int p = 0 ; p < aftsports_Switch.size() ; p++){
@@ -388,22 +399,25 @@ public class SNMPManager {
                         removing_indices.add(p);
                     }
                 }
-
+             
                 Collections.reverse(removing_indices);
-
+                
                 for(int p = 0 ; p < removing_indices.size() ; p++){
                     afts_Switch.remove((int)removing_indices.get(p));
+                    aftsports_Switch.remove((int)removing_indices.get(p));
                 }
-
+                
                 for (String Router_MacList_Mac : Router_MacList) {
                     if(afts_Switch.contains(Router_MacList_Mac)){
-                        Interface Switch_Interface = switchrouterpairs.get(i).getAgent1().GetInterface_byMacAddress(Switch_MacList_Mac);
+                        int index = afts_Switch.indexOf(Router_MacList_Mac);
+                        String switch_interface_index = aftsports_Switch.get(index);
+                        Interface Switch_Interface = switchrouterpairs.get(i).getAgent1().GetInterface_byindex(switch_interface_index);
                         Interface Router_Interface = switchrouterpairs.get(i).getAgent2().GetInterface_byMacAddress(Router_MacList_Mac);
                         Connection connection = new Connection(Switch_Interface, Router_Interface, switchrouterpairs.get(i).getAgent1(), switchrouterpairs.get(i).getAgent2(), "Switch_Router");
                         connections.add(connection);
                     }
                 }
-            }
+            
         }
         return connections;
     }
@@ -424,8 +438,6 @@ public class SNMPManager {
             }
             if (!usedinf.isEmpty()) {
                 for (int j = 0; j < usedinf.size(); j++) {
-
-                    if (i == 0) {
                         for (String s : nexthops) {
                             String Mask = usedinf.get(j).getSubnet_mask();
                             String infNetAddress = MiscellaneousMethods.getNetworkIP(usedinf.get(j).getIp_address(), Mask);
@@ -434,26 +446,13 @@ public class SNMPManager {
                                 Router B = (Router) get_Agent_by_Ip(routers, s);
                                 if (B != null) {
                                     Interface B_Interface = B.get_Interface_by_Interface_IP_address_property(s);
-                                    Connection interfaceConnection = new Connection(usedinf.get(j), B_Interface, A, B, "Router_Router");
-                                    Connections.add(interfaceConnection);
+                                    if(!has_similar_connection(Connections, A, B, usedinf.get(j), B_Interface)){
+                                        Connection interfaceConnection = new Connection(usedinf.get(j), B_Interface, A, B, "Router_Router");
+                                        Connections.add(interfaceConnection);
+                                    }
                                 }
                             }
                         }
-                    } else {
-                        for (String s : nexthops) {
-                            String Mask = usedinf.get(j).getSubnet_mask();
-                            String infNetAddress = MiscellaneousMethods.getNetworkIP(usedinf.get(j).getIp_address(), Mask);
-                            String ipNetAddress = MiscellaneousMethods.getNetworkIP(s, Mask);
-                            if (infNetAddress.equals(ipNetAddress)) {
-                                Router B = (Router) get_Agent_by_Ip(routers, s);
-                                if (B != null && !has_similar_connection(Connections, A, B)) {
-                                    Interface B_Interface = B.get_Interface_by_Interface_IP_address_property(s);
-                                    Connection interfaceConnection = new Connection(usedinf.get(j), B_Interface, A, B, "Router_Router");
-                                    Connections.add(interfaceConnection);
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -462,6 +461,10 @@ public class SNMPManager {
 
     private static ArrayList<Connection> Router_to_host_connectivity(ArrayList<AgentPair> routerhostpairs, ArrayList<Connection> Connections) throws IOException {
         for (int i = 0; i < routerhostpairs.size(); i++) {
+            Host host = (Host)routerhostpairs.get(i).getAgent2();
+            if(MiscellaneousMethods.Interface_is_connected(host.getAnInterface(), Connections)){
+                continue;
+            }
             Router A = (Router) routerhostpairs.get(i).getAgent1();
             ArrayList<String> oids = new ArrayList<>();
             oids.add(OIDS.ipNetToMediaIfIndex);
@@ -469,7 +472,7 @@ public class SNMPManager {
             ArrayList<ArrayList<String>> nexthops = SNMP_methods.getfromwalk_multi(A.getIPAddress(),
                     OIDS.ipNetToMediaTable, oids);
             ArrayList<Integer> removing_indexes = new ArrayList<>();
-
+            
             for (int n = 0 ; n < nexthops.get(0).size() ; n++){
                 String ip = nexthops.get(1).get(n);
                 if (A.has_IPaddress(ip)) {
@@ -478,55 +481,57 @@ public class SNMPManager {
                     removing_indexes.add(n);
                 }
             }
-
+            
             Collections.reverse(removing_indexes);
-
+            
             for(int n = 0 ; n < removing_indexes.size() ; n++){
                 nexthops.get(0).remove((int)removing_indexes.get(n));
                 nexthops.get(1).remove((int)removing_indexes.get(n));
             }
-
+            
             ArrayList<Interface> usedinf = A.get_UsedInterfaces();
-            ArrayList<Interface> tempintfs = (ArrayList<Interface>) usedinf.clone();
-            for (Interface intf : tempintfs) {
-                if(MiscellaneousMethods.IP_is_connected(intf.getIp_address(), Connections)){
-                    usedinf.remove(intf);
-                }
-            }
-
+//            ArrayList<Interface> tempintfs = (ArrayList<Interface>) usedinf.clone();
+//            for (Interface intf : tempintfs) {
+//                if(MiscellaneousMethods.IP_is_connected(intf.getIp_address(), Connections)){
+//                    usedinf.remove(intf);
+//                }
+//            }
+            
             ArrayList<String> intfindex = new ArrayList<>();
-
+            
             for (Interface intf : usedinf) {
                 intfindex.add(intf.getIndex());
             }
-
+            
             removing_indexes = new ArrayList<>();
-
+            
             for (int n = 0 ; n < nexthops.get(0).size() ; n++){
                 if (!intfindex.contains(nexthops.get(0).get(n))) {
                     removing_indexes.add(n);
                 }
             }
-
+            
             Collections.reverse(removing_indexes);
-
+            
             for(int n = 0 ; n < removing_indexes.size() ; n++){
                 nexthops.get(0).remove((int)removing_indexes.get(n));
                 nexthops.get(1).remove((int)removing_indexes.get(n));
             }
-
+            
             Host B = (Host) routerhostpairs.get(i).getAgent2();
             for(int n = 0 ; n < nexthops.get(0).size() ; n++){
                 String ip = nexthops.get(1).get(n);
                 if(ip.equals(B.getIPAddress())){
-                    Interface interfaceA = A.GetInterface_index(nexthops.get(0).get(n));
+                    Interface interfaceA = A.GetInterface_byindex(nexthops.get(0).get(n));
                     Interface interfaceB = B.getAnInterface();
-                    Connection interfaceconnection = new Connection(interfaceA, interfaceB, A, B, "Router_Host");
-                    Connections.add(interfaceconnection);
-                    break;
+                    if (!has_similar_connection(Connections, A, B, interfaceA, interfaceB)) {
+                        Connection interfaceconnection = new Connection(interfaceA, interfaceB, A, B, "Router_Host");
+                        Connections.add(interfaceconnection);
+                        break;
+                    }
                 }
             }
-
+            
         }
         return Connections;
     }
@@ -538,6 +543,11 @@ public class SNMPManager {
                 continue;
             }
             String switch_IP = switchhostpair.getAgent1().getIPAddress();
+            String switch_Mask = ((Switch)switchhostpair.getAgent1()).getMask();
+            String switch_NetIP = MiscellaneousMethods.getNetworkIP(switch_IP, switch_Mask);
+            if(!MiscellaneousMethods.isIPinSubnet(host_IP, switch_NetIP, switch_Mask)){
+                continue;
+            }
             ArrayList<String> oids = new ArrayList<>();
             oids.add(OIDS.ipNetToMediaNetAddress);
             oids.add(OIDS.ipNetToMediaPhysAddress);
@@ -570,15 +580,18 @@ public class SNMPManager {
                 switch_macaddrtable.get(0).remove((int) removing_indices.get(p));
                 switch_macaddrtable.get(1).remove((int) removing_indices.get(p));
             }
-
+            
             int indexofhost_in_arptable = switch_arptable.get(0).indexOf(host_IP);
+            
+//            if(switch_arptable.get(1).contains(indexofhost_in_arptable))
+            
             String mac_of_host = switch_arptable.get(1).get(indexofhost_in_arptable);
-
+            
             for(int i = 0; i < switch_macaddrtable.get(0).size() ; i++){
                 if(switch_macaddrtable.get(0).get(i).equals(mac_of_host)){
                     Switch switchA = (Switch)switchhostpair.getAgent1();
                     Host hostB = (Host)switchhostpair.getAgent2();
-                    Interface switch_interface = switchA.GetInterface_index(switch_macaddrtable.get(1).get(i));
+                    Interface switch_interface = switchA.GetInterface_byindex(switch_macaddrtable.get(1).get(i));
                     if(MiscellaneousMethods.Interface_is_connected(switch_interface, Connections)){
                         continue;
                     }
@@ -589,7 +602,7 @@ public class SNMPManager {
                     break;
                 }
             }
-
+            
         }
         return Connections;
     }
@@ -753,7 +766,8 @@ public class SNMPManager {
                             need_to_edit_connections.add(c1);
                             break;
                         }
-                    }else if (c1.getAgentB().equals(c2.getAgentA())) {
+                    }
+                    else if (c1.getAgentB().equals(c2.getAgentA())) {
                         if (!c1.getAgentB().getClass().getSimpleName().equals("Host")) {
                             if (c1.getInterfaceB().equals(c2.getInterfaceA())) {
                                 need_to_edit_connections.add(c1);
@@ -777,7 +791,7 @@ public class SNMPManager {
                 }
             }
         }
-
+        
         for(Connection connection: need_to_edit_connections){
             connections.remove(connection);
             if(connection.getType().equals("Switch_Switch")){
@@ -800,27 +814,27 @@ public class SNMPManager {
                 }
             }
         }
-
-        ArrayList<Agent> hidden_switches = new ArrayList<>();
+        
+        ArrayList<Switch> hidden_switches = new ArrayList<>();
         ArrayList<Integer> switches_interfaces_index = new ArrayList<>();
         for(int i = 0 ; i < Subnets.size() ; i++){
             ArrayList<Interface> intfs = new ArrayList<>();
             intfs.add(new Interface("0", "not used interface", Subnets.get(i), Masks.get(i), ""));
-            Agent sw = new Switch("Ethernet Switch", "Ethernet Switch"+i, intfs);
+            Switch sw = new Switch("Ethernet Switch", "Ethernet Switch"+i, intfs);
             hidden_switches.add(sw);
             switches_interfaces_index.add(1);
         }
-
+        
         ArrayList<Connection> Hidden_Connections = new ArrayList<>();
-
+        
         for (Connection connection : need_to_edit_connections) {
             if (connection.getType().equals("Switch_Switch")) {
                 if (!MiscellaneousMethods.Interface_is_connected(connection.getInterfaceA(), connections)) {
                     for(int i = 0 ; i < hidden_switches.size() ; i++){
-                        if(MiscellaneousMethods.isIPinSubnet(connection.getAgentA().getIPAddress(), hidden_switches.get(i).getIPAddress(), ((Switch)hidden_switches.get(i)).getMask())){
+                        if(MiscellaneousMethods.isIPinSubnet(connection.getAgentA().getIPAddress(), hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask())){
                             String intindx = switches_interfaces_index.get(i).toString();
-                            Interface intf = new Interface(intindx, "Ethernet Port", hidden_switches.get(i).getIPAddress(), ((Switch)hidden_switches.get(i)).getMask(), "");
-                            ((Switch)hidden_switches.get(i)).add_Interface(intf);
+                            Interface intf = new Interface(intindx, "Ethernet Port", hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask(), "");
+                            hidden_switches.get(i).add_Interface(intf);
                             switches_interfaces_index.set(i,switches_interfaces_index.get(i) + 1);
                             Connection interfaceConnection = new Connection(connection.getInterfaceA(), intf, connection.getAgentA(), hidden_switches.get(i), connection.getAgentA().getClass().getSimpleName()+"_Switch");
                             connections.add(interfaceConnection);
@@ -829,10 +843,10 @@ public class SNMPManager {
                 }
                 if (!MiscellaneousMethods.Interface_is_connected(connection.getInterfaceB(), connections)) {
                     for(int i = 0 ; i < hidden_switches.size() ; i++){
-                        if(MiscellaneousMethods.isIPinSubnet(connection.getAgentB().getIPAddress(), hidden_switches.get(i).getIPAddress(), ((Switch)hidden_switches.get(i)).getMask())){
+                        if(MiscellaneousMethods.isIPinSubnet(connection.getAgentB().getIPAddress(), hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask())){
                             String intindx = switches_interfaces_index.get(i).toString();
-                            Interface intf = new Interface(intindx, "Ethernet Port", hidden_switches.get(i).getIPAddress(), ((Switch)hidden_switches.get(i)).getMask(), "");
-                            ((Switch)hidden_switches.get(i)).add_Interface(intf);
+                            Interface intf = new Interface(intindx, "Ethernet Port", hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask(), "");
+                            hidden_switches.get(i).add_Interface(intf);
                             switches_interfaces_index.set(i,switches_interfaces_index.get(i) + 1);
                             Connection interfaceConnection = new Connection(connection.getInterfaceB(), intf, connection.getAgentB(), hidden_switches.get(i), connection.getAgentB().getClass().getSimpleName()+"_Switch");
                             connections.add(interfaceConnection);
@@ -842,10 +856,10 @@ public class SNMPManager {
             } else {
                 if (!MiscellaneousMethods.Interface_is_connected(connection.getInterfaceA(), connections)) {
                     for(int i = 0 ; i < hidden_switches.size() ; i++){
-                        if(MiscellaneousMethods.isIPinSubnet(connection.getInterfaceA().getIp_address(), hidden_switches.get(i).getIPAddress(), ((Switch)hidden_switches.get(i)).getMask())){
+                        if(MiscellaneousMethods.isIPinSubnet(connection.getInterfaceA().getIp_address(), hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask())){
                             String intindx = switches_interfaces_index.get(i).toString();
-                            Interface intf = new Interface(intindx, "Ethernet Port", hidden_switches.get(i).getIPAddress(), ((Switch)hidden_switches.get(i)).getMask(), "");
-                            ((Switch)hidden_switches.get(i)).add_Interface(intf);
+                            Interface intf = new Interface(intindx, "Ethernet Port", hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask(), "");
+                            hidden_switches.get(i).add_Interface(intf);
                             switches_interfaces_index.set(i,switches_interfaces_index.get(i) + 1);
                             Connection interfaceConnection = new Connection(connection.getInterfaceA(), intf, connection.getAgentA(), hidden_switches.get(i), connection.getAgentA().getClass().getSimpleName()+"_Switch");
                             connections.add(interfaceConnection);
@@ -854,24 +868,24 @@ public class SNMPManager {
                 }
                 if (!MiscellaneousMethods.Interface_is_connected(connection.getInterfaceB(), connections)) {
                     for(int i = 0 ; i < hidden_switches.size() ; i++){
-                        if(MiscellaneousMethods.isIPinSubnet(connection.getInterfaceB().getIp_address(), hidden_switches.get(i).getIPAddress(), ((Switch)hidden_switches.get(i)).getMask())){
+                        if(MiscellaneousMethods.isIPinSubnet(connection.getInterfaceB().getIp_address(), hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask())){
                             String intindx = switches_interfaces_index.get(i).toString();
-                            Interface intf = new Interface(intindx, "Ethernet Port", hidden_switches.get(i).getIPAddress(), ((Switch)hidden_switches.get(i)).getMask(), "");
-                            ((Switch)hidden_switches.get(i)).add_Interface(intf);
+                            Interface intf = new Interface(intindx, "Ethernet Port", hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask(), "");
+                            hidden_switches.get(i).add_Interface(intf);
                             switches_interfaces_index.set(i,switches_interfaces_index.get(i) + 1);
                             Connection interfaceConnection = new Connection(connection.getInterfaceB(), intf, connection.getAgentB(), hidden_switches.get(i), connection.getAgentB().getClass().getSimpleName()+"_Switch");
                             connections.add(interfaceConnection);
                         }
                     }
                 }
-
+                
             }
         }
-
-        for(Agent sw : hidden_switches){
+        
+        for(Switch sw : hidden_switches){
             agents.add(sw);
         }
-
+        
         return connections;
     }
 

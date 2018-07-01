@@ -109,25 +109,22 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
     public void testgentopology(){
 //        nodes = new ArrayList<>();
 //        edges = new ArrayList<>();
-
-//        nodes.add(new Node(0,"Router0"));
-//        nodes.add(new Node(1,"Router1"));
-//        nodes.add(new Node(2,"Router2"));
-//        nodes.add(new Node(3,"Router3"));
-//        nodes.add(new Node(4,"Router4"));
-//        nodes.add(new Node(5,"Switch1"));
-//        nodes.add(new Node(6,"Switch2"));
-//        nodes.add(new Node(7,"Switch3"));
-//        nodes.add(new Node(8,"LocalPC"));
-//        nodes.add(new Node(9,"PC0"));
-//        nodes.add(new Node(10,"PC1"));
-//        nodes.add(new Node(11,"PC2"));
-//        nodes.add(new Node(12,"EthernetSwitch"));
-//        //==============
-////        nodes.add(new Node("Switch4"));
-////        nodes.add(new Node("PC3"));
 //
-//        //==============
+//        nodes.add(new Node(0,"Router0", "Router"));
+//        nodes.add(new Node(1,"Router1", "Router"));
+//        nodes.add(new Node(2,"Router2", "Router"));
+//        nodes.add(new Node(3,"Router3", "Router"));
+//        nodes.add(new Node(4,"Router4", "Router"));
+//        nodes.add(new Node(5,"Switch1", "Switch"));
+//        nodes.add(new Node(6,"Switch2", "Switch"));
+//        nodes.add(new Node(7,"Switch3", "Switch"));
+//        nodes.add(new Node(8,"LocalPC", "Host"));
+//        nodes.add(new Node(9,"PC0", "Host"));
+//        nodes.add(new Node(10,"PC1", "Host"));
+//        nodes.add(new Node(11,"PC2", "Host"));
+//        nodes.add(new Node(12,"EthernetSwitch", "Switch"));
+//        nodes.add(new Node(13,"PC Alone", "Host"));
+//
 //        Edge edge = new Edge(get_vertex_by_ID(nodes, "0"), get_vertex_by_ID(nodes, "8"));
 //        edges.add(edge);
 //        get_vertex_by_ID(nodes, "0").addEdge(edge);
@@ -137,17 +134,7 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 //        edges.add(edge);
 //        get_vertex_by_ID(nodes, "0").addEdge(edge);
 //        get_vertex_by_ID(nodes, "9").addEdge(edge);
-//        //=========================
-////        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "Switch4"));
-////        edges.add(edge);
-////        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
-////        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
-////
-////        edge = new Edge(get_vertex_by_ID(nodes, "Switch4"), get_vertex_by_ID(nodes, "PC3"));
-////        edges.add(edge);
-////        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
-////        get_vertex_by_ID(nodes, "PC3").addEdge(edge);
-//        //=========================
+//
 //        edge = new Edge(get_vertex_by_ID(nodes, "0"), get_vertex_by_ID(nodes, "1"));
 //        edges.add(edge);
 //        get_vertex_by_ID(nodes, "0").addEdge(edge);

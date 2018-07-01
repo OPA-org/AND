@@ -9,6 +9,9 @@ public class Host extends Agent {
     private Interface anInterface;
 
     private int id;
+	
+	private String name = "";
+    private String descr = "";
 
     private Node node;
 
@@ -16,7 +19,16 @@ public class Host extends Agent {
         super(false);
         this.anInterface = anInterface;
         this.id = super.id_no++;
-        this.node = new Node(id,"Host of IP: " + anInterface.getIp_address(), this.getClass().getSimpleName());
+        this.node = new Node(id,"Host of IP: " + anInterface.getIp_address(),this.getClass().getSimpleName());
+    }
+	
+	public Host(Interface anInterface,String name,String descr) {
+        super(false);
+        this.anInterface = anInterface;
+        this.name = name;
+        this.descr = descr;
+		this.id = super.id_no++;
+		this.node = new Node(id,name,this.getClass().getSimpleName());
     }
 
     public Interface getAnInterface() {
@@ -45,7 +57,11 @@ public class Host extends Agent {
 
     @Override
     public String toString() {
-        return id+"- Host of IP: " + anInterface.getIp_address();
+        if(name.equals("")){
+            return "PC of IP: " + anInterface.getIp_address();
+        }else{
+            return name;
+        }
     }
 
     @Override
@@ -64,7 +80,7 @@ public class Host extends Agent {
     }
     
     @Override
-    public Interface GetInterface_index(String index) {
+    public Interface GetInterface_byindex(String index) {
         return this.anInterface;
     }
 
