@@ -13,9 +13,6 @@ import android.view.View;
 import java.util.ArrayList;
 
 import cse.opa.and.Activity.TopologyActivity;
-import cse.opa.and.Classes.MiscellaneousMethods;
-import cse.opa.and.Classes.SNMPManager;
-import cse.opa.and.Classes.Topology;
 
 
 public class TopologyGraphView extends View {
@@ -55,8 +52,6 @@ public class TopologyGraphView extends View {
         this.nodes = TopologyActivity.nodes;
         this.edges = TopologyActivity.edges;
 
-//        ProcessInput();
-//        Scale();
         set_AverageXY();
     }
     //======================================================
@@ -68,8 +63,6 @@ public class TopologyGraphView extends View {
         p.setStrokeWidth(4);
         this.nodes = TopologyActivity.nodes;
         this.edges = TopologyActivity.edges;
-//        ProcessInput();
-//        Scale();
         set_AverageXY();
     }
     //======================================================
@@ -81,8 +74,6 @@ public class TopologyGraphView extends View {
         p.setStrokeWidth(4);
         this.nodes = TopologyActivity.nodes;
         this.edges = TopologyActivity.edges;
-//        ProcessInput();
-//        Scale();
         set_AverageXY();
     }
     //======================================================
@@ -94,8 +85,6 @@ public class TopologyGraphView extends View {
         p.setStrokeWidth(4);
         this.nodes = TopologyActivity.nodes;
         this.edges = TopologyActivity.edges;
-//        ProcessInput();
-//        Scale();
         set_AverageXY();
     }
     private void init(@Nullable AttributeSet set, Context context) {
@@ -111,96 +100,96 @@ public class TopologyGraphView extends View {
 
     public void ProcessInput()
     {
-//        nodes = new ArrayList<Node>();
-//        edges = new ArrayList<Edge>();
+        nodes = new ArrayList<Node>();
+        edges = new ArrayList<Edge>();
 
-//        nodes.add(new Node(0,"Router0"));
-//        nodes.add(new Node(1,"Router1"));
-//        nodes.add(new Node(2,"Router2"));
-//        nodes.add(new Node(3,"Router3"));
-//        nodes.add(new Node(4,"Router4"));
-//        nodes.add(new Node(5,"Switch1"));
-//        nodes.add(new Node(6,"Switch2"));
-//        nodes.add(new Node(7,"Switch3"));
-//        nodes.add(new Node(8,"LocalPC"));
-//        nodes.add(new Node(9,"PC0"));
-//        nodes.add(new Node(10,"PC1"));
-//        nodes.add(new Node(11,"PC2"));
-//        nodes.add(new Node(12,"EthernetSwitch"));
-//        //==============
-////        nodes.add(new Node("Switch4"));
-////        nodes.add(new Node("PC3"));
+        nodes.add(new Node(0,"Router0","Router"));
+        nodes.add(new Node(1,"Router1","Router"));
+        nodes.add(new Node(2,"Router2","Router"));
+        nodes.add(new Node(3,"Router3","Router"));
+        nodes.add(new Node(4,"Router4","Router"));
+        nodes.add(new Node(5,"Switch1","Switch"));
+        nodes.add(new Node(6,"Switch2","Switch"));
+        nodes.add(new Node(7,"Switch3","Switch"));
+        nodes.add(new Node(8,"LocalPC","Host"));
+        nodes.add(new Node(9,"PC0","Host"));
+        nodes.add(new Node(10,"PC1","Host"));
+        nodes.add(new Node(11,"PC2","Host"));
+        nodes.add(new Node(12,"EthernetSwitch","Switch"));
+        //==============
+//        nodes.add(new Node("Switch4"));
+//        nodes.add(new Node("PC3"));
+
+        //==============
+        Edge edge = new Edge(get_vertex_by_ID(nodes, "0"), get_vertex_by_ID(nodes, "8"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "0").addEdge(edge);
+        get_vertex_by_ID(nodes, "8").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "0"), get_vertex_by_ID(nodes, "9"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "0").addEdge(edge);
+        get_vertex_by_ID(nodes, "9").addEdge(edge);
+        //=========================
+//        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "Switch4"));
+//        edges.add(edge);
+//        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
+//        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
 //
-//        //==============
-//        Edge edge = new Edge(get_vertex_by_ID(nodes, "0"), get_vertex_by_ID(nodes, "8"));
+//        edge = new Edge(get_vertex_by_ID(nodes, "Switch4"), get_vertex_by_ID(nodes, "PC3"));
 //        edges.add(edge);
-//        get_vertex_by_ID(nodes, "0").addEdge(edge);
-//        get_vertex_by_ID(nodes, "8").addEdge(edge);
-//
-//        edge = new Edge(get_vertex_by_ID(nodes, "0"), get_vertex_by_ID(nodes, "9"));
-//        edges.add(edge);
-//        get_vertex_by_ID(nodes, "0").addEdge(edge);
-//        get_vertex_by_ID(nodes, "9").addEdge(edge);
-//        //=========================
-////        edge = new Edge(get_vertex_by_ID(nodes, "Router0"), get_vertex_by_ID(nodes, "Switch4"));
-////        edges.add(edge);
-////        get_vertex_by_ID(nodes, "Router0").addEdge(edge);
-////        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
-////
-////        edge = new Edge(get_vertex_by_ID(nodes, "Switch4"), get_vertex_by_ID(nodes, "PC3"));
-////        edges.add(edge);
-////        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
-////        get_vertex_by_ID(nodes, "PC3").addEdge(edge);
-//        //=========================
-//        edge = new Edge(get_vertex_by_ID(nodes, "0"), get_vertex_by_ID(nodes, "1"));
-//        edges.add(edge);
-//        get_vertex_by_ID(nodes, "0").addEdge(edge);
-//        get_vertex_by_ID(nodes, "1").addEdge(edge);
-//
-//        edge = new Edge(get_vertex_by_ID(nodes, "1"), get_vertex_by_ID(nodes, "2"));
-//        edges.add(edge);
-//        get_vertex_by_ID(nodes, "1").addEdge(edge);
-//        get_vertex_by_ID(nodes, "2").addEdge(edge);
-//
-//        edge = new Edge(get_vertex_by_ID(nodes, "2"), get_vertex_by_ID(nodes, "5"));
-//        edges.add(edge);
-//        get_vertex_by_ID(nodes, "2").addEdge(edge);
-//        get_vertex_by_ID(nodes, "5").addEdge(edge);
-//
-//        edge = new Edge(get_vertex_by_ID(nodes, "2"), get_vertex_by_ID(nodes, "12"));
-//        edges.add(edge);
-//        get_vertex_by_ID(nodes, "2").addEdge(edge);
-//        get_vertex_by_ID(nodes, "12").addEdge(edge);
-//
-//        edge = new Edge(get_vertex_by_ID(nodes, "3"), get_vertex_by_ID(nodes, "12"));
-//        edges.add(edge);
-//        get_vertex_by_ID(nodes, "3").addEdge(edge);
-//        get_vertex_by_ID(nodes, "12").addEdge(edge);
-//
-//        edge = new Edge(get_vertex_by_ID(nodes, "4"), get_vertex_by_ID(nodes, "12"));
-//        edges.add(edge);
-//        get_vertex_by_ID(nodes, "4").addEdge(edge);
-//        get_vertex_by_ID(nodes, "12").addEdge(edge);
-//
-//        edge = new Edge(get_vertex_by_ID(nodes, "5"), get_vertex_by_ID(nodes, "6"));
-//        edges.add(edge);
-//        get_vertex_by_ID(nodes, "5").addEdge(edge);
-//        get_vertex_by_ID(nodes, "6").addEdge(edge);
-//
-//        edge = new Edge(get_vertex_by_ID(nodes, "5"), get_vertex_by_ID(nodes, "7"));
-//        edges.add(edge);
-//        get_vertex_by_ID(nodes, "5").addEdge(edge);
-//        get_vertex_by_ID(nodes, "7").addEdge(edge);
-//
-//        edge = new Edge(get_vertex_by_ID(nodes, "6"), get_vertex_by_ID(nodes, "10"));
-//        edges.add(edge);
-//        get_vertex_by_ID(nodes, "6").addEdge(edge);
-//        get_vertex_by_ID(nodes, "10").addEdge(edge);
-//
-//        edge = new Edge(get_vertex_by_ID(nodes, "7"), get_vertex_by_ID(nodes, "11"));
-//        edges.add(edge);
-//        get_vertex_by_ID(nodes, "7").addEdge(edge);
-//        get_vertex_by_ID(nodes, "11").addEdge(edge);
+//        get_vertex_by_ID(nodes, "Switch4").addEdge(edge);
+//        get_vertex_by_ID(nodes, "PC3").addEdge(edge);
+        //=========================
+        edge = new Edge(get_vertex_by_ID(nodes, "0"), get_vertex_by_ID(nodes, "1"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "0").addEdge(edge);
+        get_vertex_by_ID(nodes, "1").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "1"), get_vertex_by_ID(nodes, "2"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "1").addEdge(edge);
+        get_vertex_by_ID(nodes, "2").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "2"), get_vertex_by_ID(nodes, "5"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "2").addEdge(edge);
+        get_vertex_by_ID(nodes, "5").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "2"), get_vertex_by_ID(nodes, "12"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "2").addEdge(edge);
+        get_vertex_by_ID(nodes, "12").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "3"), get_vertex_by_ID(nodes, "12"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "3").addEdge(edge);
+        get_vertex_by_ID(nodes, "12").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "4"), get_vertex_by_ID(nodes, "12"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "4").addEdge(edge);
+        get_vertex_by_ID(nodes, "12").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "5"), get_vertex_by_ID(nodes, "6"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "5").addEdge(edge);
+        get_vertex_by_ID(nodes, "6").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "5"), get_vertex_by_ID(nodes, "7"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "5").addEdge(edge);
+        get_vertex_by_ID(nodes, "7").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "6"), get_vertex_by_ID(nodes, "10"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "6").addEdge(edge);
+        get_vertex_by_ID(nodes, "10").addEdge(edge);
+
+        edge = new Edge(get_vertex_by_ID(nodes, "7"), get_vertex_by_ID(nodes, "11"));
+        edges.add(edge);
+        get_vertex_by_ID(nodes, "7").addEdge(edge);
+        get_vertex_by_ID(nodes, "11").addEdge(edge);
 
         try {
             new  AsyncTask<Void, Void, Void>() {
@@ -263,7 +252,7 @@ public class TopologyGraphView extends View {
                 protected void onPostExecute(Void Void) {
 
                 }
-            }.execute();
+            }.execute().get();
         } catch (Exception e) {
             e.printStackTrace();
         }

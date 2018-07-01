@@ -30,7 +30,7 @@ public class Edge {
 	}
 	public void Draw(Paint p, Canvas canvas)
 	{
-		p.setColor(Color.BLACK);
+		p.setColor(Color.WHITE);
 		canvas.drawLine ((int)(a.getX() ), (int)(a.getY() ),(int)(b.getX() ),(int)(b.getY()),p);
 		double xx,yy;
 		xx= (a.getX()  + b.getX() )/2;

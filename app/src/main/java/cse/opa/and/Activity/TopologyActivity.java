@@ -9,9 +9,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -36,8 +43,14 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
     public static ArrayList<Node> nodes;
     public static ArrayList<Edge> edges;
     static boolean finishedProcessing =false;
+    boolean details_list_visible= false,device_details_visible=false;
     ProgressDialog dialog;
     Thread processthread;
+    LinearLayout ll_devices_details,ll_device_details;
+    ListView lv_devices;
+    ImageView iv_devices_details_list,iv_back;
+    Animation anim_scale_up,anim_scale_down;
+    TextView tv_device_details;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +65,14 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         //===========================================================
         ll_topology = findViewById(R.id.ll_topology);
         zv_zoomview = findViewById(R.id.zv_zoomview);
+        ll_devices_details = findViewById(R.id.ll_devices_details);
+        ll_device_details = findViewById(R.id.ll_device_details);
+        lv_devices = findViewById(R.id.lv_devices);
+        iv_devices_details_list = findViewById(R.id.iv_devices_details_list);
+        iv_back = findViewById(R.id.iv_back);
+        tv_device_details = findViewById(R.id.tv_device_details);
+        anim_scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+        anim_scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_down);
         //tgv_topology = findViewById(R.id.tgv_topology);
         //TopologyGraphView myView = new TopologyGraphView(this);
         //ZoomView zoomView = new ZoomView(this);
@@ -60,6 +81,33 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 //        zoomView.requestLayout();
        // zoomView.addView(myView);
         //ll_topology.addView(zoomView);
+//        ll_devices_details.setVisibility(View.VISIBLE);
+//        ll_devices_details.setTranslationY((ll_devices_details.getHeight()));
+        String [] list_data={"Router0",
+                "Router1",
+                "Router2",
+                "Router3",
+                "Switch0",
+                "Switch1",
+                "PC 1"};
+        ArrayAdapter arrayAdapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1,list_data);
+        lv_devices.setAdapter(arrayAdapter);
+        lv_devices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                device_details_visible = true;
+                details_list_visible = false;
+                ll_devices_details.setTranslationX(0);
+                ll_devices_details.animate().setDuration(500).translationXBy(-(ll_devices_details.getWidth()+30)).start();
+                ll_device_details.setTranslationX((ll_device_details.getWidth()+30));
+                ll_device_details.setVisibility(View.VISIBLE);
+                ll_device_details.animate().setDuration(500).translationXBy(-(ll_device_details.getWidth()+30)).start();
+                tv_device_details.setText(((TextView)lv_devices.getChildAt(position)).getText().toString()+ " Details are here\nIP : 192.168.10.2 \nSubnet : 255.255.255.0\nManufacturer : Cisco");
+                tv_device_details.requestFocus();
+            }
+        });
+        iv_back.setOnClickListener(this);
+        iv_devices_details_list.setOnClickListener(this);
         dialog = new ProgressDialog(this);
         dialog.setMessage("Loading topology..");
         dialog.setCanceledOnTouchOutside(false);
@@ -70,17 +118,17 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
                 @Override
                 public void run() {
                     Log.v("Runnable", "Thread STARTED!");
-                    testgentopology();
-                    Scale();
-
-                    while (!finishedProcessing) {
-                    }
+//                    testgentopology();
+//                    Scale();
+//
+//                    while (!finishedProcessing) {
+//                    }
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             dialog.cancel();
-                            tgv_topology = new TopologyGraphView(TopologyActivity.this);
+                           // tgv_topology = new TopologyGraphView(TopologyActivity.this);
 //                            for(int j=0;j< nodes.size();j++)
 //                            {
 //                                nodes.get(j).setContext(getBaseContext());
@@ -88,9 +136,11 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 //                                zv_zoomview.addView(nodes.get(j).getAgentView());
 //                                nodes.get(j).getAgentView().setOnClickListener(TopologyActivity.this);
 //                            }
-                           zv_zoomview.setSmoothZoomX(tgv_topology.getZoomCenterX());
-                            zv_zoomview.setSmoothZoomY(tgv_topology.getZoomCenterY());
-                            zv_zoomview.addView(tgv_topology);
+//                           zv_zoomview.setSmoothZoomX(tgv_topology.getZoomCenterX());
+//                           zv_zoomview.setSmoothZoomY(tgv_topology.getZoomCenterY());
+//                           zv_zoomview.addView(tgv_topology);
+                           iv_devices_details_list.startAnimation(anim_scale_up);
+                           iv_devices_details_list.setVisibility(View.VISIBLE);
                             if(Thread.interrupted()){
                                 return;
                             }
@@ -329,6 +379,23 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
                 break;
             }
             //===========================================================
+            case R.id.iv_back:{
+                ll_devices_details.setVisibility(View.INVISIBLE);
+                ll_device_details.setVisibility(View.INVISIBLE);
+                this.finish();
+                break;
+            }
+            //===========================================================
+            case R.id.iv_devices_details_list:{
+                iv_devices_details_list.startAnimation(anim_scale_down);
+                iv_devices_details_list.setVisibility(View.INVISIBLE);
+                ll_devices_details.setVisibility(View.VISIBLE);
+                ll_devices_details.setTranslationY(ll_devices_details.getHeight());
+                ll_devices_details.animate().setDuration(500).translationYBy(-ll_devices_details.getHeight()).start();
+                details_list_visible = true;
+                break;
+            }
+            //===========================================================
 //                default:for (int i=0;i<nodes.size();i++){
 //                    if (v.getId()==nodes.get(i).getAgentView().getId()){
 //                        Toast.makeText(this.getBaseContext(),nodes.get(i).getAgentView().getName(),Toast.LENGTH_SHORT).show();
@@ -382,9 +449,25 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+       // super.onBackPressed();
 //        processthread.stop();
 //        dialog.cancel();
+        if (details_list_visible == true){
+            //hide devices details Slide Down
+            ll_devices_details.setTranslationY(0);
+            ll_devices_details.animate().setDuration(500).translationYBy(ll_devices_details.getHeight()).start();
+            details_list_visible =false;
+            iv_devices_details_list.startAnimation(anim_scale_up);
+            iv_devices_details_list.setVisibility(View.VISIBLE);
+        }
+        else if(device_details_visible == true){
+            ll_device_details.setTranslationX(0);
+            ll_device_details.animate().translationXBy((ll_device_details.getWidth()+30)).start();
+            ll_devices_details.setTranslationX(-(ll_devices_details.getWidth()+30));
+            ll_devices_details.animate().translationXBy((ll_devices_details.getWidth()+30)).start();
+            device_details_visible= false;
+            details_list_visible =true;
+        }
     }
 
     @Override
