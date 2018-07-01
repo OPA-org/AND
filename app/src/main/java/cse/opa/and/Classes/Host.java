@@ -8,7 +8,10 @@ public class Host extends Agent {
 
     private Interface anInterface;
 
+    private static int host_id = 1;
+
     private int id;
+    private int this_host_id;
 	
 	private String name = "";
     private String descr = "";
@@ -19,7 +22,8 @@ public class Host extends Agent {
         super(false);
         this.anInterface = anInterface;
         this.id = super.id_no++;
-        this.node = new Node(id,"Host of IP: " + anInterface.getIp_address(),this.getClass().getSimpleName());
+        this.this_host_id = host_id++;
+        this.node = new Node(id,"Host "+this_host_id+" : "+ anInterface.getIp_address(),this.getClass().getSimpleName());
     }
 	
 	public Host(Interface anInterface,String name,String descr) {
@@ -49,7 +53,21 @@ public class Host extends Agent {
         mac_addresses.add(this.anInterface.getMac_address());
         return mac_addresses;
     }
-    
+
+    @Override
+    public String getName() {
+        if(name.equals("")){
+            return "Host " + this_host_id;
+        }else{
+            return name;
+        }
+    }
+
+    @Override
+    public String getType() {
+        return this.getClass().getSimpleName();
+    }
+
     @Override
     public Boolean has_IPaddress(String IP) {
         return this.anInterface.getIp_address().equals(IP);
@@ -57,11 +75,14 @@ public class Host extends Agent {
 
     @Override
     public String toString() {
+        String ss = "";
         if(name.equals("")){
-            return "PC of IP: " + anInterface.getIp_address();
+            ss += getName() +"\n";
         }else{
-            return name;
+            ss += getName() + "\n" + "Description: \n" + descr + "\n";
         }
+        ss += anInterface.toString();
+        return ss;
     }
 
     @Override
@@ -87,6 +108,10 @@ public class Host extends Agent {
     @Override
     public Node getNode() {
         return node;
+    }
+
+    public static void reset_HostID(){
+        host_id = 1;
     }
 
 }

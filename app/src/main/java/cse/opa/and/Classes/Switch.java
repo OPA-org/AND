@@ -96,6 +96,16 @@ public class Switch extends Agent {
     }
 
     @Override
+    public String getName() {
+        return sysName;
+    }
+
+    @Override
+    public String getType() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
     public Boolean has_IPaddress(String IP) {
         for (Interface inter : this.interfaces) {
             if (inter.getIp_address().equals(IP)) {
@@ -107,7 +117,12 @@ public class Switch extends Agent {
 
     @Override
     public String toString() {
-        return id+"- "+sysName;
+        String s = "";
+        s += sysName + "\n Desription: \n" + sysDescr + "\n";
+        for(Interface intf : this.interfaces){
+            s += intf.toString();
+        }
+        return s;
     }
 
     @Override

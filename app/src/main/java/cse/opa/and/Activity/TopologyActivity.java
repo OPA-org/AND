@@ -24,9 +24,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import cse.opa.and.AlgorithmParams;
+import cse.opa.and.Classes.Agent;
+import cse.opa.and.Classes.Connection;
+import cse.opa.and.Classes.Host;
 import cse.opa.and.Classes.MiscellaneousMethods;
 import cse.opa.and.Classes.SNMPManager;
 import cse.opa.and.Classes.Topology;
+import cse.opa.and.DeviceCustomAdapter;
 import cse.opa.and.Edge;
 import cse.opa.and.Node;
 import cse.opa.and.PhisicEngine;
@@ -42,6 +46,7 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
     TopologyGraphView tgv_topology;
     public static ArrayList<Node> nodes;
     public static ArrayList<Edge> edges;
+    private static Topology topology;
     static boolean finishedProcessing =false;
     boolean details_list_visible= false,device_details_visible=false;
     ProgressDialog dialog;
@@ -81,15 +86,15 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 //        zoomView.requestLayout();
        // zoomView.addView(myView);
         //ll_topology.addView(zoomView);
-        String [] list_data={"Router0",
-                "Router1",
-                "Router2",
-                "Router3",
-                "Switch0",
-                "Switch1",
-                "PC 1"};
-        ArrayAdapter arrayAdapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1,list_data);
-        lv_devices.setAdapter(arrayAdapter);
+//        String [] list_data={"Router0",
+//                "Router1",
+//                "Router2",
+//                "Router3",
+//                "Switch0",
+//                "Switch1",
+//                "PC 1"};
+//        ArrayAdapter arrayAdapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1,list_data);
+        //lv_devices.setAdapter(arrayAdapter);
         lv_devices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -100,7 +105,8 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
                 ll_device_details.setTranslationX((ll_device_details.getWidth()+30));
                 ll_device_details.setVisibility(View.VISIBLE);
                 ll_device_details.animate().setDuration(500).translationXBy(-(ll_device_details.getWidth()+30)).start();
-                tv_device_details.setText(((TextView)lv_devices.getChildAt(position)).getText().toString()+ " Details are here\nIP : 192.168.10.2 \nSubnet : 255.255.255.0\nManufacturer : Cisco");
+                //tv_device_details.setText(((TextView)(((LinearLayout)lv_devices.getChildAt(position)).getChildAt(3))).getText().toString()+ " Details are here\nIP : 192.168.10.2 \nSubnet : 255.255.255.0\nManufacturer : Cisco");
+                tv_device_details.setText(topology.getAgents().get(position).toString());
                 tv_device_details.requestFocus();
             }
         });
@@ -127,6 +133,9 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
                         public void run() {
                             dialog.cancel();
                             tgv_topology = new TopologyGraphView(TopologyActivity.this);
+                            Log.v("Size",topology.getAgents().toString());
+                            DeviceCustomAdapter adapter =new DeviceCustomAdapter(getBaseContext(),R.layout.devices_list_entry,topology.getAgents());
+                            lv_devices.setAdapter(adapter);
 //                            for(int j=0;j< nodes.size();j++)
 //                            {
 //                                nodes.get(j).setContext(getBaseContext());
@@ -233,7 +242,6 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 //        get_vertex_by_ID(nodes, "7").addEdge(edge);
 //        get_vertex_by_ID(nodes, "11").addEdge(edge);
 
-        Topology topology = null;
            // Thread t =new Thread(new Runnable(){
                // @Override
                 //public void run() {
@@ -470,6 +478,8 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     protected void onDestroy() {
+        Agent.reset_id();
+        Host.reset_HostID();
         processthread.interrupt();
         dialog.cancel();
         super.onDestroy();

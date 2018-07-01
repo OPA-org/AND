@@ -14,6 +14,10 @@ public abstract class Agent {
         this.visited = visited;
     }
 
+    public abstract String getName();
+
+    public abstract String getType();
+
     public boolean isVisited() {
         return visited;
     }
@@ -38,4 +42,8 @@ public abstract class Agent {
     public abstract String toString();
 
     public abstract Node getNode();
+
+    public static void reset_id(){
+        id_no = 0;
+    }
 }
