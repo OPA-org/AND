@@ -81,8 +81,6 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 //        zoomView.requestLayout();
        // zoomView.addView(myView);
         //ll_topology.addView(zoomView);
-//        ll_devices_details.setVisibility(View.VISIBLE);
-//        ll_devices_details.setTranslationY((ll_devices_details.getHeight()));
         String [] list_data={"Router0",
                 "Router1",
                 "Router2",
@@ -118,17 +116,17 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
                 @Override
                 public void run() {
                     Log.v("Runnable", "Thread STARTED!");
-//                    testgentopology();
-//                    Scale();
-//
-//                    while (!finishedProcessing) {
-//                    }
+                    testgentopology();
+                    Scale();
+
+                    while (!finishedProcessing) {
+                    }
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             dialog.cancel();
-                           // tgv_topology = new TopologyGraphView(TopologyActivity.this);
+                            tgv_topology = new TopologyGraphView(TopologyActivity.this);
 //                            for(int j=0;j< nodes.size();j++)
 //                            {
 //                                nodes.get(j).setContext(getBaseContext());
@@ -136,9 +134,9 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
 //                                zv_zoomview.addView(nodes.get(j).getAgentView());
 //                                nodes.get(j).getAgentView().setOnClickListener(TopologyActivity.this);
 //                            }
-//                           zv_zoomview.setSmoothZoomX(tgv_topology.getZoomCenterX());
-//                           zv_zoomview.setSmoothZoomY(tgv_topology.getZoomCenterY());
-//                           zv_zoomview.addView(tgv_topology);
+                           zv_zoomview.setSmoothZoomX(tgv_topology.getZoomCenterX());
+                           zv_zoomview.setSmoothZoomY(tgv_topology.getZoomCenterY());
+                           zv_zoomview.addView(tgv_topology);
                            iv_devices_details_list.startAnimation(anim_scale_up);
                            iv_devices_details_list.setVisibility(View.VISIBLE);
                             if(Thread.interrupted()){
