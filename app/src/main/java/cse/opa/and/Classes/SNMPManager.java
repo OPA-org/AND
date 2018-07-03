@@ -1,5 +1,7 @@
 package cse.opa.and.Classes;
 
+import android.app.ProgressDialog;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,7 +11,7 @@ public class SNMPManager {
     public static Topology generate_topology() throws Exception {
         ArrayList<String> R = new ArrayList<>();
         ArrayList<String> IPs = new ArrayList<>();
-        device_discovery("192.168.137.1", R, IPs);
+        device_discovery("192.168.10.2", R, IPs);
         System.out.println("IPs:-");
         for (String s : IPs) {
             System.out.println(s);
@@ -18,9 +20,8 @@ public class SNMPManager {
         create_nodes(IPs, agents);
         System.out.println("Agents:-");
         for (Agent a : agents) {
-            System.out.println(a);
+            System.out.println(a.getName());
         }
-
         ArrayList<Connection> Connections = create_connections(agents);
         Connections = Filter_Connections(Connections);
         System.out.println("Connections:-");
@@ -31,7 +32,7 @@ public class SNMPManager {
         Connections = Find_Hidden_Connections(Connections,agents);
         System.out.println("Agents:-");
         for (Agent a : agents) {
-            System.out.println(a);
+            System.out.println(a.getName());
         }
         System.out.println("Connections:-");
         for(Connection c: Connections){
@@ -413,6 +414,9 @@ public class SNMPManager {
                         String switch_interface_index = aftsports_Switch.get(index);
                         Interface Switch_Interface = switchrouterpairs.get(i).getAgent1().GetInterface_byindex(switch_interface_index);
                         Interface Router_Interface = switchrouterpairs.get(i).getAgent2().GetInterface_byMacAddress(Router_MacList_Mac);
+//                        if(has_similar_connection(connections,switchrouterpairs.get(i).getAgent1(),switchrouterpairs.get(i).getAgent2(),Switch_Interface,Router_Interface)){
+//                            continue;
+//                        }
                         Connection connection = new Connection(Switch_Interface, Router_Interface, switchrouterpairs.get(i).getAgent1(), switchrouterpairs.get(i).getAgent2(), "Switch_Router");
                         connections.add(connection);
                     }

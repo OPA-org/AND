@@ -95,10 +95,10 @@ public class Node implements View.OnClickListener {
 //        canvas.drawCircle((int)(getX()), (int)(getY()), 10, p);
         Bitmap b=null;
         if (type.equals("Router")){
-            b= BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_router1);
+            b= BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_switch1);
         }
         else if (type.equals("Switch")){
-            b= BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_switch1);
+            b= BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_router1);
         }else if (type.equals("Host")){
             b= BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_pc1);
         }

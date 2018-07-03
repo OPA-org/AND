@@ -90,12 +90,12 @@ public class Interface  {
     public String toString() {
         if(ip_address != ""){
             if (subnet_mask != null) {
-                return "Interface\n" + "\tindex: " + this.index + "\n\tdescription: " + description + "\n\tip: " + ip_address + "\n\tmask: " + subnet_mask + "\n\tmac: " + mac_address;
+                return "\tInterface\n" + "\t\tindex: " + this.index + "\n\t\tdescription: " + description + "\n\t\tip: " + ip_address + "\n\t\tmask: " + subnet_mask + "\n\t\tmac: " + mac_address + "\n";
             } else {
-                return "Interface\n" + "\tindex: " + this.index + "\n\tdescription: " + description + "\n\tip: " + ip_address + "\n\tmac: " + mac_address;
+                return "\tInterface\n" + "\t\tindex: " + this.index + "\n\t\tdescription: " + description + "\n\t\tip: " + ip_address + "\n\t\tmac: " + mac_address + "\n";
             }
         }else{
-            return "Interface\n" + "\tindex: " + this.index + "\n\tdescription: " + description +"\n\tmac: " + mac_address;
+            return "\tInterface\n" + "\t\tindex: " + this.index + "\n\t\tdescription: " + description +"\n\t\tmac: " + mac_address + "\n";
         }
     }
 }

@@ -79,9 +79,9 @@ public class Host extends Agent {
         if(name.equals("")){
             ss += getName() +"\n";
         }else{
-            ss += getName() + "\n" + "Description: \n" + descr + "\n";
+            ss += getName() + "\n\n" + "\tDescription: \n\t\t" + descr + "\n";
         }
-        ss += anInterface.toString();
+        ss += "\n" + anInterface.toString();
         return ss;
     }
 

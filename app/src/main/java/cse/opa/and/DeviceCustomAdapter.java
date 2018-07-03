@@ -57,10 +57,10 @@ public class DeviceCustomAdapter extends ArrayAdapter<Agent>{
             holder.textView1.setText(objects.get(position).getName());
             if (objects.get(position).getType().equals("Router")){
                 Log.v("TYPE","Router");
-                holder.image.setBackgroundResource(R.drawable.ic_router1);
+                holder.image.setBackgroundResource(R.drawable.ic_switch1);
             }else if (objects.get(position).getType().equals("Switch")){
                 Log.v("TYPE","Switch");
-                holder.image.setBackgroundResource(R.drawable.ic_switch1);
+                holder.image.setBackgroundResource(R.drawable.ic_router1);
             }
             else if (objects.get(position).getType().equals("Host")){
                 Log.v("TYPE","Host");

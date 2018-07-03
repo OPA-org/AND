@@ -118,9 +118,9 @@ public class Switch extends Agent {
     @Override
     public String toString() {
         String s = "";
-        s += sysName + "\n Desription: \n" + sysDescr + "\n";
+        s += sysName + "\n\n\tDescription: \n\t\t" + sysDescr + "\n";
         for(Interface intf : this.interfaces){
-            s += intf.toString();
+            s += "\n"+intf.toString();
         }
         return s;
     }

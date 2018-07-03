@@ -63,7 +63,7 @@ public class Connection {
     }
     
     public String toString(){
-        return Type +"\n"+agentA.toString() +"\n" + interfaceA.toString() + "\n" + agentB.toString() + "\n" + interfaceB.toString();
+        return Type +"\n"+agentA.getName() +"\n" + interfaceA.toString() + "\n" + agentB.getName() + "\n" + interfaceB.toString();
     }
 
     public Edge getEdge(){
