@@ -2,10 +2,6 @@ package cse.opa.and.Classes;
 
 import java.util.ArrayList;
 
-/**
- * Created by Peter on 28/3/2018.
- */
-
 public class Topology {
     //TODO : Add Connections Property
 

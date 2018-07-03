@@ -4,18 +4,33 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import cse.opa.and.Classes.Agent;
+import cse.opa.and.Classes.Connection;
 import cse.opa.and.Classes.OIDS;
 import cse.opa.and.Classes.SNMP_methods;
+import cse.opa.and.Classes.Switch;
+import cse.opa.and.Classes.Topology;
 import cse.opa.and.R;
 
-public class ReportActivity extends AppCompatActivity {
+public class ReportActivity extends AppCompatActivity implements View.OnClickListener {
     private ProgressDialog progressDialog;
     private TextView tv_report;
+    private Button btn_save_report;
+    private String output = "";
+    private FirebaseAuth mAuth;
+    ImageView iv_report_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,10 +38,35 @@ public class ReportActivity extends AppCompatActivity {
         initUIComponents();
         MainActivity.setStatusBarGradiant(this);
         //generateReport();
+        mAuth = FirebaseAuth.getInstance();
+        generateReport();
     }
+    @Override
+    public void onStart() {//checks on start of application if user is already signed in
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //update UI ->Remove login and add settings
+        updateUI(currentUser);
+    }
+    //======================================================
+    private void updateUI(FirebaseUser user){
+        if (user != null) {
+            btn_save_report.setVisibility(View.VISIBLE);
+        }
+        else{
+            btn_save_report.setVisibility(View.GONE);
+        }
+
+    }
+    //======================================================
     private void initUIComponents(){
         tv_report = findViewById(R.id.tv_report);
         progressDialog = new ProgressDialog(this);
+        iv_report_back = findViewById(R.id.iv_report_back);
+        btn_save_report = findViewById(R.id.btn_save_report);
+        iv_report_back.setOnClickListener(this);
+        btn_save_report.setOnClickListener(this);
     }
     //===========================================================
     void device_discovery(String gateway_IP,ArrayList<String> R,ArrayList<String> D) throws IOException,Exception{
@@ -87,61 +127,61 @@ public class ReportActivity extends AppCompatActivity {
     }
     //===========================================================
     private void generateReport()  {
-
-        progressDialog.setMessage("Generating Report");
-        progressDialog.show();
-        try {
-            new  AsyncTask<Void, Void, Void>() {
-                ArrayList<String> R = new ArrayList<>();
-                ArrayList<String> D = new ArrayList<>();
-                @Override
-                protected void onPreExecute() {
-                    super.onPreExecute();
-
+        Topology topology = TopologyActivity.topology;
+        int routers = 0;
+        int switches = 0;
+        int hosts = 0;
+        for(Agent a : topology.getAgents()){
+            switch (a.getType()) {
+                case "Router": {
+                    routers++;
+                    break;
                 }
-                @Override
-                protected Void doInBackground(Void... params) {
-                    try {
-                        device_discovery("192.168.6.1",R,D);
-
-                    } catch (Exception e) {
-
-                        System.out.println("Exception "+ e.getMessage());
-                        return null;
-                    }
-                    return null;
+                case "Switch":{
+                    switches++;
+                    break;
                 }
-                @Override
-                protected void onPostExecute(Void Void) {
-                    progressDialog.cancel();
-                    tv_report.setText("R:-");
-                    String temp;
-                    for(String s: R){
-                        temp =tv_report.getText().toString();
-                        tv_report.setText(temp+"\n"+s);
-                    }
-                    temp =tv_report.getText().toString();
-                    tv_report.setText(temp+"\n"+"D:-");
-                    for(String s: D){
-                        temp =tv_report.getText().toString();
-                        tv_report.setText(temp+"\n"+s);
-                    }
+                default:{
+                    hosts++;
                 }
-            }.execute().get();
 
-
-
-
-
-
-
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            }
         }
+        output += "This network is consisted of "+topology.getAgents().size()+" device.\n\n\t";
+        if(routers > 0) {
+            output += "Routers: " + routers + "\n\t";
+        }
+        if(switches > 0) {
+            output += "Switches: " + switches + "\n\t";
+        }
+        if(hosts > 0) {
+            output += "End Hosts: " + hosts + "\n\n";
+        }
+        output += "____________________________\n\n";
+        if(topology.getConnections().size() > 0) {
+            output += "Connections: \n\n\t";
+            for (Connection c : topology.getConnections()) {
+                output += "Connection\n\n";
+                output += c.toString() + "\n\n";
+            }
+            output += "____________________________\n\n";
+        }
+        if(topology.getAgents().size() > 0) {
+            for (Agent a : topology.getAgents()) {
+                output += a.toString() + "\n\n";
+            }
+        }
+        tv_report.setText(output);
+    }
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId()==R.id.btn_save_report){
+
+        }
+        else if (v.getId()==R.id.iv_report_back){
+            finish();
+        }
     }
     //===========================================================
 }

@@ -46,7 +46,7 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
     TopologyGraphView tgv_topology;
     public static ArrayList<Node> nodes;
     public static ArrayList<Edge> edges;
-    private static Topology topology;
+    public static Topology topology;
     static boolean finishedProcessing =false;
     boolean details_list_visible= false,device_details_visible=false;
     ProgressDialog dialog;
@@ -62,10 +62,10 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_topology);
         MainActivity.setStatusBarGradiant(this);
         //===========================================================
-        btn_save_topology = findViewById(R.id.btn_save_topology);
+        //btn_save_topology = findViewById(R.id.btn_save_topology);
         btn_generate_report = findViewById(R.id.btn_generate_report);
         //===========================================================
-        btn_save_topology.setOnClickListener(this);
+        //btn_save_topology.setOnClickListener(this);
         btn_generate_report.setOnClickListener(this);
         //===========================================================
         ll_topology = findViewById(R.id.ll_topology);
@@ -101,10 +101,10 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
                 device_details_visible = true;
                 details_list_visible = false;
                 ll_devices_details.setTranslationX(0);
-                ll_devices_details.animate().setDuration(500).translationXBy(-(ll_devices_details.getWidth()+30)).start();
+                ll_devices_details.animate().setDuration(300).translationXBy(-(ll_devices_details.getWidth()+30)).start();
                 ll_device_details.setTranslationX((ll_device_details.getWidth()+30));
                 ll_device_details.setVisibility(View.VISIBLE);
-                ll_device_details.animate().setDuration(500).translationXBy(-(ll_device_details.getWidth()+30)).start();
+                ll_device_details.animate().setDuration(300).translationXBy(-(ll_device_details.getWidth()+30)).start();
                 //tv_device_details.setText(((TextView)(((LinearLayout)lv_devices.getChildAt(position)).getChildAt(3))).getText().toString()+ " Details are here\nIP : 192.168.10.2 \nSubnet : 255.255.255.0\nManufacturer : Cisco");
                 tv_device_details.setText(topology.getAgents().get(position).toString());
                 tv_device_details.requestFocus();
@@ -355,35 +355,35 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
                 break;
             }
             //===========================================================
-            case R.id.btn_save_topology: {
-                AlertDialog.Builder builder = new AlertDialog.Builder(TopologyActivity.this);
-                builder.setTitle("File Name");
-
-                // Set up the input
-                final EditText input = new EditText(TopologyActivity.this);
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-                builder.setView(input);
-
-                // Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(TopologyActivity.this, "TopologyActivity successfully saved",
-                                Toast.LENGTH_LONG).show();
-                        m_Text = input.getText().toString();
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-                break;
-            }
+//            case R.id.btn_save_topology: {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(TopologyActivity.this);
+//                builder.setTitle("File Name");
+//
+//                // Set up the input
+//                final EditText input = new EditText(TopologyActivity.this);
+//                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+//                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+//                builder.setView(input);
+//
+//                // Set up the buttons
+//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(TopologyActivity.this, "TopologyActivity successfully saved",
+//                                Toast.LENGTH_LONG).show();
+//                        m_Text = input.getText().toString();
+//                    }
+//                });
+//                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//                builder.show();
+//                break;
+//            }
             //===========================================================
             case R.id.iv_back:{
                 ll_devices_details.setVisibility(View.INVISIBLE);
@@ -397,7 +397,7 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
                 iv_devices_details_list.setVisibility(View.INVISIBLE);
                 ll_devices_details.setVisibility(View.VISIBLE);
                 ll_devices_details.setTranslationY(ll_devices_details.getHeight());
-                ll_devices_details.animate().setDuration(500).translationYBy(-ll_devices_details.getHeight()).start();
+                ll_devices_details.animate().setDuration(300).translationYBy(-ll_devices_details.getHeight()).start();
                 details_list_visible = true;
                 break;
             }
@@ -461,7 +461,7 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
         if (details_list_visible == true){
             //hide devices details Slide Down
             ll_devices_details.setTranslationY(0);
-            ll_devices_details.animate().setDuration(500).translationYBy(ll_devices_details.getHeight()).start();
+            ll_devices_details.animate().setDuration(300).translationYBy(ll_devices_details.getHeight()).start();
             details_list_visible =false;
             iv_devices_details_list.startAnimation(anim_scale_up);
             iv_devices_details_list.setVisibility(View.VISIBLE);

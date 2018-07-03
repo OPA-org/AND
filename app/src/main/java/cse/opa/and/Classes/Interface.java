@@ -16,7 +16,7 @@ public class Interface  {
         this.mac_address = mac_address;
         this.connected_to = connected_to;
     }
-    
+
     public Interface(String index,String description, String ip_address, String subnet_mask, String mac_address) {
         this.index = index;
         this.description = description;
@@ -24,14 +24,14 @@ public class Interface  {
         this.subnet_mask = subnet_mask;
         this.mac_address = mac_address;
     }
-    
+
     public Interface(String index,String description, String ip_address, String mac_address) {
         this.index = index;
         this.description = description;
         this.ip_address = ip_address;
         this.mac_address = mac_address;
     }
-    
+
     public Interface(String ip_address){
         this.ip_address = ip_address;
     }
@@ -52,7 +52,7 @@ public class Interface  {
         this.description = description;
     }
 
-    
+
 
     public String getIp_address() {
         return ip_address;
@@ -85,17 +85,17 @@ public class Interface  {
     public void setConnected_to(String connected_to) {
         this.connected_to = connected_to;
     }
-    
+
     @Override
     public String toString() {
         if(ip_address != ""){
             if (subnet_mask != null) {
-                return "\tInterface\n" + "\t\tindex: " + this.index + "\n\t\tdescription: " + description + "\n\t\tip: " + ip_address + "\n\t\tmask: " + subnet_mask + "\n\t\tmac: " + mac_address + "\n";
+                return "\tInterface\n" + "\t\tIndex: " + this.index + "\n\t\tDescription: " + description + "\n\t\tIP: " + ip_address + "\n\t\tMask: " + subnet_mask + "\n\t\tMAC: " + mac_address + "\n";
             } else {
-                return "\tInterface\n" + "\t\tindex: " + this.index + "\n\t\tdescription: " + description + "\n\t\tip: " + ip_address + "\n\t\tmac: " + mac_address + "\n";
+                return "\tInterface\n" + "\t\tIndex: " + this.index + "\n\t\tDescription: " + description + "\n\t\tIP: " + ip_address + "\n\t\tMAC: " + mac_address + "\n";
             }
         }else{
-            return "\tInterface\n" + "\t\tindex: " + this.index + "\n\t\tdescription: " + description +"\n\t\tmac: " + mac_address + "\n";
+            return "\tInterface\n" + "\t\tIndex: " + this.index + "\n\t\tDescription: " + description +"\n\t\tMAC: " + mac_address + "\n";
         }
     }
 }

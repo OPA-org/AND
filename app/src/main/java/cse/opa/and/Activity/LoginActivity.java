@@ -6,18 +6,25 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
+
+import java.util.Objects;
 
 import cse.opa.and.R;
 
@@ -84,20 +91,36 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (task.isSuccessful()) {//if logged in successfully
                         progressDialog.cancel();
                         Toast.makeText(LoginActivity.this, SUCCESSFULL_LOGIN, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        //startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     }
                     //===========================================================
                     else {
-                        FirebaseAuthException e = (FirebaseAuthException) task.getException();
-                        progressDialog.cancel();
-                        //===========================================================
-                        if (!error_handler(e)) {
-                            Toast.makeText(LoginActivity.this, ERROR_LOGIN, Toast.LENGTH_SHORT).show();//in case error was not catched a default error handler is inserted
-                            Log.e("Login", "Failed Log-in", e);//unhandled error logged
+                        try {
+                            throw Objects.requireNonNull(task.getException());
+                        }catch (FirebaseNetworkException e){
+                            Log.v("LOGIN_ERROR","NETWORK");
+                            progressDialog.cancel();
+                            showErrorDialog("Please check your internet connection.\nif you are connected to the internet and this message keeps appearing contact the app developer");
+                        }catch (FirebaseException e){
+                            progressDialog.cancel();
+                            try {
+                                Log.v("LOGIN_ERROR","AUTH");
+                                if (!error_handler((FirebaseAuthException) e)) {
+                                    Toast.makeText(LoginActivity.this, ERROR_LOGIN, Toast.LENGTH_SHORT).show();//in case error was not catched a default error handler is inserted
+                                    Log.e("Login", "Failed Log-in", e);//unhandled error logged
+                                }
+                            }
+                            catch (ClassCastException ex){
+                                Log.v("Error",ex.getMessage());
+                            }
                         }
-                        //===========================================================
-
+                        catch (Exception e) {
+                            Log.v("SIGNUP_ERROR","ELSE");
+                            progressDialog.cancel();
+                            Toast.makeText(LoginActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
@@ -108,6 +131,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(LoginActivity.this, SignupActivity.class));
             finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //startActivity(new Intent(LoginActivity.this, MainActivity.class));
     }
 
     @Override
@@ -210,5 +239,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         return entered;
     }
-
+    //======================================================
+    private void showErrorDialog(String message){
+        if (message==null){
+            message = "Please check your internet connection.\nif you are connected to the internet and this message keeps appearing contact the app developer";
+        }
+        LinearLayout.LayoutParams params = (new LinearLayout.LayoutParams(90, 90));
+        params.gravity = Gravity.CENTER;
+        new LovelyInfoDialog(this)
+                .setTopColorRes(R.color.Grey_blue)
+                .setIcon(R.drawable.ic_info_white)
+                .configureView(rootView -> rootView.findViewById(R.id.ld_icon).setLayoutParams(params))
+                .setTitle("Error")
+                .setMessage(message)
+                .show();
+    }
+    //======================================================
 }

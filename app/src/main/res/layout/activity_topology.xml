@@ -66,7 +66,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.5"/>
+                android:layout_weight="0.25"/>
             <LinearLayout
                 android:layout_gravity="bottom"
                 android:orientation="horizontal"
@@ -75,18 +75,7 @@
                 android:elevation="10dp">
 
                 <Button
-                    android:text="Save"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/btn_save_topology"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:textColor="#fff"
-                    android:fontFamily="sans-serif-light"
-                    android:elevation="0dp" />
-
-                <Button
-                    android:text="Report"
+                    android:text="Open Report"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:id="@+id/btn_generate_report"

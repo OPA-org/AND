@@ -13,7 +13,7 @@ public class Connection {
     private Agent agentA;
     private Agent agentB;
     private String Type;
-    
+
     public Connection(Interface interfaceA, Interface interfaceB, Agent agentA, Agent agentB, String Type) {
         this.interfaceA = interfaceA;
         this.interfaceB = interfaceB;
@@ -21,7 +21,7 @@ public class Connection {
         this.agentB = agentB;
         this.Type = Type;
     }
-    
+
     public Interface getInterfaceA() {
         return interfaceA;
     }
@@ -61,9 +61,9 @@ public class Connection {
     public void setType(String Type) {
         this.Type = Type;
     }
-    
+
     public String toString(){
-        return Type +"\n"+agentA.getName() +"\n" + interfaceA.toString() + "\n" + agentB.getName() + "\n" + interfaceB.toString();
+        return "Connection Type: "+ Type +"\n\t"+agentA.getName() +"\n\t" + interfaceA.toString() + "\n\t" + agentB.getName() + "\n\t" + interfaceB.toString();
     }
 
     public Edge getEdge(){

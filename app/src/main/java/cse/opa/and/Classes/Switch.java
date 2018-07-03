@@ -145,7 +145,7 @@ public class Switch extends Agent {
         }
         return "";
     }
-    
+
     public String getMask() {
         for (Interface aInterface : interfaces) {
             if (!aInterface.getIp_address().isEmpty() && aInterface.getIp_address() != null) {
@@ -164,7 +164,7 @@ public class Switch extends Agent {
         }
         return null;
     }
-    
+
     @Override
     public Interface GetInterface_byindex(String index) {
         for (Interface aInterface : interfaces) {

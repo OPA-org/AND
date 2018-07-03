@@ -12,7 +12,7 @@ public class Host extends Agent {
 
     private int id;
     private int this_host_id;
-	
+
 	private String name = "";
     private String descr = "";
 
@@ -25,7 +25,7 @@ public class Host extends Agent {
         this.this_host_id = host_id++;
         this.node = new Node(id,"Host "+this_host_id+" : "+ anInterface.getIp_address(),this.getClass().getSimpleName());
     }
-	
+
 	public Host(Interface anInterface,String name,String descr) {
         super(false);
         this.anInterface = anInterface;
@@ -46,7 +46,7 @@ public class Host extends Agent {
     public void set_Mac_Address(String Mac_Address){
         this.anInterface.setMac_address(Mac_Address);
     }
-    
+
     @Override
     public ArrayList<String> get_mac_addresses() {
         ArrayList<String> mac_addresses = new ArrayList<>();
@@ -99,7 +99,7 @@ public class Host extends Agent {
     public Interface GetInterface_byMacAddress(String mac_address) {
         return this.anInterface;
     }
-    
+
     @Override
     public Interface GetInterface_byindex(String index) {
         return this.anInterface;

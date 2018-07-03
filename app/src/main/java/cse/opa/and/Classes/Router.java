@@ -61,7 +61,7 @@ public class Router extends Agent {
         }
         return null;
     }*/
-    
+
     @Override
     public ArrayList<String> get_mac_addresses() {
         ArrayList<String> mac_addresses = new ArrayList<>();
@@ -70,7 +70,7 @@ public class Router extends Agent {
         }
         return mac_addresses;
     }
-    
+
     public Interface get_Interface_by_Interface_IP_address_property(String ip_address) {
         for (int i = 0; i < interfaces.size(); i++) {
             if (interfaces.get(i).getIp_address().equals(ip_address)) {
@@ -161,7 +161,7 @@ public class Router extends Agent {
         }
         return null;
     }
-    
+
     @Override
     public Interface GetInterface_byindex(String index) {
         for (Interface aInterface : interfaces) {

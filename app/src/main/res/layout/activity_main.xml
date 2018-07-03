@@ -48,7 +48,7 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
         <Button
-            android:text="Create New Topology"
+            android:text="Discover Network"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="5dp"
@@ -61,7 +61,7 @@
             android:id="@+id/btn_create_topology" />
 
         <Button
-            android:text="Open Topology"
+            android:text="Load Topology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="5dp"
@@ -71,6 +71,7 @@
             android:fontFamily="sans-serif-light"
             android:textColor="#fff"
             android:layout_gravity="center_horizontal"
+            android:visibility="gone"
             android:id="@+id/btn_load_topology" />
 
     </LinearLayout>
@@ -80,38 +81,75 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5">
-        <View
+        <LinearLayout
+            android:id="@+id/ll_logout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2" />
-        <View
-            android:layout_width="250dp"
-            android:layout_height="1dp"
-            android:layout_gravity="center"
-            android:background="#fff" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2" />
+            <View
+                android:layout_width="250dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:background="#fff" />
 
-        <TextView
-            android:text="Access your account?"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:textSize="12sp"
-            android:textColor="#fff"
-            android:id="@+id/textView4"
-            android:fontFamily="sans-serif-light" />
+            <Button
+                android:text="Logout"
+                android:layout_width="wrap_content"
+                android:background="@null"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:id="@+id/btn_logout"
+                android:textSize="18sp"
+                android:textColor="#fff"
+                android:fontFamily="sans-serif-light" />
+        </LinearLayout>
 
-        <Button
-            android:text="Login"
-            android:layout_width="wrap_content"
-            android:background="@null"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:id="@+id/btn_login"
-            android:textSize="18sp"
-            android:textColor="#fff"
-            android:fontFamily="sans-serif-light" />
+        <LinearLayout
+            android:id="@+id/ll_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2" />
+            <View
+                android:layout_width="250dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:background="#fff" />
+
+            <TextView
+                android:text="Access your account?"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:textSize="12sp"
+                android:textColor="#fff"
+                android:id="@+id/textView4"
+                android:fontFamily="sans-serif-light" />
+
+            <Button
+                android:text="Login"
+                android:layout_width="wrap_content"
+                android:background="@null"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:id="@+id/btn_login"
+                android:textSize="18sp"
+                android:textColor="#fff"
+                android:fontFamily="sans-serif-light" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>
