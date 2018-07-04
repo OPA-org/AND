@@ -378,50 +378,50 @@ public class SNMPManager {
 //                if (MiscellaneousMethods.Mac_is_connected(Switch_MacList_Mac, connections)) {
 //                    continue;
 //                }
-                ArrayList<String> afts_Switch = SNMP_methods.getfromwalk_single(Switch_ip, OIDS.dot1dTpFdbTable, OIDS.dot1dTpFdbAddress);
-                ArrayList<String> aftsports_Switch = SNMP_methods.getfromwalk_single(Switch_ip, OIDS.dot1dTpFdbTable, OIDS.dot1dTpFdbPort);
+            ArrayList<String> afts_Switch = SNMP_methods.getfromwalk_single(Switch_ip, OIDS.dot1dTpFdbTable, OIDS.dot1dTpFdbAddress);
+            ArrayList<String> aftsports_Switch = SNMP_methods.getfromwalk_single(Switch_ip, OIDS.dot1dTpFdbTable, OIDS.dot1dTpFdbPort);
                 /*Interface interface_of_MAC = switchrouterpairs.get(i).getAgent1().GetInterface_byMacAddress(Switch_MacList_Mac);
                 if(!aftsports_Switch.contains(interface_of_MAC.getIndex())){
                     continue;
                 }*/
-                ArrayList<Integer> portoccurunces_Switch = new ArrayList<>();
-                ArrayList<Integer> removing_indices = new ArrayList<>();
-                for(int p = 0 ; p < aftsports_Switch.size() ; p++){
-                    int count = 0;
-                    for(int l = 0 ; l < aftsports_Switch.size() ; l++){
-                        if(aftsports_Switch.get(p).equals(aftsports_Switch.get(l))){
-                            count++;
-                        }
-                    }
-                    portoccurunces_Switch.add(count);
-                }
-                for(int p = 0 ; p < afts_Switch.size() ; p++){
-                    if(portoccurunces_Switch.get(p) > 1){
-                        removing_indices.add(p);
+            ArrayList<Integer> portoccurunces_Switch = new ArrayList<>();
+            ArrayList<Integer> removing_indices = new ArrayList<>();
+            for(int p = 0 ; p < aftsports_Switch.size() ; p++){
+                int count = 0;
+                for(int l = 0 ; l < aftsports_Switch.size() ; l++){
+                    if(aftsports_Switch.get(p).equals(aftsports_Switch.get(l))){
+                        count++;
                     }
                 }
-             
-                Collections.reverse(removing_indices);
-                
-                for(int p = 0 ; p < removing_indices.size() ; p++){
-                    afts_Switch.remove((int)removing_indices.get(p));
-                    aftsports_Switch.remove((int)removing_indices.get(p));
+                portoccurunces_Switch.add(count);
+            }
+            for(int p = 0 ; p < afts_Switch.size() ; p++){
+                if(portoccurunces_Switch.get(p) > 1){
+                    removing_indices.add(p);
                 }
-                
-                for (String Router_MacList_Mac : Router_MacList) {
-                    if(afts_Switch.contains(Router_MacList_Mac)){
-                        int index = afts_Switch.indexOf(Router_MacList_Mac);
-                        String switch_interface_index = aftsports_Switch.get(index);
-                        Interface Switch_Interface = switchrouterpairs.get(i).getAgent1().GetInterface_byindex(switch_interface_index);
-                        Interface Router_Interface = switchrouterpairs.get(i).getAgent2().GetInterface_byMacAddress(Router_MacList_Mac);
-//                        if(has_similar_connection(connections,switchrouterpairs.get(i).getAgent1(),switchrouterpairs.get(i).getAgent2(),Switch_Interface,Router_Interface)){
-//                            continue;
-//                        }
-                        Connection connection = new Connection(Switch_Interface, Router_Interface, switchrouterpairs.get(i).getAgent1(), switchrouterpairs.get(i).getAgent2(), "Switch_Router");
-                        connections.add(connection);
+            }
+
+            Collections.reverse(removing_indices);
+
+            for(int p = 0 ; p < removing_indices.size() ; p++){
+                afts_Switch.remove((int)removing_indices.get(p));
+                aftsports_Switch.remove((int)removing_indices.get(p));
+            }
+
+            for (String Router_MacList_Mac : Router_MacList) {
+                if(afts_Switch.contains(Router_MacList_Mac)){
+                    int index = afts_Switch.indexOf(Router_MacList_Mac);
+                    String switch_interface_index = aftsports_Switch.get(index);
+                    Interface Switch_Interface = switchrouterpairs.get(i).getAgent1().GetInterface_byindex(switch_interface_index);
+                    Interface Router_Interface = switchrouterpairs.get(i).getAgent2().GetInterface_byMacAddress(Router_MacList_Mac);
+                    if(has_similar_connection(connections, switchrouterpairs.get(i).getAgent1(), switchrouterpairs.get(i).getAgent2(), Switch_Interface, Router_Interface)){
+                        continue;
                     }
+                    Connection connection = new Connection(Switch_Interface, Router_Interface, switchrouterpairs.get(i).getAgent1(), switchrouterpairs.get(i).getAgent2(), "Switch_Router");
+                    connections.add(connection);
                 }
-            
+            }
+
         }
         return connections;
     }
@@ -543,9 +543,6 @@ public class SNMPManager {
     private static ArrayList<Connection> Switch_to_host_connectivity(ArrayList<AgentPair> switchhostpairs, ArrayList<Connection> Connections) throws IOException {
         for(AgentPair switchhostpair : switchhostpairs){
             String host_IP = switchhostpair.getAgent2().getIPAddress();
-            if(MiscellaneousMethods.IP_is_connected(host_IP, Connections)){
-                continue;
-            }
             String switch_IP = switchhostpair.getAgent1().getIPAddress();
             String switch_Mask = ((Switch)switchhostpair.getAgent1()).getMask();
             String switch_NetIP = MiscellaneousMethods.getNetworkIP(switch_IP, switch_Mask);
@@ -562,21 +559,21 @@ public class SNMPManager {
             ArrayList<ArrayList<String>> switch_macaddrtable = SNMP_methods.getfromwalk_multi(switch_IP, OIDS.dot1dTpFdbTable, oids);
             ArrayList<Integer> portoccurunces_Switch = new ArrayList<>();
             ArrayList<Integer> removing_indices = new ArrayList<>();
-            for (int p = 0; p < switch_macaddrtable.get(1).size(); p++) {
-                int count = 0;
-                for (int l = 0; l < switch_macaddrtable.get(1).size(); l++) {
-                    if (switch_macaddrtable.get(1).get(p).equals(switch_macaddrtable.get(1).get(l))) {
-                        count++;
-                    }
-                }
-                portoccurunces_Switch.add(count);
-            }
-
-            for (int p = 0; p < switch_macaddrtable.get(1).size(); p++) {
-                if (portoccurunces_Switch.get(p) > 1) {
-                    removing_indices.add(p);
-                }
-            }
+//            for (int p = 0; p < switch_macaddrtable.get(1).size(); p++) {
+//                int count = 0;
+//                for (int l = 0; l < switch_macaddrtable.get(1).size(); l++) {
+//                    if (switch_macaddrtable.get(1).get(p).equals(switch_macaddrtable.get(1).get(l))) {
+//                        count++;
+//                    }
+//                }
+//                portoccurunces_Switch.add(count);
+//            }
+//
+//            for (int p = 0; p < switch_macaddrtable.get(1).size(); p++) {
+//                if (portoccurunces_Switch.get(p) > 1) {
+//                    removing_indices.add(p);
+//                }
+//            }
 
             Collections.reverse(removing_indices);
 
@@ -584,29 +581,32 @@ public class SNMPManager {
                 switch_macaddrtable.get(0).remove((int) removing_indices.get(p));
                 switch_macaddrtable.get(1).remove((int) removing_indices.get(p));
             }
-            
+
             int indexofhost_in_arptable = switch_arptable.get(0).indexOf(host_IP);
-            
+
 //            if(switch_arptable.get(1).contains(indexofhost_in_arptable))
-            
+
             String mac_of_host = switch_arptable.get(1).get(indexofhost_in_arptable);
-            
+
             for(int i = 0; i < switch_macaddrtable.get(0).size() ; i++){
                 if(switch_macaddrtable.get(0).get(i).equals(mac_of_host)){
                     Switch switchA = (Switch)switchhostpair.getAgent1();
                     Host hostB = (Host)switchhostpair.getAgent2();
                     Interface switch_interface = switchA.GetInterface_byindex(switch_macaddrtable.get(1).get(i));
-                    if(MiscellaneousMethods.Interface_is_connected(switch_interface, Connections)){
-                        continue;
-                    }
+//                    if(MiscellaneousMethods.Interface_is_connected(switch_interface, Connections)){
+//                        continue;
+//                    }
                     hostB.set_Mac_Address(mac_of_host);
                     Interface host_interface = hostB.getAnInterface();
+                    if(has_similar_connection(Connections, switchA, hostB, switch_interface, host_interface)){
+                        continue;
+                    }
                     Connection interfaceConnection = new Connection(switch_interface, host_interface, switchA, hostB, "Switch_Host");
                     Connections.add(interfaceConnection);
                     break;
                 }
             }
-            
+
         }
         return Connections;
     }
@@ -722,6 +722,12 @@ public class SNMPManager {
             }
         }
         Switch switchh = new Switch(sysdescr, sysname, switchifs);
+        for(Interface intf : switchh.getInterfaces()){
+            if(intf.getIp_address().equals("")){
+                intf.setIp_address(switchh.getIPAddress());
+                intf.setSubnet_mask(switchh.getMask());
+            }
+        }
         return switchh;
     }
 
@@ -737,159 +743,201 @@ public class SNMPManager {
             }else if(connection.getInterfaceA().getDescription().contains("null") || connection.getInterfaceB().getDescription().contains("null")){
                 temp.remove(connection);
             }
-        }
-        return temp;
-    }
 
-    private static ArrayList<Connection> Find_Hidden_Connections(ArrayList<Connection> connections,ArrayList<Agent> agents){
-        ArrayList<Connection> need_to_edit_connections = new ArrayList<>();
-        ArrayList<String> Subnets = new ArrayList<>();
-        ArrayList<String> Masks = new ArrayList<>();
-        for(int i = 0 ; i < connections.size() ; i++) {
-            Connection c1  = connections.get(i);
-            for (int j = 0 ; j < connections.size() ; j++) {
-                Connection c2 = connections.get(j);
-                if (!c1.equals(c2)) {
-                    if (c1.getAgentA().equals(c2.getAgentA())) {
-                        if (!c1.getAgentA().getClass().getSimpleName().equals("Host")) {
-                            if (c1.getInterfaceA().equals(c2.getInterfaceA())) {
-                                need_to_edit_connections.add(c1);
-                                break;
+            if(connection.getType().equals("Switch_Router")){
+                for (Connection connection2 : connections) {
+                    if (!connection.equals(connection2)) {
+                        if (connection2.getType().equals("Router_Router")) {
+                            if(connection.getAgentB().equals(connection2.getAgentA())){
+                                if(connection.getInterfaceB().equals(connection2.getInterfaceA())){
+                                    temp.remove(connection2);
+                                }
+                            }else if(connection.getAgentB().equals(connection2.getAgentB())){
+                                if(connection.getInterfaceB().equals(connection2.getInterfaceB())){
+                                    temp.remove(connection2);
+                                }
                             }
-                        } else {
-                            need_to_edit_connections.add(c1);
-                            break;
-                        }
-                    } else if (c1.getAgentA().equals(c2.getAgentB())) {
-                        if (!c1.getAgentA().getClass().getSimpleName().equals("Host")) {
-                            if (c1.getInterfaceA().equals(c2.getInterfaceB())) {
-                                need_to_edit_connections.add(c1);
-                                break;
-                            }
-                        } else {
-                            need_to_edit_connections.add(c1);
-                            break;
                         }
                     }
-                    else if (c1.getAgentB().equals(c2.getAgentA())) {
-                        if (!c1.getAgentB().getClass().getSimpleName().equals("Host")) {
-                            if (c1.getInterfaceB().equals(c2.getInterfaceA())) {
-                                need_to_edit_connections.add(c1);
-                                break;
+                }
+            }else if(connection.getType().equals("Switch_Switch")){
+                for (Connection connection2 : connections){
+                    if(!connection.equals(connection2)){
+                        if (connection2.getType().equals("Switch_Host")) {
+                            if(connection.getAgentA().equals(connection2.getAgentA())){
+                                if(connection.getInterfaceA().equals(connection2.getInterfaceA())){
+                                    temp.remove(connection2);
+                                }
+                            }else if(connection.getAgentA().equals(connection2.getAgentB())){
+                                if(connection.getInterfaceA().equals(connection2.getInterfaceB())){
+                                    temp.remove(connection2);
+                                }
+                            }else if(connection.getAgentB().equals(connection2.getAgentA())){
+                                if(connection.getInterfaceB().equals(connection2.getInterfaceA())){
+                                    temp.remove(connection2);
+                                }
+                            }else if(connection.getAgentB().equals(connection2.getAgentB())){
+                                if(connection.getInterfaceB().equals(connection2.getInterfaceB())){
+                                    temp.remove(connection2);
+                                }
                             }
-                        } else {
-                            need_to_edit_connections.add(c1);
-                            break;
-                        }
-                    } else if (c1.getAgentB().equals(c2.getAgentB())) {
-                        if (!c1.getAgentB().getClass().getSimpleName().equals("Host")) {
-                            if (c1.getInterfaceB().equals(c2.getInterfaceB())) {
-                                need_to_edit_connections.add(c1);
-                                break;
-                            }
-                        } else {
-                            need_to_edit_connections.add(c1);
-                            break;
                         }
                     }
                 }
             }
+
         }
-        
-        for(Connection connection: need_to_edit_connections){
+        return temp;
+    }
+
+    private static ArrayList<Connection> Find_Hidden_Connections(ArrayList<Connection> connections,ArrayList<Agent> agents) {
+        ArrayList<Connection> need_to_edit_connections = new ArrayList<>();
+        ArrayList<String> Subnets = new ArrayList<>();
+        ArrayList<String> Masks = new ArrayList<>();
+        for (int i = 0; i < connections.size(); i++) {
+            Connection c1 = connections.get(i);
+            for (int j = 0; j < connections.size(); j++) {
+                Connection c2 = connections.get(j);
+                if (!c1.equals(c2)) {
+                    if (c1.getAgentA().equals(c2.getAgentA())) {
+//                        if (!c1.getAgentA().getClass().getSimpleName().equals("Host")) {
+                        if (c1.getInterfaceA().equals(c2.getInterfaceA())) {
+                            need_to_edit_connections.add(c1);
+                            break;
+                        }
+//                        } else {
+//                            need_to_edit_connections.add(c1);
+//                            break;
+//                        }
+                    } else if (c1.getAgentA().equals(c2.getAgentB())) {
+//                        if (!c1.getAgentA().getClass().getSimpleName().equals("Host")) {
+                        if (c1.getInterfaceA().equals(c2.getInterfaceB())) {
+                            need_to_edit_connections.add(c1);
+                            break;
+                        }
+//                        } else {
+//                            need_to_edit_connections.add(c1);
+//                            break;
+//                        }
+                    } else if (c1.getAgentB().equals(c2.getAgentA())) {
+//                        if (!c1.getAgentB().getClass().getSimpleName().equals("Host")) {
+                        if (c1.getInterfaceB().equals(c2.getInterfaceA())) {
+                            need_to_edit_connections.add(c1);
+                            break;
+                        }
+//                        } else {
+//                            need_to_edit_connections.add(c1);
+//                            break;
+//                        }
+                    } else if (c1.getAgentB().equals(c2.getAgentB())) {
+//                        if (!c1.getAgentB().getClass().getSimpleName().equals("Host")) {
+                        if (c1.getInterfaceB().equals(c2.getInterfaceB())) {
+                            need_to_edit_connections.add(c1);
+                            break;
+                        }
+//                        } else {
+//                            need_to_edit_connections.add(c1);
+//                            break;
+//                        }
+                    }
+                }
+            }
+        }
+
+        for (Connection connection : need_to_edit_connections) {
             connections.remove(connection);
-            if(connection.getType().equals("Switch_Switch")){
-                String subnet = MiscellaneousMethods.getNetworkIP(connection.getAgentA().getIPAddress(),((Switch)connection.getAgentA()).getMask());
+            if (connection.getType().equals("Switch_Switch")) {
+                String subnet = MiscellaneousMethods.getNetworkIP(connection.getAgentA().getIPAddress(), ((Switch) connection.getAgentA()).getMask());
                 if (!Subnets.contains(subnet)) {
                     Subnets.add(subnet);
                     Masks.add(((Switch) connection.getAgentA()).getMask());
                 }
-            }else if(connection.getType().equals("Switch_Router")){
-                String subnet = MiscellaneousMethods.getNetworkIP(connection.getInterfaceB().getIp_address(),connection.getInterfaceB().getSubnet_mask());
+            } else if (connection.getType().equals("Switch_Router")) {
+                String subnet = MiscellaneousMethods.getNetworkIP(connection.getInterfaceB().getIp_address(), connection.getInterfaceB().getSubnet_mask());
                 if (!Subnets.contains(subnet)) {
                     Subnets.add(subnet);
                     Masks.add(connection.getInterfaceB().getSubnet_mask());
                 }
-            }else{
-                String subnet = MiscellaneousMethods.getNetworkIP(connection.getInterfaceA().getIp_address(),connection.getInterfaceA().getSubnet_mask());
+            } else {
+                String subnet = MiscellaneousMethods.getNetworkIP(connection.getInterfaceA().getIp_address(), connection.getInterfaceA().getSubnet_mask());
                 if (!Subnets.contains(subnet)) {
                     Subnets.add(subnet);
                     Masks.add(connection.getInterfaceA().getSubnet_mask());
                 }
             }
         }
-        
+
         ArrayList<Switch> hidden_switches = new ArrayList<>();
         ArrayList<Integer> switches_interfaces_index = new ArrayList<>();
-        for(int i = 0 ; i < Subnets.size() ; i++){
+        for (int i = 0; i < Subnets.size(); i++) {
             ArrayList<Interface> intfs = new ArrayList<>();
             intfs.add(new Interface("0", "not used interface", Subnets.get(i), Masks.get(i), ""));
-            Switch sw = new Switch("Ethernet Switch", "Ethernet Switch"+i, intfs);
+            Switch sw = new Switch("Ethernet Switch", "Ethernet Switch" + i, intfs);
             hidden_switches.add(sw);
             switches_interfaces_index.add(1);
         }
-        
+
         ArrayList<Connection> Hidden_Connections = new ArrayList<>();
-        
+
         for (Connection connection : need_to_edit_connections) {
             if (connection.getType().equals("Switch_Switch")) {
                 if (!MiscellaneousMethods.Interface_is_connected(connection.getInterfaceA(), connections)) {
-                    for(int i = 0 ; i < hidden_switches.size() ; i++){
-                        if(MiscellaneousMethods.isIPinSubnet(connection.getAgentA().getIPAddress(), hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask())){
+                    for (int i = 0; i < hidden_switches.size(); i++) {
+                        if (MiscellaneousMethods.isIPinSubnet(connection.getAgentA().getIPAddress(), hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask())) {
                             String intindx = switches_interfaces_index.get(i).toString();
                             Interface intf = new Interface(intindx, "Ethernet Port", hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask(), "");
                             hidden_switches.get(i).add_Interface(intf);
-                            switches_interfaces_index.set(i,switches_interfaces_index.get(i) + 1);
-                            Connection interfaceConnection = new Connection(connection.getInterfaceA(), intf, connection.getAgentA(), hidden_switches.get(i), connection.getAgentA().getClass().getSimpleName()+"_Switch");
+                            switches_interfaces_index.set(i, switches_interfaces_index.get(i) + 1);
+                            Connection interfaceConnection = new Connection(connection.getInterfaceA(), intf, connection.getAgentA(), hidden_switches.get(i), connection.getAgentA().getClass().getSimpleName() + "_Switch");
                             connections.add(interfaceConnection);
                         }
                     }
                 }
                 if (!MiscellaneousMethods.Interface_is_connected(connection.getInterfaceB(), connections)) {
-                    for(int i = 0 ; i < hidden_switches.size() ; i++){
-                        if(MiscellaneousMethods.isIPinSubnet(connection.getAgentB().getIPAddress(), hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask())){
+                    for (int i = 0; i < hidden_switches.size(); i++) {
+                        if (MiscellaneousMethods.isIPinSubnet(connection.getAgentB().getIPAddress(), hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask())) {
                             String intindx = switches_interfaces_index.get(i).toString();
                             Interface intf = new Interface(intindx, "Ethernet Port", hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask(), "");
                             hidden_switches.get(i).add_Interface(intf);
-                            switches_interfaces_index.set(i,switches_interfaces_index.get(i) + 1);
-                            Connection interfaceConnection = new Connection(connection.getInterfaceB(), intf, connection.getAgentB(), hidden_switches.get(i), connection.getAgentB().getClass().getSimpleName()+"_Switch");
+                            switches_interfaces_index.set(i, switches_interfaces_index.get(i) + 1);
+                            Connection interfaceConnection = new Connection(connection.getInterfaceB(), intf, connection.getAgentB(), hidden_switches.get(i), connection.getAgentB().getClass().getSimpleName() + "_Switch");
                             connections.add(interfaceConnection);
                         }
                     }
                 }
             } else {
                 if (!MiscellaneousMethods.Interface_is_connected(connection.getInterfaceA(), connections)) {
-                    for(int i = 0 ; i < hidden_switches.size() ; i++){
-                        if(MiscellaneousMethods.isIPinSubnet(connection.getInterfaceA().getIp_address(), hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask())){
+                    for (int i = 0; i < hidden_switches.size(); i++) {
+                        if (MiscellaneousMethods.isIPinSubnet(connection.getInterfaceA().getIp_address(), hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask())) {
                             String intindx = switches_interfaces_index.get(i).toString();
                             Interface intf = new Interface(intindx, "Ethernet Port", hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask(), "");
                             hidden_switches.get(i).add_Interface(intf);
-                            switches_interfaces_index.set(i,switches_interfaces_index.get(i) + 1);
-                            Connection interfaceConnection = new Connection(connection.getInterfaceA(), intf, connection.getAgentA(), hidden_switches.get(i), connection.getAgentA().getClass().getSimpleName()+"_Switch");
+                            switches_interfaces_index.set(i, switches_interfaces_index.get(i) + 1);
+                            Connection interfaceConnection = new Connection(connection.getInterfaceA(), intf, connection.getAgentA(), hidden_switches.get(i), connection.getAgentA().getClass().getSimpleName() + "_Switch");
                             connections.add(interfaceConnection);
                         }
                     }
                 }
                 if (!MiscellaneousMethods.Interface_is_connected(connection.getInterfaceB(), connections)) {
-                    for(int i = 0 ; i < hidden_switches.size() ; i++){
-                        if(MiscellaneousMethods.isIPinSubnet(connection.getInterfaceB().getIp_address(), hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask())){
+                    for (int i = 0; i < hidden_switches.size(); i++) {
+                        if (MiscellaneousMethods.isIPinSubnet(connection.getInterfaceB().getIp_address(), hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask())) {
                             String intindx = switches_interfaces_index.get(i).toString();
                             Interface intf = new Interface(intindx, "Ethernet Port", hidden_switches.get(i).getIPAddress(), hidden_switches.get(i).getMask(), "");
                             hidden_switches.get(i).add_Interface(intf);
-                            switches_interfaces_index.set(i,switches_interfaces_index.get(i) + 1);
-                            Connection interfaceConnection = new Connection(connection.getInterfaceB(), intf, connection.getAgentB(), hidden_switches.get(i), connection.getAgentB().getClass().getSimpleName()+"_Switch");
+                            switches_interfaces_index.set(i, switches_interfaces_index.get(i) + 1);
+                            Connection interfaceConnection = new Connection(connection.getInterfaceB(), intf, connection.getAgentB(), hidden_switches.get(i), connection.getAgentB().getClass().getSimpleName() + "_Switch");
                             connections.add(interfaceConnection);
                         }
                     }
                 }
-                
+
             }
         }
-        
-        for(Switch sw : hidden_switches){
+
+        for (Switch sw : hidden_switches) {
             agents.add(sw);
         }
-        
+
         return connections;
     }
 

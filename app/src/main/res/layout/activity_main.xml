@@ -61,7 +61,7 @@
             android:id="@+id/btn_create_topology" />
 
         <Button
-            android:text="Load Topology"
+            android:text="Load Report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="5dp"
