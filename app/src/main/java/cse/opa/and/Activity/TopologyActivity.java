@@ -1,31 +1,24 @@
 package cse.opa.and.Activity;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import cse.opa.and.AlgorithmParams;
 import cse.opa.and.Classes.Agent;
-import cse.opa.and.Classes.Connection;
 import cse.opa.and.Classes.Host;
 import cse.opa.and.Classes.MiscellaneousMethods;
 import cse.opa.and.Classes.SNMPManager;
@@ -49,6 +42,7 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
     public static Topology topology;
     static boolean finishedProcessing =false;
     boolean details_list_visible= false,device_details_visible=false;
+    public static boolean report_saved=false;
     ProgressDialog dialog;
     Thread processthread;
     LinearLayout ll_devices_details,ll_device_details;
@@ -349,7 +343,6 @@ public class TopologyActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.btn_generate_report: {
                 startActivity(new Intent(TopologyActivity.this, ReportActivity.class));
                 break;

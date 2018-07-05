@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -15,14 +16,20 @@ import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
-import cse.opa.and.ListOfTopologies;
 import cse.opa.and.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btn_create_topology, btn_load_topology, btn_login , btn_logout;
     private LinearLayout ll_login,ll_logout;
     private FirebaseAuth mAuth;
+    private static boolean connected;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //update UI ->Remove login and add settings
         updateUI(currentUser);
+        TopologyActivity.report_saved = false;
+        initConnectionListener();
     }
     //======================================================
     private void updateUI(FirebaseUser user){
@@ -83,7 +92,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             //===========================================================
             case R.id.btn_load_topology: {
-                startActivity(new Intent(MainActivity.this, ListOfTopologies.class));
+                if (connected){
+                    startActivity(new Intent(MainActivity.this, TopologyListActivity.class));
+                }
+                else {
+                    showErrorDialog(null);
+                }
                 break;
             }
             //===========================================================
@@ -117,4 +131,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             window.setBackgroundDrawable(background);
         }
     }
+    private void initConnectionListener(){
+        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                connected = snapshot.getValue(Boolean.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.err.println("Listener was cancelled");
+            }
+        });
+    }
+    //======================================================
+    private void showErrorDialog(String message){
+        if (message==null){
+            message = "Please try again.\nIf this happened before check your internet connection.\nif you are connected to the internet and this message keeps appearing contact the app developer";
+        }
+        LinearLayout.LayoutParams params = (new LinearLayout.LayoutParams(90, 90));
+        params.gravity = Gravity.CENTER;
+        new LovelyInfoDialog(this)
+                .setTopColorRes(R.color.Grey_blue)
+                .setIcon(R.drawable.ic_info_white)
+                .configureView(rootView -> rootView.findViewById(R.id.ld_icon).setLayoutParams(params))
+                .setTitle("Error")
+                .setMessage(message)
+                .show();
+    }
+    //======================================================
 }

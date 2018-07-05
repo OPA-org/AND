@@ -51,7 +51,7 @@ public class CustomAdapter extends ArrayAdapter<CustomObject> {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.textView1.setText(objects.get(position).getUsername());
-        holder.textView2.setText(objects.get(position).getTopologyname());
+        holder.textView2.setText(objects.get(position).getReportname());
         holder.textView3.setText(objects.get(position).getDate());
         return convertView;
     }

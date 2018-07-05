@@ -21,7 +21,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_topology" />
         <activity android:name=".Activity.ReportActivity" />
-        <activity android:name=".ListOfTopologies" />
+        <activity android:name=".Activity.TopologyListActivity" />
         <activity android:name=".Activity.SignupActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
